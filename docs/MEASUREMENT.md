@@ -1,11 +1,11 @@
 # Měření – Fingramo
 
-Podklad pro README §8. Rozhodnutí: D11 (PostHog EU + Vercel Analytics), D24 (bez cookies, záznamy relací ponechány).
+Podklad pro README §8. Rozhodnutí: D11 (PostHog EU + Vercel Analytics), D24 (bez cookies), D33 (záznamy relací vypnuté v kódu, heatmapy zapnuté).
 
 ## Nástroje
 | Nástroj | Co měří | Kde jsou čísla |
 |---|---|---|
-| **PostHog EU** (Frankfurt), projekt 301598 | celá cesta návštěvníka po jednotlivých událostech, trychtýř, rozpad A/B, záznamy relací | Dashboard **„Fingramo – trychtýř leadů"**: https://eu.posthog.com/project/301598/dashboard/1014275 |
+| **PostHog EU** (Frankfurt), projekt 301598 | celá cesta návštěvníka po jednotlivých událostech, trychtýř, rozpad A/B, souhrnné heatmapy kliknutí (záznamy relací vypnuté, D33) | Dashboard **„Fingramo – trychtýř leadů"**: https://eu.posthog.com/project/301598/dashboard/1014275 |
 | **Vercel Web Analytics** | návštěvy, zdroje, země; kontrola počtu návštěv z PostHogu | Vercel → projekt `fingramo` → Analytics |
 | **Supabase** `leads` | skutečně uložené kontakty včetně `utm_*` a `form_location` (kontrola, že `form_submit` = řádek v DB) | Supabase → `fingramo-leads` → Table editor |
 

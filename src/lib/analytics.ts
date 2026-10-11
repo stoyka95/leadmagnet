@@ -20,6 +20,9 @@ const init = async (): Promise<void> => {
     capture_pageview: true, // $pageview carries utm_* from the URL automatically
     capture_pageleave: true,
     person_profiles: 'identified_only',
+    // D33: no session recordings (they record behaviour without consent); aggregated click heatmaps stay on
+    disable_session_recording: true,
+    capture_heatmaps: true,
   });
 
   // Ad variant on every event of this page, so each funnel step can be split by ad A / B
