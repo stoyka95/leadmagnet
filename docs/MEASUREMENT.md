@@ -31,7 +31,7 @@ Podklad pro README §8. Rozhodnutí: D11 (PostHog EU + Vercel Analytics), D24 (b
 | — | `hero_calc_submit` | varianta testu `hero_input`: odeslání částky z 1. obrazovky (D28) | `monthly_czk` |
 | 7 | `thank_you_view` | zobrazení `/dekujeme` | `used_calculator` |
 
-- **Každá událost** nese `ad_variant` (= `utm_content`: `a` / `b` / `none`), `utm_*` a **`exp_hero_calc`** (`control` / `hero_input`, živý A/B test D28). Díky tomu jde každý krok rozdělit podle reklamy i podle varianty testu.
+- **Každá událost** nese `ad_variant` (= `utm_content`: `a` / `b` / `none`), `utm_*` a **`exp_hero_calc`** (`control` / `hero_input`, živý A/B test D28) a `forms_variant` (`2` základ / `3` varianta přes `?forms=3`, D35). Díky tomu jde každý krok rozdělit podle reklamy i podle varianty testu.
 - **Lead ↔ cesta v PostHogu:** `leads.analytics_id` = `lead_ref` v události `form_submit` (náhodné UUID pro každé odeslání).
 - `form_submit` a události těsně před přesměrováním se posílají přes `sendBeacon`, takže se neztratí při odchodu ze stránky.
 

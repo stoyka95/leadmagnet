@@ -60,11 +60,18 @@ const minEuTer = Math.min(...ucitsEtfs.map((u) => u.terPct));
     Zdroj: weby správců (State Street, iShares, Vanguard, Schwab, DWS), staženo {formatDate(dataRetrieved)}. Velikost = ETF třída fondu. Registrace pro ČR podle State Street. <a href="/zdroje">Všechny zdroje</a>
   </p>
 
-  <div class="cta">
-    <button type="button" class="btn btn-ghost" data-open-compare-form aria-expanded="false" aria-controls="compare-form">Poslat srovnání e-mailem</button>
+  <!-- D35: the base page has 2 lead forms – this button leads to the one under the calculator.
+       The third form here is only in the variant ?forms=3 (hypothesis in README). -->
+  <div class="cta forms2-only">
+    <a class="btn btn-ghost" href="#lf-calculator-h" data-gate-open data-track="cta_click" data-cta="compare_send">Poslat srovnání e-mailem</a>
   </div>
-  <div id="compare-form" class="form-wrap" hidden>
-    <LeadForm location="compare" wide heading="Pošleme vám všech 6 párů v jednom e-mailu" />
+  <div class="forms3-only">
+    <div class="cta">
+      <button type="button" class="btn btn-ghost" data-open-compare-form aria-expanded="false" aria-controls="compare-form">Poslat srovnání e-mailem</button>
+    </div>
+    <div id="compare-form" class="form-wrap" hidden>
+      <LeadForm location="compare" wide heading="Pošleme vám všech 6 párů v jednom e-mailu" />
+    </div>
   </div>
 </section>
 
@@ -99,6 +106,7 @@ const minEuTer = Math.min(...ucitsEtfs.map((u) => u.terPct));
   .cta { margin-top: var(--sp-6); }
   .cta .btn { width: 100%; }
   @media (min-width: 600px) { .cta .btn { width: auto; } }
+  :global(:root:not([data-forms='3'])) .forms3-only, :global(:root[data-forms='3']) .forms2-only { display: none; }
   .form-wrap { margin-top: var(--sp-4); scroll-margin-top: var(--sp-6); }
 </style>
 

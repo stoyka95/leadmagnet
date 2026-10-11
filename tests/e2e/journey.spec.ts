@@ -263,12 +263,29 @@ test.describe('compare section', () => {
     await expect(page.getByRole('button', { name: 'Celý svět' })).toHaveAttribute('aria-pressed', 'true');
   });
 
-  test('the compare form opens and gets the cursor', async ({ page }) => {
+  test('the base page has 2 lead forms; the compare button leads to the calculator form (D35)', async ({ page }) => {
     await page.goto('/');
     await noSmoothScroll(page);
+    await expect(page.locator('html')).toHaveAttribute('data-forms', '2');
+    await expect(page.locator('.forms3-only')).toBeHidden();
+    const visibleForms = page.locator('[data-lead-form]:visible');
+    await expect(visibleForms).toHaveCount(2);
+    await page.getByRole('link', { name: 'Poslat srovnání e-mailem' }).click();
+    await expect(page.locator('#lf-calculator-email')).toBeFocused();
+    expect(await events(page)).toContainEqual(['cta_click', expect.objectContaining({ cta: 'compare_send' })]);
+  });
+
+  test('variant ?forms=3: the compare form opens and gets the cursor, and stays on in this tab', async ({ page }) => {
+    await page.goto('/?forms=3');
+    await noSmoothScroll(page);
+    await expect(page.locator('html')).toHaveAttribute('data-forms', '3');
+    await expect(page.locator('.forms2-only')).toBeHidden();
     await page.locator('[data-open-compare-form]').click();
     await expect(page.locator('#compare-form')).toBeVisible();
     await expect(page.locator('#compare-form input[name=email]')).toBeFocused();
+    await page.goto('/');
+    await expect(page.locator('html')).toHaveAttribute('data-forms', '3');
+    await expect(page.locator('[data-open-compare-form]')).toBeVisible(); // the third form is there again, collapsed behind its button
   });
 });
 

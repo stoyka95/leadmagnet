@@ -38,7 +38,7 @@ const init = async (): Promise<void> => {
   if (!exp) {
     try { exp = sessionStorage.getItem('fg:exp_hero_calc') ?? undefined; } catch { /* storage blocked */ }
   }
-  posthog.register({ ad_variant: utm.utm_content ?? 'none', exp_hero_calc: exp ?? 'none', ...utm });
+  posthog.register({ ad_variant: utm.utm_content ?? 'none', exp_hero_calc: exp ?? 'none', forms_variant: document.documentElement.dataset.forms ?? '2', ...utm });
 
   window.__fgCapture = (event: string, props: Props) => {
     // sendBeacon survives the redirect to /dekujeme right after form_submit

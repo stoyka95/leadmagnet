@@ -34,6 +34,17 @@ import SiteHeader from '../components/SiteHeader.astro';
       }
       document.documentElement.dataset.expHero = exp;
     })();
+    // D35: the base page has 2 lead forms; ?forms=3 switches on the variant with the third form by the comparison
+    // (hypothesis for a later test – not a live split, only one test runs at a time). Remembered in this tab.
+    (function () {
+      var f = '2';
+      try {
+        var q = new URLSearchParams(location.search).get('forms');
+        if (q === '2' || q === '3') sessionStorage.setItem('fg:forms', q);
+        f = sessionStorage.getItem('fg:forms') === '3' ? '3' : '2';
+      } catch (e) {}
+      document.documentElement.dataset.forms = f;
+    })();
   </script>
   <SiteHeader />
   <Hero />
