@@ -120,3 +120,21 @@ Surové exporty konverzací jsou v [`ai-log/`](../ai-log/).
 ### Kde se AI spletla
 1. **UTM se nikdy neukládaly do leadů.** Funkce `rememberUtm()` z Fáze 3 se nikde nevolala, takže kontakty by neměly informaci, ze které reklamy přišly, a A/B test reklam by v databázi nešel vyhodnotit. Nalezeno při psaní měření (čtení vlastního kódu). Opraveno čtením UTM přímo z URL, bez ukládání v prohlížeči. Ověřeno řádkem v Supabase (`test / qa / e2e_funnel / b`).
 2. **Falešný poplach:** po prvním testu chyběly v PostHogu `cta_click` a `thank_you_view`. AI nejdřív hledala chybu v kódu, ale události jen dorazily se zpožděním zpracování. Poučení: před laděním počkat a dotaz zopakovat.
+
+---
+
+## Session 1, pokračování – 11. 10. 2026: rozmazaný detail za e-mail (D25)
+
+### Pokyn
+Miky: rozmazat část obsahu, aby návštěvník musel zadat e-mail, a jméno i telefon udělat volitelné.
+
+### Co AI udělala a jak ověřovala
+- Před stavbou upozornila na rozpor se zadáním (*„hodnota má být zřejmá před formulářem"*) a nabídla varianty. Miky zvolil částečnou bránu: hlavní výsledek je vidět, detail rozmazaný.
+- Rozmazaný obsah má atribut `inert`, takže ho nečte čtečka obrazovky a nejde na něj tabulátorem. Upozornění na riziko a zdroje zůstávají čitelné.
+- Migrace v Supabase (jméno volitelné), ověřená dotazem na omezení tabulky. Nová verze souhlasu `v2-2026-10-11`, zásady upravené.
+- Důsledek, který Miky nezmínil: podnadpis hero B sliboval „uvidíte poplatky u 6 ETF", což by po rozmazání neplatilo. AI ho upravila, aby slib reklamy zůstal pravdivý.
+- Ověřeno: `astro check` 0 chyb; mobil 375 px i desktop 1366 px (screenshoty); tlačítko „Odemknout" přesune e-mail doprostřed obrazovky a dá do něj kurzor (Playwright, všechna 3 tlačítka); po odeslání (záznam `fg:lead`) je vše odemčené a nic nezůstane `inert`.
+
+### Kde se AI spletla
+1. **Posun na formulář po kliknutí.** První verze posouvala na celý formulář (`block: center`), který je na mobilu vyšší než obrazovka, takže pole e-mail skončilo mimo ni. Opraveno posunem přímo na pole e-mail.
+2. **Chybná diagnóza při testu.** AI pak naměřila, že posun pořád nesedí, a hledala chybu v kódu. Ve skutečnosti headless prohlížeč spouští plynulý posun asi o 1,4 s později a měření proběhlo dřív. Prokázáno záznamem polohy po 150 ms. Poučení: u animací měřit průběh, ne jeden okamžik.
