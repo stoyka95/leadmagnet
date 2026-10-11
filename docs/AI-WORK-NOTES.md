@@ -108,3 +108,15 @@ Surové exporty konverzací jsou v [`ai-log/`](../ai-log/).
   - gradient Tailwind emerald-500 s bílým textem – kontrast ~2,5:1
 - **Ověření po úpravách:** `npm run check` 0 chyb; `data-track` atributy beze změny (diff před/po); mobil 375 px bez přetékání, pole 52 px, formulář u kalkulačky o ~720 px výš.
 - **Poučení pro README:** výstup AI (vlastní i cizí) se kontroluje stejně, tedy proti datům a pravidlům, ne proti tomu, jak přesvědčivě zní.
+
+---
+
+## Session 1, pokračování – 11. 10. 2026: Fáze 4 (měření)
+
+### Co AI udělala a jak ověřovala
+- Měření bez cookies ověřila v oficiální dokumentaci PostHogu (přes konektor), ne z paměti. Nastavení projektu změnila až po Mikyho souhlasu.
+- Měřila po krocích: lokálně (žádné cookies ani localStorage, události v PostHogu), pak na produkci celý průchod jako návštěvník z reklamy B. Kontrola proběhla na třech místech: události v PostHogu (SQL), řádek v Supabase a stav e-mailu v Resendu.
+
+### Kde se AI spletla
+1. **UTM se nikdy neukládaly do leadů.** Funkce `rememberUtm()` z Fáze 3 se nikde nevolala, takže kontakty by neměly informaci, ze které reklamy přišly, a A/B test reklam by v databázi nešel vyhodnotit. Nalezeno při psaní měření (čtení vlastního kódu). Opraveno čtením UTM přímo z URL, bez ukládání v prohlížeči. Ověřeno řádkem v Supabase (`test / qa / e2e_funnel / b`).
+2. **Falešný poplach:** po prvním testu chyběly v PostHogu `cta_click` a `thank_you_view`. AI nejdřív hledala chybu v kódu, ale události jen dorazily se zpožděním zpracování. Poučení: před laděním počkat a dotaz zopakovat.

@@ -184,6 +184,12 @@ Drobnosti s rozumnou výchozí volbou rozhoduje Claude sám – jsou na konci v 
   - graf do rozbalovacího bloku: graf si Miky výslovně přál (D21) → **viditelný, na mobilu za formulářem**
   - „🔒 100% zdarma“ → ikona SVG, bez „100%“
 
+### D24 – Měření bez cookies a záznamy relací
+- **Varianty (cookies):** (a) PostHog „cookieless server hash mode" (stavový) *(doporučeno)* · (b) běžné cookies + cookie lišta
+- **Zvoleno:** (a). Nic se neukládá v prohlížeči, cookie lišta není potřeba a trychtýř přes `/dekujeme` funguje. Nastavení projektu změnil Claude na Mikyho souhlas.
+- **Varianty (záznamy relací a heatmapy):** (a) vypnout *(doporučeno: citlivý formulář, výkon na mobilu)* · (b) nechat zapnuté
+- **Zvoleno:** (b) **nechat zapnuté** (Miky). Zásady ochrany údajů to uvádějí. Obsah polí formuláře se nepřenáší (výchozí maskování vstupů v PostHogu).
+
 ---
 
 ## Rozhodnuto Claudem (drobnosti)
@@ -192,3 +198,4 @@ Drobnosti s rozumnou výchozí volbou rozhoduje Claude sám – jsou na konci v 
 - **Výchozí hodnoty kalkulačky (11. 10.):** 100 000 Kč jednorázově, 3 000 Kč měsíčně, 20 let. Odpovídají typickému začínajícímu investorovi a dají se snadno přepsat.
 - **Výchozí hero bez UTM:** varianta B (obecnější).
 - **Lepivé CTA na mobilu** po odscrollování hero.
+- **Měření (11. 10.):** autocapture vypnuté, posílají se jen explicitní události trychtýře (čistší data, méně JS na mobilu). PostHog se načítá asynchronně, takže nezdržuje první vykreslení. `sendBeacon` kvůli přesměrování po odeslání.

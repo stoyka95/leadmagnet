@@ -59,11 +59,12 @@ Legenda: `[ ]` zbývá · `[x]` hotovo · `[~]` rozpracováno
 
 **Kontrola:** po každé sekci build, prohlédnutí v prohlížeči na 375 px a na desktopu, kontrola podle seznamu výše. Na konci fáze nezávislá kontrola celé stránky (Fáze 5).
 
-## Fáze 4 – Měření (st 14. 10.)
-- [ ] Události: `page_view` (s UTM) → `scroll_50` → `cta_click` → `tool_used` → `form_start` → `form_submit` → `thank_you_view`
-- [x] Vercel Web Analytics zapojeno (skript /_vercel/insights 200)
-- [ ] Trychtýř v analytice, ověření, že události reálně dorazí (test z mobilu)
-- [ ] Commit + push
+## Fáze 4 – Měření (ne 11. 10.) ✅
+- [x] Události `$pageview` (s UTM) → `scroll_50` → `cta_click` → `tool_used` → `form_start` → `form_submit` → `thank_you_view` (+ `form_error`)
+- [x] PostHog EU bez cookies (D24), Vercel Web Analytics
+- [x] Trychtýř a dashboard v PostHogu, rozpad podle `ad_variant` a `form_location`
+- [x] Ověřeno end-to-end na produkci (8 kroků, jeden návštěvník, lead s UTM, e-mail delivered) – `docs/MEASUREMENT.md`
+- [ ] Před spuštěním smazat testovací leady (`utm_source=test`)
 
 ## Fáze 5 – Testy a ladění (čt 15. 10.)
 - [ ] Mobil (reálný telefon + emulace 375 px), rychlost (Lighthouse), přístupnost
