@@ -1,0 +1,187 @@
+---
+// Main tool (D4, D16): instant fee result in CZK, lead form right under the result (D3).
+import GlassCard from './GlassCard.astro';
+import LeadForm from './LeadForm.astro';
+import { DEFAULT_CALC } from '../lib/calc-state';
+import { usEtfs, ucitsFor, formatPct, formatDate, dataRetrieved } from '../lib/etf';
+import { feesForTer, formatCzk } from '../lib/fees';
+
+// Server-rendered first result = defaults, so the section is useful even before JS runs
+const rows = usEtfs
+  .map((e) => ({ etf: e, ucits: ucitsFor(e), fees: feesForTer(e.expenseRatioPct, DEFAULT_CALC).feesCzk }))
+  .sort((a, b) => a.fees - b.fees);
+const maxFees = Math.max(...rows.map((r) => r.fees));
+const nf = new Intl.NumberFormat('cs-CZ');
+---
+<section id="kalkulacka" class="section container" aria-labelledby="calc-h">
+  <div class="section-head">
+    <p class="eyebrow">Kalkulačka poplatků</p>
+    <h2 id="calc-h">Kolik vás budou stát poplatky?</h2>
+  </div>
+
+  <div class="calc-grid">
+    <GlassCard class="inputs">
+      <form class="calc-form" data-calc novalidate onsubmit="return false">
+        <div class="field">
+          <label for="c-once">Jednorázově</label>
+          <div class="money"><input id="c-once" name="onceCzk" type="text" inputmode="numeric" autocomplete="off" value={nf.format(DEFAULT_CALC.onceCzk)} /><span>Kč</span></div>
+        </div>
+        <div class="field">
+          <label for="c-monthly">Měsíčně</label>
+          <div class="money"><input id="c-monthly" name="monthlyCzk" type="text" inputmode="numeric" autocomplete="off" value={nf.format(DEFAULT_CALC.monthlyCzk)} /><span>Kč</span></div>
+        </div>
+        <div class="field">
+          <label for="c-years">Na kolik let: <output for="c-years" class="num" data-years-out>{DEFAULT_CALC.years}</output></label>
+          <input id="c-years" name="years" type="range" min="5" max="30" step="1" value={DEFAULT_CALC.years} />
+        </div>
+        <details class="growth">
+          <summary>A co kdyby investice rostla?</summary>
+          <div class="field">
+            <label for="c-return">Předpokládaný roční výnos: <output for="c-return" class="num" data-return-out>0 %</output></label>
+            <input id="c-return" name="annualReturnPct" type="range" min="0" max="10" step="0.5" value="0" />
+            <p class="fine">Váš předpoklad, ne náš slib. Výnos není zaručen a hodnota investice může i klesat. S růstem rostou i poplatky, protože se počítají z hodnoty investice.</p>
+          </div>
+        </details>
+      </form>
+    </GlassCard>
+
+    <GlassCard solid class="result" aria-live="polite">
+      <p class="muted summary" data-summary>
+        Za <strong class="num">{DEFAULT_CALC.years} let</strong> vložíte <strong class="num" data-paid>{formatCzk(feesForTer(0, DEFAULT_CALC).paidInCzk)}</strong>. Na ročních poplatcích fondu zaplatíte minimálně:
+      </p>
+      <ol class="rows" data-rows>
+        {rows.map((r) => (
+          <li class="row" data-ticker={r.etf.ticker}>
+            <div class="row-head">
+              <span class="t">{r.etf.ticker}</span>
+              <span class="ter num">{formatPct(r.etf.expenseRatioPct)}</span>
+              <span class="kc num" data-kc>{formatCzk(r.fees)}</span>
+            </div>
+            <div class="bar" aria-hidden="true"><span style={`width:${Math.max(2, (r.fees / maxFees) * 100)}%`} data-bar></span></div>
+            <p class="eu fine">Evropská verze {r.ucits.ticker.split(' ')[0]}: {formatPct(r.ucits.terPct)} → <span class="num" data-eu-kc>{formatCzk(feesForTer(r.ucits.terPct, DEFAULT_CALC).feesCzk)}</span></p>
+          </li>
+        ))}
+      </ol>
+      <p class="diff" data-diff></p>
+      <p class="fine note">
+        Počítáno jen z ročního poplatku fondu (TER) podle správců, data k {formatDate(dataRetrieved)}. Nezahrnuje poplatky brokera, převod měny ani daně. Nejde o investiční doporučení.
+      </p>
+    </GlassCard>
+  </div>
+
+  <div class="form-wrap">
+    <LeadForm location="calculator" />
+  </div>
+</section>
+
+<style>
+  .calc-grid { display: grid; gap: var(--sp-4); }
+  @media (min-width: 900px) { .calc-grid { grid-template-columns: 0.8fr 1.2fr; gap: var(--sp-6); align-items: start; } }
+  .calc-form { display: grid; gap: var(--sp-5); }
+  .field { display: grid; gap: var(--sp-2); }
+  label { font-size: var(--fs-sm); font-weight: var(--fw-medium); }
+  .money { display: flex; align-items: center; background: var(--c-white); border: 1.5px solid var(--c-line); border-radius: var(--r-md); padding-inline: var(--sp-4); min-height: var(--tap); }
+  .money:focus-within { border-color: var(--c-blue-700); outline: 3px solid var(--c-blue-700); outline-offset: 1px; }
+  .money input { flex: 1; min-width: 0; border: 0; background: transparent; font: inherit; font-size: var(--fs-lg); font-weight: var(--fw-medium); font-variant-numeric: tabular-nums; padding-block: var(--sp-2); color: var(--c-ink); }
+  .money input:focus-visible { outline: none; }
+  .money span { color: var(--c-ink-faint); }
+  input[type='range'] { width: 100%; accent-color: var(--c-green-800); min-height: 32px; }
+  .growth summary { cursor: pointer; color: var(--c-blue-700); font-size: var(--fs-sm); font-weight: var(--fw-medium); min-height: var(--tap); display: flex; align-items: center; }
+  .growth[open] summary { margin-bottom: var(--sp-2); }
+
+  .summary { margin-bottom: var(--sp-4); }
+  .rows { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-4); }
+  .row-head { display: grid; grid-template-columns: 4.5rem 1fr auto; align-items: baseline; gap: var(--sp-2); }
+  .t { font-weight: var(--fw-bold); }
+  .ter { color: var(--c-ink-faint); font-size: var(--fs-sm); }
+  .kc { font-weight: var(--fw-bold); font-size: var(--fs-lg); }
+  .bar { height: 8px; border-radius: var(--r-pill); background: var(--c-bg-2); margin-top: var(--sp-1); overflow: hidden; }
+  .bar span { display: block; height: 100%; border-radius: inherit; background: var(--c-green-700); transition: width var(--dur) var(--ease); }
+  .row:last-child .bar span { background: var(--c-ink-muted); }
+  .eu { margin-top: var(--sp-1); }
+  .diff { margin-top: var(--sp-5); padding: var(--sp-4); border-radius: var(--r-md); background: var(--c-green-100); color: var(--c-green-900); font-weight: var(--fw-medium); }
+  .diff:empty { display: none; }
+  .note { margin-top: var(--sp-4); }
+  .form-wrap { margin-top: var(--sp-6); max-width: 560px; }
+  @media (min-width: 900px) { .form-wrap { margin-inline-start: auto; width: 60%; } }
+</style>
+
+<script>
+  import { usEtfs, ucitsFor } from '../lib/etf';
+  import { feesForTer, formatCzk } from '../lib/fees';
+  import { readCalc, writeCalc, type CalcState } from '../lib/calc-state';
+  import { track } from '../lib/track';
+
+  const form = document.querySelector<HTMLFormElement>('[data-calc]')!;
+  const list = document.querySelector<HTMLOListElement>('[data-rows]')!;
+  const nf = new Intl.NumberFormat('cs-CZ');
+  const field = (name: string) => form.elements.namedItem(name) as HTMLInputElement;
+  const digits = (s: string) => Number(s.replace(/\D/g, '').slice(0, 9)) || 0;
+
+  let usedOnce = false;
+
+  const render = (s: CalcState) => {
+    const rows = usEtfs
+      .map((e) => ({ etf: e, fees: feesForTer(e.expenseRatioPct, s).feesCzk, eu: feesForTer(ucitsFor(e).terPct, s).feesCzk }))
+      .sort((a, b) => a.fees - b.fees);
+    const max = Math.max(...rows.map((r) => r.fees), 1);
+    for (const r of rows) {
+      const li = list.querySelector<HTMLLIElement>(`[data-ticker="${r.etf.ticker}"]`)!;
+      li.querySelector('[data-kc]')!.textContent = formatCzk(r.fees);
+      li.querySelector('[data-eu-kc]')!.textContent = formatCzk(r.eu);
+      li.querySelector<HTMLElement>('[data-bar]')!.style.width = `${Math.max(2, (r.fees / max) * 100)}%`;
+      list.appendChild(li); // keep cheapest first
+    }
+    const paid = feesForTer(0, s).paidInCzk;
+    document.querySelector('[data-paid]')!.textContent = formatCzk(paid);
+    document.querySelector('[data-summary] strong')!.textContent = `${s.years} let`;
+    const spy = rows.find((r) => r.etf.ticker === 'SPY')!;
+    const voo = rows.find((r) => r.etf.ticker === 'VOO')!;
+    document.querySelector('[data-diff]')!.textContent =
+      `SPY a VOO sledují stejný index S&P 500. Rozdíl v poplatcích: ${formatCzk(spy.fees - voo.fees)} za ${s.years} let.`;
+    (document.querySelector('[data-years-out]') as HTMLOutputElement).value = String(s.years);
+    (document.querySelector('[data-return-out]') as HTMLOutputElement).value = `${nf.format(s.annualReturnPct)} %`;
+  };
+
+  const readForm = (): CalcState => ({
+    onceCzk: digits(field('onceCzk').value),
+    monthlyCzk: digits(field('monthlyCzk').value),
+    years: Number(field('years').value),
+    annualReturnPct: Number(field('annualReturnPct').value),
+    touched: true,
+  });
+
+  // Restore what the visitor entered earlier in this session
+  const saved = readCalc();
+  if (saved.touched) {
+    field('onceCzk').value = nf.format(saved.onceCzk);
+    field('monthlyCzk').value = nf.format(saved.monthlyCzk);
+    field('years').value = String(saved.years);
+    field('annualReturnPct').value = String(saved.annualReturnPct);
+  }
+  render(saved);
+
+  let timer: number | undefined;
+  form.addEventListener('input', (e) => {
+    const target = e.target as HTMLInputElement;
+    if (target.inputMode === 'numeric') {
+      const n = digits(target.value);
+      target.value = n ? nf.format(n) : '';
+    }
+    const state = readForm();
+    render(state);
+    writeCalc(state);
+    window.clearTimeout(timer);
+    timer = window.setTimeout(() => {
+      track('tool_used', {
+        tool: 'calculator',
+        first_use: !usedOnce,
+        once_czk: state.onceCzk,
+        monthly_czk: state.monthlyCzk,
+        years: state.years,
+        return_pct: state.annualReturnPct,
+      });
+      usedOnce = true;
+    }, 800);
+  });
+</script>
