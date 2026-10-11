@@ -3,7 +3,10 @@
 // so no lead is stored and no e-mail is sent.
 import { defineConfig, devices } from '@playwright/test';
 
-const PORT = 4330;
+// Astro runs one dev server per project; an already running one (port 4321) is reused.
+// E2E_BASE_URL=https://fingramo.vercel.app runs the same tests against production (the form API is still intercepted).
+const PORT = 4321;
+const REMOTE = process.env.E2E_BASE_URL;
 
 export default defineConfig({
   testDir: 'tests/e2e',
@@ -11,7 +14,7 @@ export default defineConfig({
   retries: 0,
   reporter: [['list']],
   use: {
-    baseURL: `http://localhost:${PORT}`,
+    baseURL: REMOTE ?? `http://localhost:${PORT}`,
     channel: 'chrome',
     trace: 'retain-on-failure',
   },
@@ -19,7 +22,7 @@ export default defineConfig({
     { name: 'mobil', use: { ...devices['Pixel 7'], channel: 'chrome', viewport: { width: 375, height: 812 } } },
     { name: 'desktop', use: { ...devices['Desktop Chrome'], channel: 'chrome', viewport: { width: 1366, height: 900 } } },
   ],
-  webServer: {
+  webServer: REMOTE ? undefined : {
     command: `npx astro dev --port ${PORT}`,
     url: `http://localhost:${PORT}`,
     reuseExistingServer: true,
