@@ -32,14 +32,16 @@ export const POST: APIRoute = async ({ request, url }) => {
   // Honeypot filled → pretend success, store nothing
   if (str(body.company, 100)) return json(200, { ok: true });
 
-  const fullName = str(body.full_name, 120);
+  // D25: only the e-mail is required; a one-letter name is dropped rather than rejected
+  const nameRaw = str(body.full_name, 120);
+  const fullName = nameRaw && nameRaw.length >= 2 ? nameRaw : null;
   const email = str(body.email, 254)?.toLowerCase() ?? null;
   const phoneRaw = str(body.phone, 30);
   const phone = phoneRaw && /^\+?\d{6,15}$/.test(phoneRaw.replace(/[\s()-]/g, '')) ? phoneRaw : null;
   const location = str(body.form_location, 20);
   const consentVersion = str(body.consent_version, 40);
 
-  if (!fullName || fullName.length < 2 || !email || !EMAIL_RE.test(email) || !location || !LOCATIONS.has(location) || !consentVersion) {
+  if (!email || !EMAIL_RE.test(email) || !location || !LOCATIONS.has(location) || !consentVersion) {
     return json(422, { ok: false, error: 'validation' });
   }
 
@@ -91,7 +93,7 @@ export const POST: APIRoute = async ({ request, url }) => {
   const resendKey = env('RESEND_API_KEY');
   let emailSent = false;
   if (resendKey) {
-    const { subject, html, text } = buildEmail(fullName.split(/\s+/)[0], { onceCzk, monthlyCzk }, url.origin);
+    const { subject, html, text } = buildEmail(fullName?.split(/\s+/)[0] ?? '', { onceCzk, monthlyCzk }, url.origin);
     const send = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: { Authorization: `Bearer ${resendKey}`, 'Content-Type': 'application/json' },

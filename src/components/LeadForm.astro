@@ -1,6 +1,6 @@
 ---
 // The one lead form (D5, D13), used 3× – under the calculator, by the comparison, at the end.
-// Name + e-mail required, phone optional; the button is the request, the marketing box is separate and unticked.
+// Only the e-mail is required (D25), name and phone are optional; the button is the request, the marketing box is separate and unticked.
 import GlassCard from './GlassCard.astro';
 
 interface Props {
@@ -24,17 +24,15 @@ const id = `lf-${location}`;
 
     <div class="fields">
     <div class="field">
-      <label for={`${id}-name`}>Jméno a příjmení</label>
-      <input id={`${id}-name`} name="full_name" type="text" autocomplete="name" required minlength="2" maxlength="120"
-        aria-describedby={`${id}-name-err`} />
-      <p class="err" id={`${id}-name-err`} data-err-for="full_name" hidden>Napište prosím jméno a příjmení.</p>
-    </div>
-
-    <div class="field">
       <label for={`${id}-email`}>E-mail</label>
       <input id={`${id}-email`} name="email" type="email" inputmode="email" autocomplete="email" required maxlength="254"
         aria-describedby={`${id}-email-err`} />
       <p class="err" id={`${id}-email-err`} data-err-for="email" hidden>Zkontrolujte prosím e-mail, sem vám srovnání pošleme.</p>
+    </div>
+
+    <div class="field">
+      <label for={`${id}-name`}>Jméno <span class="opt">(nepovinné)</span></label>
+      <input id={`${id}-name`} name="full_name" type="text" autocomplete="name" maxlength="120" />
     </div>
 
     <div class="field">
@@ -110,15 +108,14 @@ const id = `lf-${location}`;
   import { track, readUtm } from '../lib/track';
   import { readCalc } from '../lib/calc-state';
 
-  const CONSENT_VERSION = 'v1-2026-10-11';
+  const CONSENT_VERSION = 'v2-2026-10-11'; // v2: name optional (D25)
   const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
-  type FieldName = 'full_name' | 'email' | 'phone';
+  type FieldName = 'email' | 'phone';
 
   const validate = (form: HTMLFormElement): FieldName[] => {
     const data = new FormData(form);
     const bad: FieldName[] = [];
-    if (String(data.get('full_name') ?? '').trim().length < 2) bad.push('full_name');
     if (!EMAIL_RE.test(String(data.get('email') ?? '').trim())) bad.push('email');
     const phone = String(data.get('phone') ?? '').replace(/[\s()-]/g, '');
     if (phone && !/^\+?\d{6,15}$/.test(phone)) bad.push('phone');
@@ -126,7 +123,7 @@ const id = `lf-${location}`;
   };
 
   const showErrors = (form: HTMLFormElement, bad: FieldName[]): void => {
-    for (const name of ['full_name', 'email', 'phone'] as FieldName[]) {
+    for (const name of ['email', 'phone'] as FieldName[]) {
       const input = form.elements.namedItem(name) as HTMLInputElement;
       const err = form.querySelector<HTMLElement>(`[data-err-for="${name}"]`);
       const isBad = bad.includes(name);
@@ -170,7 +167,7 @@ const id = `lf-${location}`;
       const data = new FormData(form);
       const calc = readCalc();
       const payload = {
-        full_name: String(data.get('full_name')).trim(),
+        full_name: String(data.get('full_name') ?? '').trim() || null,
         email: String(data.get('email')).trim(),
         phone: String(data.get('phone') ?? '').trim() || null,
         marketing_consent: data.get('marketing_consent') === 'yes',
@@ -197,10 +194,11 @@ const id = `lf-${location}`;
         track('form_submit', {
           form_location: location,
           marketing_consent: payload.marketing_consent,
+          has_name: Boolean(payload.full_name),
           has_phone: Boolean(payload.phone),
           used_calculator: calc.touched,
         });
-        try { sessionStorage.setItem('fg:lead', JSON.stringify({ firstName: payload.full_name.split(' ')[0], email: payload.email })); } catch { /* ignore */ }
+        try { sessionStorage.setItem('fg:lead', JSON.stringify({ firstName: payload.full_name?.split(/\s+/)[0] ?? '', email: payload.email })); } catch { /* ignore */ }
         window.location.assign('/dekujeme');
       } catch (err) {
         track('form_error', { form_location: location, reason: 'server', detail: String(err) });

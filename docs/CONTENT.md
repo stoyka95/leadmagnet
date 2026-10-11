@@ -68,7 +68,7 @@ Na stránku přichází z reklamy na mobilu a má **pár sekund**. Musí hned vi
 - **Formulář pod výsledkem:**
   - Nadpis: **Pošleme vám celé srovnání pro vaši částku**
   - Podtext: Všech 6 fondů, jejich evropské verze, poplatky v Kč na 10 a 20 let a odkazy na zdroje. Do e-mailu, zdarma.
-  - Pole: Jméno a příjmení · E-mail · Telefon *(nepovinné)*
+  - Pole: E-mail · Jméno *(nepovinné)* · Telefon *(nepovinné)* (D25)
   - Tlačítko: **Získat srovnání zdarma** *(změna D23, původně „Poslat mi srovnání“)*
   - Pod tlačítkem: 🔒 *Zdarma · Bez spamu · Hned v e-mailu* (ikona SVG)
   - Pod tlačítkem: *Odesláním žádáte o zaslání srovnání. Údaje zpracujeme podle [Zásad ochrany osobních údajů].*
