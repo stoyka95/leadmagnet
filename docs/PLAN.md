@@ -14,16 +14,17 @@ Legenda: `[ ]` zbývá · `[x]` hotovo · `[~]` rozpracováno
 - [ ] PostHog: konektor existuje, účet/projekt pro tento úkol ověřit – závisí na rozhodnutí č. 11
 - [x] Schválení tohoto plánu (11. 10.)
 - [x] Rozhodnutí ze sekce 7 CLAUDE.md (po skupinách) → `docs/DECISIONS.md` (zbývá doplnit název domény, D15)
-- [ ] Založení veřejného repozitáře `stoyka95/leadmagnet`, struktura, `.gitignore`, `.env.example`
-- [ ] První commity: `CLAUDE.md`, `docs/PLAN.md`, `docs/DECISIONS.md`, `docs/AI-WORK-NOTES.md` → push
+- [x] Založení veřejného repozitáře `stoyka95/leadmagnet`, struktura, `.gitignore`, `.env.example`
+- [x] První commity: `CLAUDE.md`, `docs/PLAN.md`, `docs/DECISIONS.md`, `docs/AI-WORK-NOTES.md` → push
 
 ## Fáze 1 – Data a ověření faktů (ne 11. – po 12. 10.)
-- [ ] Výběr ETF podle schváleného kritéria
-- [ ] Stažení TER, velikosti fondu, burzy, data vzniku z factsheetů správců (+ URL, datum) → `data/etf.json`, `data/SOURCES.md`
-- [ ] Kurz USD/CZK z ČNB (+ datum)
-- [ ] Ověření dostupnosti US ETF pro české retailové investory (PRIIPs/KID) u konkrétních brokerů – se zdrojem; případně UCITS ekvivalenty
-- [ ] Ověření daňových informací jen tam, kde je oficiální zdroj; jinak neuvádět
-- [ ] Commit `data: ...` + push
+- [x] Výběr ETF podle schváleného kritéria
+- [x] Stažení TER, velikosti fondu, burzy, data vzniku z factsheetů správců (+ URL, datum) → `data/etf.json`, `data/SOURCES.md`
+- [x] Kurz USD/CZK z ČNB (+ datum)
+- [~] Ověření dostupnosti US ETF pro české retailové investory (PRIIPs/KID) u konkrétních brokerů – se zdrojem; případně UCITS ekvivalenty
+- [x] Ověření daňových informací – zatím bez oficiálního zdroje → neuvádět
+- [x] Commit `data: ...` + push
+- [ ] Zbývá: TER UCITS proti KID správců (hlavně XD9U, VWCE), stránka IBKR ručně v prohlížeči
 
 ## Fáze 2 – Obsah: cílovka, texty, reklamy (po 12. 10.)
 - [ ] Persona a slib reklamy → struktura první obrazovky
