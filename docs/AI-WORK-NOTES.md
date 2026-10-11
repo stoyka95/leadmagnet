@@ -81,3 +81,20 @@ Surové exporty konverzací jsou v [`ai-log/`](../ai-log/).
 6. **API fungovalo lokálně, ale na Vercelu padalo** (`FUNCTION_INVOCATION_FAILED`). AI test na produkci udělala hned po nasazení, chybu dohledala v runtime logu Vercelu (`Cannot find native binding` u `rolldown`) a opravila ji samostatným `fix:` commitem (přibalení Linux bindingu přes `includeFiles` adaptéru). Po opravě ověřeno na produkci: validace 422, honeypot 200.
    **Poučení:** „funguje lokálně" nestačí. Každá serverová změna se testuje na nasazené adrese.
 7. **Vizuály reklam** potřebovaly 4 iterace renderu: ořízlé upozornění dole, zalomené „%", rozdělené „S&P 500" a přetékající čísla. Každá iterace byla zkontrolována pohledem na výsledný PNG. Jednou si AI myslela, že oprava nefunguje, ale šlo jen o starou verzi obrázku v mezipaměti nástroje. Ověřeno měřením přímo na stránce.
+
+---
+
+## Session 1, pokračování – 11. 10. 2026: úpravy po Mikyho kontrole
+
+### Pokyny (Miky ze screenshotů)
+1. Mezi některými sekcemi chybí mezera.
+2. U kalkulačky je hodně prázdného místa – navrhnout úpravu.
+3. Chybí „kolik investuji a kolik můžu vydělat", nejlépe graf se 3 úrovněmi.
+4. Zelená je příliš jednoduchá a chybí modrá (modrá = důvěra, zelená = peníze).
+
+### Co se zjistilo a udělalo
+- **Bod 1 byla chyba AI, ne jen chybějící mezera:** přepínač srovnání vůbec neskrýval ostatní skupiny (`display: grid` přebíjel atribut `hidden`), takže byly vidět všechny páry naráz. AI to při své kontrole nezachytila, protože v náhledu měřila jen přetékání do šířky, ne viditelnost skupin. Opraveno globálním pravidlem `[hidden]`. Od té doby se v kontrole měří i počet viditelných skupin.
+- **Body 2 a 4:** AI připravila vizuální ukázku (3 palety, rozložení teď vs. návrh), Miky vybral (D19, D20).
+- **Bod 3:** AI doporučila scénáře z KID. Při stahování KID ale zjistila, že platí jen pro 5 let a že by jejich protažení na 20 let dávalo čísla v milionech Kč. Řekla to Mikymu dřív, než cokoli postavila. Miky pak zadal vlastní řešení: 5 let podle KID a pro delší horizont historický rozsah S&P 500 (D21).
+- **Ověření dat:** KID je šifrované PDF, text byl vytažen knihovnou `pypdf`. Historická data poskytl nástroj WebFetch, ale ten prochází zjednodušujícím modelem, takže AI tabulku vyparsovala znovu přímo z HTML a 5 hodnot porovnala. Výpočet ověřen proti KID: 10 000 při 14,8 % ročně za 5 let = 19 953 vs. KID 19 910 USD (rozdíl jen zaokrouhlením).
+- **Iterace vzhledu:** na desktopu po první úpravě stále zůstávala mezera (řádek mřížky měl výšku grafu) a na mobilu byly osy grafu nečitelné a „%" se zalamovalo. Vše nalezeno screenshoty v Playwright na 1440 a 375 px a opraveno před pushem.
