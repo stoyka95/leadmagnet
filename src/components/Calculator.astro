@@ -1,26 +1,29 @@
 ---
-// Main tool (D4, D16): instant fee result in CZK, lead form right under the result (D3).
+// Main tool (D4, D16, D20, D21). Desktop: inputs + sticky form left, growth + fees right.
+// Mobile order: inputs → growth → fees → form.
 import GlassCard from './GlassCard.astro';
 import LeadForm from './LeadForm.astro';
 import { DEFAULT_CALC } from '../lib/calc-state';
 import { usEtfs, ucitsFor, formatPct, formatDate, dataRetrieved } from '../lib/etf';
 import { feesForTer, formatCzk } from '../lib/fees';
+import { kidMeta, kidScenarios, KID_YEARS, historyFor, historyMeta } from '../lib/growth';
 
-// Server-rendered first result = defaults, so the section is useful even before JS runs
 const rows = usEtfs
   .map((e) => ({ etf: e, ucits: ucitsFor(e), fees: feesForTer(e.expenseRatioPct, DEFAULT_CALC).feesCzk }))
   .sort((a, b) => a.fees - b.fees);
 const maxFees = Math.max(...rows.map((r) => r.fees));
 const nf = new Intl.NumberFormat('cs-CZ');
+const hist = historyFor(DEFAULT_CALC.years);
+const pctSigned = (v: number) => `${v > 0 ? '+' : ''}${formatPct(v)}`;
 ---
 <section id="kalkulacka" class="section container" aria-labelledby="calc-h">
   <div class="section-head">
-    <p class="eyebrow">Kalkulačka poplatků</p>
-    <h2 id="calc-h">Kolik vás budou stát poplatky?</h2>
+    <p class="eyebrow">Kalkulačka</p>
+    <h2 id="calc-h">Kolik vložíte, jak by to mohlo vypadat a kolik zaplatíte na poplatcích</h2>
   </div>
 
   <div class="calc-grid">
-    <GlassCard class="inputs">
+    <GlassCard class="area-inputs">
       <form class="calc-form" data-calc novalidate onsubmit="return false">
         <div class="field">
           <label for="c-once">Jednorázově</label>
@@ -34,20 +37,48 @@ const nf = new Intl.NumberFormat('cs-CZ');
           <label for="c-years">Na kolik let: <output for="c-years" class="num" data-years-out>{DEFAULT_CALC.years}</output></label>
           <input id="c-years" name="years" type="range" min="5" max="30" step="1" value={DEFAULT_CALC.years} />
         </div>
-        <details class="growth">
-          <summary>A co kdyby investice rostla?</summary>
+        <details class="growth-opt">
+          <summary>Poplatky s vlastním předpokladem výnosu</summary>
           <div class="field">
             <label for="c-return">Předpokládaný roční výnos: <output for="c-return" class="num" data-return-out>0 %</output></label>
             <input id="c-return" name="annualReturnPct" type="range" min="0" max="10" step="0.5" value="0" />
-            <p class="fine">Váš předpoklad, ne náš slib. Výnos není zaručen a hodnota investice může i klesat. S růstem rostou i poplatky, protože se počítají z hodnoty investice.</p>
+            <p class="fine">Váš předpoklad, ne náš slib. S růstem rostou i poplatky, protože se počítají z hodnoty investice.</p>
           </div>
         </details>
       </form>
     </GlassCard>
 
-    <GlassCard solid class="result" aria-live="polite">
+    <GlassCard solid class="area-growth">
+      <h3>Jak by mohla investice vypadat za {KID_YEARS} let</h3>
+      <p class="fine sub">Podle scénářů z dokumentu KID fondu {kidMeta.ticker} (S&amp;P 500, evropská verze). Vloženo: <strong class="num" data-paid5></strong></p>
+      <svg class="chart" viewBox="0 0 600 260" role="img" aria-labelledby="chart-t chart-d" data-chart>
+        <title id="chart-t">Vývoj hodnoty investice za {KID_YEARS} let ve 4 scénářích z KID</title>
+        <desc id="chart-d" data-chart-desc></desc>
+      </svg>
+      <ul class="legend" data-legend>
+        {kidScenarios.map((s) => (
+          <li data-scn={s.id}><span class="dot" aria-hidden="true"></span><span>{s.label} <span class="fine num">({pctSigned(s.avgAnnualPct)} ročně)</span></span><strong class="num" data-end></strong></li>
+        ))}
+      </ul>
+      <p class="fine">
+        Ilustrace podle průměrných ročních výnosů po nákladech z KID ze dne {formatDate(kidMeta.kidDate)} (nejhorší, průměrný a nejlepší výsledek fondu za posledních 10 let a stresový scénář). <strong>Nejde o předpověď.</strong> Hodnota investice může klesnout a můžete přijít o část vložených peněz. KID počítá s jednorázovou investicí, my průměrné výnosy používáme i na měsíční vklady. <a href={kidMeta.source} rel="noopener">KID (PDF)</a>
+      </p>
+
+      <div class="history" aria-live="polite">
+        <h4>Historie S&amp;P 500 za <span class="num" data-hist-years>{hist.years}</span> let</h4>
+        <div class="hist-grid">
+          <div><span class="fine">Nejhorší</span><strong class="num" data-hist-worst>{pctSigned(hist.worstPct)}</strong><span class="fine" data-hist-worst-p>{hist.worstPeriod}</span></div>
+          <div><span class="fine">Medián</span><strong class="num" data-hist-med>{pctSigned(hist.medianPct)}</strong><span class="fine">všech období</span></div>
+          <div><span class="fine">Nejlepší</span><strong class="num" data-hist-best>{pctSigned(hist.bestPct)}</strong><span class="fine" data-hist-best-p>{hist.bestPeriod}</span></div>
+        </div>
+        <p class="fine">Průměrný roční výnos za všechna stejně dlouhá období v letech {historyMeta.years}. <strong>Historie, ne předpověď.</strong> V amerických dolarech, včetně dividend, bez daní a poplatků. Zdroj: <a href={historyMeta.url} rel="noopener">A. Damodaran, NYU Stern</a>.</p>
+      </div>
+    </GlassCard>
+
+    <GlassCard solid class="area-fees" aria-live="polite">
+      <h3>Kolik zaplatíte na poplatcích fondu</h3>
       <p class="muted summary" data-summary>
-        Za <strong class="num">{DEFAULT_CALC.years} let</strong> vložíte <strong class="num" data-paid>{formatCzk(feesForTer(0, DEFAULT_CALC).paidInCzk)}</strong>. Na ročních poplatcích fondu zaplatíte minimálně:
+        Za <strong class="num" data-years-txt>{DEFAULT_CALC.years} let</strong> vložíte <strong class="num" data-paid>{formatCzk(feesForTer(0, DEFAULT_CALC).paidInCzk)}</strong>. Na ročních poplatcích zaplatíte minimálně:
       </p>
       <ol class="rows" data-rows>
         {rows.map((r) => (
@@ -67,27 +98,61 @@ const nf = new Intl.NumberFormat('cs-CZ');
         Počítáno jen z ročního poplatku fondu (TER) podle správců, data k {formatDate(dataRetrieved)}. Nezahrnuje poplatky brokera, převod měny ani daně. Nejde o investiční doporučení.
       </p>
     </GlassCard>
-  </div>
 
-  <div class="form-wrap">
-    <LeadForm location="calculator" />
+    <div class="area-form">
+      <LeadForm location="calculator" />
+    </div>
   </div>
 </section>
 
 <style>
-  .calc-grid { display: grid; gap: var(--sp-4); }
-  @media (min-width: 900px) { .calc-grid { grid-template-columns: 0.8fr 1.2fr; gap: var(--sp-6); align-items: start; } }
+  .calc-grid {
+    display: grid; gap: var(--sp-4);
+    grid-template-areas: 'inputs' 'growth' 'fees' 'form';
+  }
+  @media (min-width: 960px) {
+    .calc-grid {
+      grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+      /* growth spans two rows, so the form starts right under the inputs (no empty gap) */
+      grid-template-areas: 'inputs growth' 'form growth' 'form fees';
+      grid-template-rows: auto auto 1fr;
+      gap: var(--sp-6); align-items: start;
+    }
+    .area-form { position: sticky; top: var(--sp-6); }
+  }
+  :global(.area-inputs) { grid-area: inputs; }
+  :global(.area-growth) { grid-area: growth; }
+  :global(.area-fees) { grid-area: fees; }
+  .area-form { grid-area: form; }
+
   .calc-form { display: grid; gap: var(--sp-5); }
   .field { display: grid; gap: var(--sp-2); }
   label { font-size: var(--fs-sm); font-weight: var(--fw-medium); }
   .money { display: flex; align-items: center; background: var(--c-white); border: 1.5px solid var(--c-line); border-radius: var(--r-md); padding-inline: var(--sp-4); min-height: var(--tap); }
-  .money:focus-within { border-color: var(--c-blue-700); outline: 3px solid var(--c-blue-700); outline-offset: 1px; }
+  .money:focus-within { border-color: var(--c-navy-700); outline: 3px solid var(--c-navy-700); outline-offset: 1px; }
   .money input { flex: 1; min-width: 0; border: 0; background: transparent; font: inherit; font-size: var(--fs-lg); font-weight: var(--fw-medium); font-variant-numeric: tabular-nums; padding-block: var(--sp-2); color: var(--c-ink); }
   .money input:focus-visible { outline: none; }
   .money span { color: var(--c-ink-faint); }
   input[type='range'] { width: 100%; accent-color: var(--c-green-800); min-height: 32px; }
-  .growth summary { cursor: pointer; color: var(--c-blue-700); font-size: var(--fs-sm); font-weight: var(--fw-medium); min-height: var(--tap); display: flex; align-items: center; }
-  .growth[open] summary { margin-bottom: var(--sp-2); }
+  .growth-opt summary { cursor: pointer; color: var(--c-navy-700); font-size: var(--fs-sm); font-weight: var(--fw-medium); min-height: var(--tap); display: flex; align-items: center; }
+
+  h3 { margin-bottom: var(--sp-1); }
+  h4 { margin: 0 0 var(--sp-3); font-size: var(--fs-md); color: var(--c-navy-900); }
+  .sub { margin-bottom: var(--sp-3); }
+  .chart { width: 100%; height: auto; display: block; margin-block: var(--sp-2); }
+  .legend { list-style: none; padding: 0; margin: 0 0 var(--sp-4); display: grid; gap: var(--sp-2); font-size: var(--fs-sm); }
+  .legend li { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: var(--sp-2); }
+  .dot { width: 12px; height: 12px; border-radius: var(--r-pill); background: var(--scn); }
+  [data-scn='stress'] { --scn: var(--c-ink-faint); }
+  [data-scn='unfavourable'] { --scn: var(--c-navy-500); }
+  [data-scn='moderate'] { --scn: var(--c-green-500); }
+  [data-scn='favourable'] { --scn: var(--c-green-900); }
+
+  .history { margin-top: var(--sp-5); padding: var(--sp-4); border-radius: var(--r-md); background: var(--c-navy-100); }
+  .hist-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-3); margin-bottom: var(--sp-3); }
+  .hist-grid > div { display: grid; gap: 2px; }
+  .hist-grid strong { font-size: var(--fs-lg); color: var(--c-navy-900); line-height: 1.1; white-space: nowrap; }
+  @media (min-width: 480px) { .hist-grid strong { font-size: var(--fs-xl); } }
 
   .summary { margin-bottom: var(--sp-4); }
   .rows { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-4); }
@@ -96,31 +161,94 @@ const nf = new Intl.NumberFormat('cs-CZ');
   .ter { color: var(--c-ink-faint); font-size: var(--fs-sm); }
   .kc { font-weight: var(--fw-bold); font-size: var(--fs-lg); }
   .bar { height: 8px; border-radius: var(--r-pill); background: var(--c-bg-2); margin-top: var(--sp-1); overflow: hidden; }
-  .bar span { display: block; height: 100%; border-radius: inherit; background: var(--c-green-700); transition: width var(--dur) var(--ease); }
+  .bar span { display: block; height: 100%; border-radius: inherit; background: var(--c-green-500); transition: width var(--dur) var(--ease); }
   .row:last-child .bar span { background: var(--c-ink-muted); }
   .eu { margin-top: var(--sp-1); }
   .diff { margin-top: var(--sp-5); padding: var(--sp-4); border-radius: var(--r-md); background: var(--c-green-100); color: var(--c-green-900); font-weight: var(--fw-medium); }
   .diff:empty { display: none; }
   .note { margin-top: var(--sp-4); }
-  .form-wrap { margin-top: var(--sp-6); max-width: 560px; }
-  @media (min-width: 900px) { .form-wrap { margin-inline-start: auto; width: 60%; } }
 </style>
 
 <script>
   import { usEtfs, ucitsFor } from '../lib/etf';
   import { feesForTer, formatCzk } from '../lib/fees';
   import { readCalc, writeCalc, type CalcState } from '../lib/calc-state';
+  import { kidScenarios, KID_YEARS, valuePath, paidInPath, historyFor } from '../lib/growth';
   import { track } from '../lib/track';
 
   const form = document.querySelector<HTMLFormElement>('[data-calc]')!;
   const list = document.querySelector<HTMLOListElement>('[data-rows]')!;
+  const svg = document.querySelector<SVGSVGElement>('[data-chart]')!;
   const nf = new Intl.NumberFormat('cs-CZ');
+  const pf = new Intl.NumberFormat('cs-CZ', { maximumFractionDigits: 2 });
+  const signed = (v: number) => `${v > 0 ? '+' : ''}${pf.format(v)} %`;
   const field = (name: string) => form.elements.namedItem(name) as HTMLInputElement;
   const digits = (s: string) => Number(s.replace(/\D/g, '').slice(0, 9)) || 0;
+  const $ = (sel: string) => document.querySelector(sel)!;
 
-  let usedOnce = false;
+  // Colours come from tokens.css via the legend's --scn custom property
+  const colourOf = (id: string) => getComputedStyle(document.querySelector(`[data-scn="${id}"]`)!).getPropertyValue('--scn').trim();
+  const SVGNS = 'http://www.w3.org/2000/svg';
+  const el = (tag: string, attrs: Record<string, string | number>) => {
+    const n = document.createElementNS(SVGNS, tag);
+    for (const [k, v] of Object.entries(attrs)) n.setAttribute(k, String(v));
+    return n;
+  };
 
-  const render = (s: CalcState) => {
+  const drawChart = (s: CalcState) => {
+    // Draw in real pixels so axis labels stay readable on phones
+    const W = Math.max(300, Math.round(svg.getBoundingClientRect().width) || 600);
+    const H = W < 480 ? 220 : 260, L = 52, R = 28, T = 12, B = 28;
+    svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+    const series = kidScenarios.map((k) => ({ id: k.id, pts: valuePath(s.onceCzk, s.monthlyCzk, k.avgAnnualPct) }));
+    const paid = paidInPath(s.onceCzk, s.monthlyCzk);
+    const max = Math.max(...series.flatMap((x) => x.pts), ...paid, 1);
+    const x = (i: number) => L + (i / KID_YEARS) * (W - L - R);
+    const y = (v: number) => T + (1 - v / max) * (H - T - B);
+    const line = (pts: number[]) => pts.map((v, i) => `${i ? 'L' : 'M'}${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(' ');
+
+    svg.querySelectorAll('g').forEach((g) => g.remove());
+    const g = el('g', {});
+    for (let i = 0; i <= 4; i++) {
+      const v = (max / 4) * i;
+      g.appendChild(el('line', { x1: L, x2: W - R, y1: y(v), y2: y(v), stroke: 'currentColor', 'stroke-opacity': 0.12 }));
+      const t = el('text', { x: L - 8, y: y(v) + 4, 'text-anchor': 'end', 'font-size': 12, fill: 'currentColor', 'fill-opacity': 0.6 });
+      t.textContent = v >= 1e6 ? `${pf.format(v / 1e6)} mil.` : `${nf.format(Math.round(v / 1000))} tis.`;
+      g.appendChild(t);
+    }
+    for (let i = 0; i <= KID_YEARS; i++) {
+      const t = el('text', { x: x(i), y: H - 8, 'text-anchor': 'middle', 'font-size': 12, fill: 'currentColor', 'fill-opacity': 0.6 });
+      t.textContent = i === 0 ? 'dnes' : W < 480 ? `${i}.` : `${i}. rok`;
+      g.appendChild(t);
+    }
+    g.appendChild(el('path', { d: line(paid), fill: 'none', stroke: 'currentColor', 'stroke-opacity': 0.55, 'stroke-width': 2, 'stroke-dasharray': '6 5' }));
+    for (const sr of series) {
+      g.appendChild(el('path', { d: line(sr.pts), fill: 'none', stroke: colourOf(sr.id), 'stroke-width': sr.id === 'moderate' ? 3 : 2.25, 'stroke-linecap': 'round' }));
+    }
+    svg.appendChild(g);
+
+    // Legend values + accessible description
+    const desc: string[] = [`Vloženo celkem ${formatCzk(paid[KID_YEARS])}.`];
+    for (const sr of series) {
+      const end = sr.pts[KID_YEARS];
+      document.querySelector(`[data-scn="${sr.id}"] [data-end]`)!.textContent = formatCzk(end);
+      desc.push(`${kidScenarios.find((k) => k.id === sr.id)!.label}: ${formatCzk(end)}.`);
+    }
+    $('[data-paid5]').textContent = formatCzk(paid[KID_YEARS]);
+    $('[data-chart-desc]').textContent = desc.join(' ');
+  };
+
+  const renderHistory = (years: number) => {
+    const h = historyFor(years);
+    $('[data-hist-years]').textContent = String(h.years);
+    $('[data-hist-worst]').textContent = signed(h.worstPct);
+    $('[data-hist-worst-p]').textContent = h.worstPeriod;
+    $('[data-hist-med]').textContent = signed(h.medianPct);
+    $('[data-hist-best]').textContent = signed(h.bestPct);
+    $('[data-hist-best-p]').textContent = h.bestPeriod;
+  };
+
+  const renderFees = (s: CalcState) => {
     const rows = usEtfs
       .map((e) => ({ etf: e, fees: feesForTer(e.expenseRatioPct, s).feesCzk, eu: feesForTer(ucitsFor(e).terPct, s).feesCzk }))
       .sort((a, b) => a.fees - b.fees);
@@ -130,17 +258,21 @@ const nf = new Intl.NumberFormat('cs-CZ');
       li.querySelector('[data-kc]')!.textContent = formatCzk(r.fees);
       li.querySelector('[data-eu-kc]')!.textContent = formatCzk(r.eu);
       li.querySelector<HTMLElement>('[data-bar]')!.style.width = `${Math.max(2, (r.fees / max) * 100)}%`;
-      list.appendChild(li); // keep cheapest first
+      list.appendChild(li); // cheapest first
     }
-    const paid = feesForTer(0, s).paidInCzk;
-    document.querySelector('[data-paid]')!.textContent = formatCzk(paid);
-    document.querySelector('[data-summary] strong')!.textContent = `${s.years} let`;
+    $('[data-paid]').textContent = formatCzk(feesForTer(0, s).paidInCzk);
+    $('[data-years-txt]').textContent = `${s.years} let`;
     const spy = rows.find((r) => r.etf.ticker === 'SPY')!;
     const voo = rows.find((r) => r.etf.ticker === 'VOO')!;
-    document.querySelector('[data-diff]')!.textContent =
-      `SPY a VOO sledují stejný index S&P 500. Rozdíl v poplatcích: ${formatCzk(spy.fees - voo.fees)} za ${s.years} let.`;
+    $('[data-diff]').textContent = `SPY a VOO sledují stejný index S&P 500. Rozdíl v poplatcích: ${formatCzk(spy.fees - voo.fees)} za ${s.years} let.`;
     (document.querySelector('[data-years-out]') as HTMLOutputElement).value = String(s.years);
     (document.querySelector('[data-return-out]') as HTMLOutputElement).value = `${nf.format(s.annualReturnPct)} %`;
+  };
+
+  const render = (s: CalcState) => {
+    drawChart(s);
+    renderHistory(s.years);
+    renderFees(s);
   };
 
   const readForm = (): CalcState => ({
@@ -151,7 +283,6 @@ const nf = new Intl.NumberFormat('cs-CZ');
     touched: true,
   });
 
-  // Restore what the visitor entered earlier in this session
   const saved = readCalc();
   if (saved.touched) {
     field('onceCzk').value = nf.format(saved.onceCzk);
@@ -160,7 +291,10 @@ const nf = new Intl.NumberFormat('cs-CZ');
     field('annualReturnPct').value = String(saved.annualReturnPct);
   }
   render(saved);
+  let resizeTimer: number | undefined;
+  window.addEventListener('resize', () => { window.clearTimeout(resizeTimer); resizeTimer = window.setTimeout(() => drawChart(readCalc()), 150); });
 
+  let usedOnce = false;
   let timer: number | undefined;
   form.addEventListener('input', (e) => {
     const target = e.target as HTMLInputElement;
