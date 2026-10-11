@@ -52,3 +52,29 @@ Surové exporty konverzací jsou v [`ai-log/`](../ai-log/).
   - justETF měl u CSPX o den jiné datum vzniku. Platí údaj iShares.
   - AI z paměti počítala se stropem 40 mil. Kč pro osvobození cenných papírů, ale v aktuálním znění zákona se týká jen kryptoaktiv. Na stránce se proto neuvede.
   - U SPYL a SPYD State Street uvádí registraci v ČR, což je silnější argument pro „co si Čech reálně koupí".
+
+---
+
+## Session 1, pokračování – 11. 10. 2026: Fáze 2 a 3 (obsah, stavba)
+
+### Pokyny
+- „Pokračuj Fází 2“ → AI navrhla obsah a reklamy, Miky schválil (D16–D18).
+- „Založ Vercel projekt ty, napiš mi návod, pokračuj Fází 3.“
+
+### Co AI udělala
+- Vercel projekt přes konektor (funkce ve Frankfurtu), veřejné proměnné. Tajné klíče jsou jen jako návod pro Mikyho, AI je nevidí.
+- Supabase tabulka `leads` přes migraci (uložena i v `supabase/migrations/`), kontrola Supabase advisorem.
+- Stránka v Astro po sekcích, každá sekce = jeden commit.
+
+### Jak se výstup kontroloval
+- **Výpočet poplatků** ověřen ruční kontrolou (1 % ze 100 000 Kč za rok = 995 Kč) a odhadem průměrného zůstatku.
+- **Mobil 375 px:** skript v prohlížeči hledá prvky přesahující šířku obrazovky (žádné nenašel). Screenshoty z náhledu byly občas oříznuté, ale šlo o chybu nástroje, ne stránky (ověřeno měřením).
+- **API** otestováno bez klíčů: validace, honeypot, chybějící konfigurace, špatný JSON.
+- **Kontrolní seznam fáze 3** (PLAN.md) se procházel po každé sekci.
+
+### Kde se AI spletla (a opravila)
+1. **Čísla opsaná ručně:** v náhledu e-mailu (sekce „Co vám pošleme") AI nejdřív napsala poplatky přímo do textu. To porušuje pravidlo „každé číslo z `etf.json`". Opraveno před commitem, náhled se teď generuje z dat.
+2. **Barvy mimo tokeny:** patička měla barvy napsané přímo v kódu. Přesunuty do `tokens.css`.
+3. **Porovnání velikosti požadavku jako textu** v API (`'9' > '20000'` je v JavaScriptu pravda). Chyba nalezena při čtení vlastního kódu, opravena dřív, než se dostala do commitu.
+4. **Sloupec „Platí k" na stránce zdrojů** míchal datum velikosti fondu s datem poplatku, což by bylo zavádějící. Opraveno samostatně.
+5. **Kurz ČNB v kalkulačce:** CONTENT.md sliboval „počítáno s kurzem ČNB". Poplatek je ale procento z hodnoty investice, takže kurz výsledek neovlivní. Text na stránce byl upraven (kurz se neuvádí), aby netvrdil něco, co výpočet nedělá.

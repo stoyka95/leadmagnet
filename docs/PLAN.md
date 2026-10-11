@@ -37,14 +37,14 @@ Legenda: `[ ]` zbývá · `[x]` hotovo · `[~]` rozpracováno
 - [x] Kostra Astro 7 + Vercel adaptér, nasazení na https://fingramo.vercel.app (ověřeno 200)
 - [x] Vercel projekt `fingramo` (funkce ve fra1), veřejné env proměnné; tajné klíče doplní Miky
 - [x] Supabase tabulka `leads` (RLS bez politik, zápis jen serverem)
-- [ ] `src/styles/tokens.css` + `BaseLayout` + `GlassCard` (vizuální základ D8)
-- [ ] Hero s nadpisem podle `utm_content` (D17)
-- [ ] `src/lib/fees.ts` + Kalkulačka (D16)
-- [ ] `LeadForm` (UI, validace, stavy) – použit 3×
-- [ ] Srovnání 6 ETF (EtfCompare)
-- [ ] Sekce: proč VOO nenajdete, co pošleme, daně, FAQ, patička, lepivé CTA
-- [ ] API `/api/lead` (Supabase insert, Resend e-mail) + `/dekujeme` – po doplnění klíčů
-- [ ] `/zasady`, `/zdroje`
+- [x] `src/styles/tokens.css` + `BaseLayout` + `GlassCard` (vizuální základ D8)
+- [x] Hero s nadpisem podle `utm_content` (D17)
+- [x] `src/lib/fees.ts` + Kalkulačka (D16)
+- [x] `LeadForm` (UI, validace, stavy) – použit 3×
+- [x] Srovnání 6 ETF (EtfCompare)
+- [x] Sekce: proč VOO nenajdete, co pošleme, daně, FAQ, patička, lepivé CTA
+- [~] API `/api/lead` + `/dekujeme` – kód hotový a otestovaný bez klíčů; ostrý test po doplnění klíčů Mikym
+- [x] `/zasady`, `/zdroje`
 - [ ] Vizuály reklam A/B (PNG 4:5 a 9:16) ze stejných tokenů
 
 **Kontrolní seznam každé sekce** (z D7, D8, D16, D17, CONTENT.md):
