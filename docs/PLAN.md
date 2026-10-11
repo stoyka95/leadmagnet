@@ -25,7 +25,7 @@ Legenda: `[ ]` zbývá · `[x]` hotovo · `[~]` rozpracováno
 - [x] Ověření daňových informací – zatím bez oficiálního zdroje → neuvádět
 - [x] Commit `data: ...` + push
 - [x] TER UCITS proti KID správců (hlavně XD9U, VWCE) – 11. 10., vše sedí (SOURCES.md, „Druhá kontrola TER")
-- [ ] Zbývá: stránka IBKR ručně v prohlížeči
+- [x] Stránka IBKR v prohlížeči – znovu 11. 10. odpoledne, obě tvrzení na webu sedí (KID u US ETF obvykle chybí, IBKR je retailu z EHP blokuje)
 
 ## Fáze 2 – Obsah: cílovka, texty, reklamy (po 12. 10.)
 - [x] Persona a slib reklamy → struktura první obrazovky
@@ -86,7 +86,7 @@ Každý krok: změna, testy (unit/E2E) upravené nebo nové, kontrola na mobilu 
 5. [x] **Tlačítko v liště (D30):** dokud není `tool_used` → „Spočítat poplatky" ke kalkulačce; potom „Získat srovnání" k formuláři.
 6. [x] **Zhuštění (D31):** zkrátit sekci KID a Daně, detaily do FAQ; blok „Kdo za tím stojí" (2–3 věty, odkazy na zdroje).
 7. [x] **Děkovací stránka (D32):** otázka „Už investujete?" (Ano / Začínám / Zatím ne, událost `lead_segment`, nic osobního) a sdílení (Web Share API na mobilu, jinak WhatsApp a kopírovat odkaz; odkaz s `utm_source=share`).
-8. [ ] **Hypotézy H1 a H3** připravit textem pro README (hypotéza, změna, metrika, odhad dopadu).
+8. [x] **Hypotézy H1 a H3** – v README spolu s H2 a kandidátem 2 vs. 3 formuláře.
 9. [ ] **Testy:** celá sada lokálně i proti produkci, Lighthouse znovu.
 10. [x] **S Mikym (D36):** vlastní linkové ikony (`Icon.astro`), ilustrace na děkovací stránce, OG obrázek 1200×630.
 
@@ -99,7 +99,7 @@ Každý krok: změna, testy (unit/E2E) upravené nebo nové, kontrola na mobilu 
 - [x] Vysvětlení u telefonu, otázka na částku ne
 - [x] README – sekce Měření, insight „Cena za lead podle reklamy"
 - [x] Test obou reklam (`utm_content=a` / `b`) → DECISIONS
-- [ ] Ověřit `anonymize_ips` (MEASUREMENT.md to uvádí, v kódu není)
+- [x] `anonymize_ips` – zapnuté v nastavení projektu, ověřeno v datech (žádná IP ani poloha)
 - [ ] Záznamy relací vypnout i v nastavení PostHog projektu – Miky
 
 ## Fáze 6 – README a odevzdání (čt 15. 10. večer)

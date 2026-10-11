@@ -276,3 +276,11 @@ Miky si stránku prošel v prohlížeči a poslal 8 bodů: ověřit TER (hlavně
 1. **Dvě ikony na zkušebním listu kolidovaly** (zelená mince přes sloupec mincí, šipka přes obálku). Viděno na zvětšeném náhledu a opraveno před nasazením.
 2. **Čísla na OG obrázku přetékala z karty** (0,03 % uříznuté). Viděno na prvním renderu. Opraveno menším písmem a širší kartou, render má teď kontrolu, že nic nepřesahuje kartu.
 3. **Příliš široký úklid:** lokální server pro render AI zastavila příkazem `taskkill /IM python.exe`, který ukončí všechny procesy Pythonu v počítači, nejen ten jeden. Pokud Mikymu běžel jiný Python program, mohl být ukončen. Správně mělo jít o zastavení jen konkrétního procesu (podle portu nebo PID). AI to Mikymu hned řekla.
+
+---
+
+## Session 1, pokračování – 11. 10. 2026: hypotézy a dvě ověření
+
+- **Hypotézy H1–H3 do README:** odhad dopadu AI napsala slovně s důvodem, bez vymyšlených procent (stránka zatím nemá provoz z reklamy). Citlivost testu převzala z už spočítané tabulky velikosti vzorku.
+- **Anonymizace IP:** v AI-WORK-NOTES bylo otevřené, jestli tvrzení v MEASUREMENT.md platí, když v kódu chybí. Ověřeno jen čtením: nastavení je na úrovni projektu a v datech nemá žádná ze 163 událostí IP ani polohu. Tvrzení tedy platilo, jen bylo nepřesně popsané, kde se nastavuje.
+- **IBKR:** položka v PLAN zůstala neodškrtnutá, přestože SOURCES.md měl ověření z prohlížeče už z rána. AI stránku otevřela znovu a obě tvrzení na webu sedí.

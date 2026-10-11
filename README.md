@@ -25,7 +25,7 @@ Všechny insighty počítají jen produkční doménu `fingramo.vercel.app` a vy
 ### Co je zapnuté
 - **UTM měření:** reklamy nesou `utm_source`, `utm_medium`, `utm_campaign` a `utm_content` (`a` / `b` = verze reklamy). Každá událost má vlastnost `ad_variant`, takže jde každý krok rozdělit podle reklamy. UTM se ukládají i ke kontaktu v databázi (Supabase, tabulka `leads`), takže jde lead spárovat s reklamou i bez PostHogu.
 - **Heatmapy kliknutí:** zapnuté (`capture_heatmaps` v kódu, zapnuté i v nastavení projektu). Ukazují souhrnně, kam lidé klikají, ne jednotlivé návštěvníky.
-- **Bez cookies:** PostHog běží v režimu bez cookies (`cookieless_mode: 'always'`), návštěvníky spojuje na serveru podle denně měněného hashe.
+- **Bez cookies:** PostHog běží v režimu bez cookies (`cookieless_mode: 'always'`), návštěvníky spojuje na serveru podle denně měněného hashe. IP adresy se neukládají (nastavení projektu, ověřeno v datech: žádná událost nemá IP ani polohu).
 
 ### Co je záměrně vypnuté
 - **Záznamy relací (session recordings) jsou záměrně vypnuté.** Zaznamenávají chování konkrétního člověka na stránce, a to by bez souhlasu (cookie lišty) nebylo v pořádku. Vypnuté jsou přímo v kódu (`disable_session_recording: true`), takže se nenahrávají, ani když je funkce v nastavení PostHog projektu povolená. Pro ostré nasazení: zapnout je jen po souhlasu návštěvníka.

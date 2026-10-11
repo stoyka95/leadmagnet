@@ -12,7 +12,7 @@ Podklad pro README §8. Rozhodnutí: D11 (PostHog EU + Vercel Analytics), D24 (b
 ## Bez cookies
 - `posthog-js` běží s `cookieless_mode: 'always'` a projekt má zapnutý *Cookieless server hash mode* (stateful).
 - Do prohlížeče se **nic neukládá** (ověřeno: `document.cookie` je prázdné, `localStorage` prázdné). PostHog spojuje události jednoho návštěvníka na serveru podle denně měněného hashe. Trychtýř proto funguje i přes přechod `/` → `/dekujeme` (ověřeno: stejné `distinct_id` u všech 8 kroků).
-- IP adresy se anonymizují (`anonymize_ips: true`).
+- IP adresy se neukládají: v nastavení PostHog projektu je zapnuté „Discard client IP data" (`anonymize_ips: true`), v kódu se to nenastavuje. Ověřeno 11. 10. 2026: 163 produkčních událostí za 7 dní, žádná nemá `$ip` ani polohu (`$geoip_*`), přestože transformace GeoIP je v projektu zapnutá.
 - **Omezení:** stejný člověk další den = nový návštěvník. U reklamy, kde se rozhoduje během minut, to nevadí, jen se tím nadhodnocuje počet unikátních návštěvníků v delším období.
 - Jediné úložiště, které stránka používá, je `sessionStorage` `fg:calc`, tedy zadání kalkulačky pro děkovací stránku (funkční, nutné pro službu, o kterou návštěvník požádal).
 
