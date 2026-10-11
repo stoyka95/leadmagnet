@@ -1,0 +1,45 @@
+---
+// CONTENT.md §3.7 + the last (catch-all) form.
+import LeadForm from './LeadForm.astro';
+import { etfByTicker, formatPct } from '../lib/etf';
+const spy = etfByTicker('SPY');
+const voo = etfByTicker('VOO');
+const faqs = [
+  { q: 'Je mezi SPY, IVV a VOO rozdíl?', a: `Sledují stejný index S&P 500, liší se hlavně správcem a poplatkem (${formatPct(spy.expenseRatioPct)} vs. ${formatPct(voo.expenseRatioPct)}).` },
+  { q: 'Co je UCITS?', a: 'Evropská pravidla pro fondy. UCITS ETF mají dokument KID, proto je drobní investoři v EU běžně koupí.' },
+  { q: 'Je to investiční doporučení?', a: 'Ne. Srovnáváme veřejné údaje správců. Rozhodnutí je na vás.' },
+  { q: 'Co s mými údaji?', a: 'Použijeme je k zaslání srovnání. Další e-maily jen pokud zaškrtnete souhlas. Odhlásit se můžete jedním klikem.' },
+];
+---
+<section id="zaver" class="section container" aria-labelledby="faq-h">
+  <div class="grid">
+    <div>
+      <div class="section-head">
+        <p class="eyebrow">Časté otázky</p>
+        <h2 id="faq-h">Než nám napíšete</h2>
+      </div>
+      <div class="faq">
+        {faqs.map((f) => (
+          <details>
+            <summary>{f.q}</summary>
+            <p class="muted">{f.a}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+    <LeadForm location="footer" />
+  </div>
+</section>
+
+<style>
+  .grid { display: grid; gap: var(--sp-10); }
+  @media (min-width: 900px) { .grid { grid-template-columns: 1fr 1fr; align-items: start; } }
+  .faq { display: grid; }
+  details { border-top: 1px solid var(--c-line); }
+  details:last-child { border-bottom: 1px solid var(--c-line); }
+  summary { cursor: pointer; min-height: var(--tap); display: flex; align-items: center; justify-content: space-between; gap: var(--sp-4); font-weight: var(--fw-medium); list-style: none; padding-block: var(--sp-3); }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: '+'; font-size: var(--fs-xl); color: var(--c-green-700); line-height: 1; }
+  details[open] summary::after { content: '–'; }
+  details p { padding-bottom: var(--sp-4); }
+</style>
