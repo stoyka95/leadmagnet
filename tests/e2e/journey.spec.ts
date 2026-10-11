@@ -14,6 +14,18 @@ test.describe('first screen (D17)', () => {
     expect(consoleErrors).toEqual([]);
   });
 
+  test('the hero card follows the ad (D29): A = original → European pairs, B = SPY vs VOO', async ({ page }) => {
+    await page.goto(AD_A);
+    const cardA = page.locator('.hero-card .variant-a');
+    await expect(cardA).toBeVisible();
+    await expect(page.locator('.hero-card .variant-b')).toBeHidden();
+    await expect(cardA.locator('.pairs li')).toHaveCount(3);
+    await expect(cardA.locator('.pair-eu strong')).toHaveText(['VUAA', 'SPYL', 'VWCE']);
+    await page.goto(AD_B);
+    await expect(page.locator('.hero-card .variant-b')).toBeVisible();
+    await expect(page.locator('.hero-card .variant-a')).toBeHidden();
+  });
+
   test('without UTM the default variant B is shown', async ({ page }) => {
     await page.goto('/');
     await expect(page.locator('h1:visible')).toHaveText(/Stejný index/);

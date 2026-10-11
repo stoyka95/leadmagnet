@@ -2,12 +2,18 @@
 // First screen. Headline follows the ad the visitor came from (D17): utm_content=a -> "VOO" angle, otherwise B.
 // The variant is set on <html data-ad> by an inline script in <head> before first paint (no flicker).
 import GlassCard from './GlassCard.astro';
-import { etfByTicker, formatPct, formatDate, dataRetrieved, usEtfs } from '../lib/etf';
+import { etfByTicker, formatPct, formatDate, dataRetrieved, usEtfs, ucitsFor } from '../lib/etf';
 
 const spy = etfByTicker('SPY');
 const voo = etfByTicker('VOO');
 // Computed from data, not typed in: 0.0945 / 0.03 ≈ 3
 const feeRatio = Math.round(spy.expenseRatioPct / voo.expenseRatioPct);
+// D29: card for ad A ("your broker may not offer it") – the same three pairs as the ad, from data
+const pairs = ['VOO', 'SPY', 'VT'].map((t) => {
+  const us = etfByTicker(t);
+  const eu = ucitsFor(us);
+  return { us, eu, euTicker: eu.ticker.split(' ')[0] };
+});
 ---
 <header class="hero container">
 
@@ -31,6 +37,21 @@ const feeRatio = Math.round(spy.expenseRatioPct / voo.expenseRatioPct);
     </div>
 
     <GlassCard class="hero-card" aria-label="Ukázka srovnání">
+      <div class="variant-a">
+        <p class="card-label">Americký originál → evropská verze</p>
+        <ul class="pairs">
+          {pairs.map((p) => (
+            <li>
+              <span class="pair-us"><strong>{p.us.ticker}</strong> <span class="num">{formatPct(p.us.expenseRatioPct)}</span></span>
+              <span class="pair-arrow" aria-label="evropská verze">→</span>
+              <span class="pair-eu"><strong>{p.euTicker}</strong> <span class="num">{formatPct(p.eu.terPct)}</span></span>
+              <span class="pair-match fine">{p.eu.match} · <span class="nowrap">ISIN {p.eu.isin}</span></span>
+            </li>
+          ))}
+        </ul>
+        <p class="fine">Evropské verze (UCITS) mají ISIN začínající IE. Zda fond nabízí váš broker, ověříte podle ISIN. Poplatky: weby správců, viz <a href="/zdroje">zdroje</a>.</p>
+      </div>
+      <div class="variant-b">
       <div class="card-top">
         <p class="card-label">Stejný index S&amp;P 500</p>
         <span class="badge-mint">Poplatek VOO ~{feeRatio}× nižší</span>
@@ -52,6 +73,7 @@ const feeRatio = Math.round(spy.expenseRatioPct / voo.expenseRatioPct);
         {usEtfs.map((e) => <li>{e.ticker}</li>)}
       </ul>
       <p class="fine">Zdroj: weby správců (ssga.com, vanguard.com), viz <a href="/zdroje">zdroje</a>.</p>
+      </div>
     </GlassCard>
   </div>
 </header>
@@ -87,6 +109,19 @@ const feeRatio = Math.round(spy.expenseRatioPct / voo.expenseRatioPct);
   .ter-low { color: var(--c-green-800); }
   .vs { color: var(--c-ink-faint); padding-bottom: var(--sp-6); }
   .chips { list-style: none; padding: 0; margin: 0 0 var(--sp-4); display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+  .pairs { list-style: none; padding: 0; margin: var(--sp-3) 0 var(--sp-4); display: grid; }
+  .pairs li {
+    display: grid; grid-template-columns: 1fr auto 1fr; align-items: baseline; gap: 2px var(--sp-3);
+    padding-block: var(--sp-3); border-top: 1px solid var(--c-line);
+  }
+  .pairs li:first-child { border-top: 0; padding-top: 0; }
+  .pairs strong { font-size: var(--fs-lg); color: var(--c-navy-900); }
+  .pair-us { color: var(--c-ink-muted); white-space: nowrap; }
+  .pair-arrow { color: var(--c-green-700); font-weight: var(--fw-bold); }
+  .pair-eu { white-space: nowrap; }
+  .pair-eu strong { color: var(--c-green-800); }
+  .pair-match { grid-column: 1 / -1; color: var(--c-ink-faint); }
+  .nowrap { white-space: nowrap; }
   .chips li {
     font-size: var(--fs-xs); font-weight: var(--fw-medium);
     padding: var(--sp-1) var(--sp-3); border-radius: var(--r-pill);
