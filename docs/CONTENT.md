@@ -46,7 +46,7 @@ Na stránku přichází z reklamy na mobilu a má **pár sekund**. Musí hned vi
 
 **Varianta pro reklamu B** (`utm_content=b`, úhel „čísla"):
 - Nadpis: **Stejný index, jiný poplatek. Kolik vás ETF stojí v korunách?**
-- Podnadpis: Zadejte částku a za 10 vteřin uvidíte, kolik zaplatíte na poplatcích u 6 populárních ETF z NYSE – a u jejich evropských verzí.
+- Podnadpis: Zadejte částku a za 10 vteřin uvidíte, kolik zaplatíte na poplatcích ETF z NYSE. Celé srovnání 6 fondů a jejich evropských verzí vám pošleme zdarma. *(upraveno kvůli D25: všech 6 fondů v Kč je až za e-mailem)*
 
 **Výchozí** (bez UTM / přímý příchod) = varianta B.
 

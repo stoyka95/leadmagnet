@@ -1,5 +1,5 @@
 ---
-// Main tool (D4, D16, D20, D21). Desktop: inputs + sticky form left, growth + fees right.
+// Main tool (D4, D16, D20, D21). D25: the headline result is open, the detail is blurred until the e-mail is sent. Desktop: inputs + sticky form left, growth + fees right.
 // Mobile order: inputs → growth → fees → form.
 import GlassCard from './GlassCard.astro';
 import LeadForm from './LeadForm.astro';
@@ -12,6 +12,9 @@ const rows = usEtfs
   .map((e) => ({ etf: e, ucits: ucitsFor(e), fees: feesForTer(e.expenseRatioPct, DEFAULT_CALC).feesCzk }))
   .sort((a, b) => a.fees - b.fees);
 const maxFees = Math.max(...rows.map((r) => r.fees));
+const minFees = rows[0].fees;
+// The open headline (D25): cheapest and most expensive fund; ties are listed together
+const tickersAt = (fee: number) => rows.filter((r) => r.fees === fee).map((r) => r.etf.ticker).join(', ');
 // Factual label for the European fund(s) with the lowest TER – never "recommended" (no investment advice)
 const minEuTer = Math.min(...ucitsEtfs.map((u) => u.terPct));
 const nf = new Intl.NumberFormat('cs-CZ');
@@ -53,25 +56,38 @@ const pctSigned = (v: number) => `${v > 0 ? '+' : ''}${formatPct(v)}`;
     <GlassCard solid class="area-growth">
       <h3>Jak by mohla investice vypadat za {KID_YEARS} let</h3>
       <p class="fine sub">Podle scénářů z dokumentu KID fondu {kidMeta.ticker} (S&amp;P 500, evropská verze). Vloženo: <strong class="num" data-paid5></strong></p>
-      <svg class="chart" viewBox="0 0 600 260" role="img" aria-labelledby="chart-t chart-d" data-chart>
-        <title id="chart-t">Vývoj hodnoty investice za {KID_YEARS} let ve 4 scénářích z KID</title>
-        <desc id="chart-d" data-chart-desc></desc>
-      </svg>
-      <ul class="legend" data-legend>
-        {kidScenarios.map((s) => (
-          <li data-scn={s.id}><span class="dot" aria-hidden="true"></span><span>{s.label} <span class="fine num">({pctSigned(s.avgAnnualPct)} ročně)</span></span><strong class="num" data-end></strong></li>
-        ))}
-      </ul>
+      <div class="gate is-locked" data-gate>
+        <div class="gate-body" inert>
+          <svg class="chart" viewBox="0 0 600 260" role="img" aria-labelledby="chart-t chart-d" data-chart>
+            <title id="chart-t">Vývoj hodnoty investice za {KID_YEARS} let ve 4 scénářích z KID</title>
+            <desc id="chart-d" data-chart-desc></desc>
+          </svg>
+          <ul class="legend" data-legend>
+            {kidScenarios.map((s) => (
+              <li data-scn={s.id}><span class="dot" aria-hidden="true"></span><span>{s.label} <span class="fine num">({pctSigned(s.avgAnnualPct)} ročně)</span></span><strong class="num" data-end></strong></li>
+            ))}
+          </ul>
+        </div>
+        <div class="gate-cta">
+          <a class="btn btn-primary" href="#lf-calculator-h" data-gate-open data-track="cta_click" data-cta="gate_growth">Odemknout 4 scénáře</a>
+          <span class="fine">Zdarma, stačí e-mail</span>
+        </div>
+      </div>
       <p class="fine">
         Ilustrace podle průměrných ročních výnosů po nákladech z KID ze dne {formatDate(kidMeta.kidDate)} (nejhorší, průměrný a nejlepší výsledek fondu za posledních 10 let a stresový scénář). <strong>Nejde o předpověď.</strong> Hodnota investice může klesnout a můžete přijít o část vložených peněz. KID počítá s jednorázovou investicí, my průměrné výnosy používáme i na měsíční vklady. <a href={kidMeta.source} rel="noopener">KID (PDF)</a>
       </p>
 
       <div class="history" aria-live="polite">
         <h4>Historie S&amp;P 500 za <span class="num" data-hist-years>{hist.years}</span> let</h4>
-        <div class="hist-grid">
-          <div><span class="fine">Nejhorší</span><strong class="num" data-hist-worst>{pctSigned(hist.worstPct)}</strong><span class="fine" data-hist-worst-p>{hist.worstPeriod}</span></div>
-          <div><span class="fine">Medián</span><strong class="num" data-hist-med>{pctSigned(hist.medianPct)}</strong><span class="fine">všech období</span></div>
-          <div><span class="fine">Nejlepší</span><strong class="num" data-hist-best>{pctSigned(hist.bestPct)}</strong><span class="fine" data-hist-best-p>{hist.bestPeriod}</span></div>
+        <div class="gate is-locked" data-gate>
+          <div class="hist-grid gate-body" inert>
+            <div><span class="fine">Nejhorší</span><strong class="num" data-hist-worst>{pctSigned(hist.worstPct)}</strong><span class="fine" data-hist-worst-p>{hist.worstPeriod}</span></div>
+            <div><span class="fine">Medián</span><strong class="num" data-hist-med>{pctSigned(hist.medianPct)}</strong><span class="fine">všech období</span></div>
+            <div><span class="fine">Nejlepší</span><strong class="num" data-hist-best>{pctSigned(hist.bestPct)}</strong><span class="fine" data-hist-best-p>{hist.bestPeriod}</span></div>
+          </div>
+          <div class="gate-cta gate-cta-sm">
+            <a class="btn btn-primary" href="#lf-calculator-h" data-gate-open data-track="cta_click" data-cta="gate_history">Odemknout historii</a>
+          </div>
         </div>
         <p class="fine">Průměrný roční výnos za všechna stejně dlouhá období v letech {historyMeta.years}. <strong>Historie, ne předpověď.</strong> V amerických dolarech, včetně dividend, bez daní a poplatků. Zdroj: <a href={historyMeta.url} rel="noopener">A. Damodaran, NYU Stern</a>.</p>
       </div>
@@ -80,9 +96,12 @@ const pctSigned = (v: number) => `${v > 0 ? '+' : ''}${formatPct(v)}`;
     <GlassCard solid class="area-fees" aria-live="polite">
       <h3>Kolik zaplatíte na poplatcích fondu</h3>
       <p class="muted summary" data-summary>
-        Za <strong class="num" data-years-txt>{DEFAULT_CALC.years} let</strong> vložíte <strong class="num" data-paid>{formatCzk(feesForTer(0, DEFAULT_CALC).paidInCzk)}</strong>. Na ročních poplatcích zaplatíte minimálně:
+        Za <strong class="num" data-years-txt>{DEFAULT_CALC.years} let</strong> vložíte <strong class="num" data-paid>{formatCzk(feesForTer(0, DEFAULT_CALC).paidInCzk)}</strong>. Na ročních poplatcích fondu zaplatíte od <strong class="num" data-min>{formatCzk(minFees)}</strong> (<span data-min-t>{tickersAt(minFees)}</span>) do <strong class="num" data-max>{formatCzk(maxFees)}</strong> (<span data-max-t>{tickersAt(maxFees)}</span>).
       </p>
-      <ol class="rows" data-rows>
+      <p class="diff" data-diff></p>
+      <p class="list-head">Všech 6 fondů a jejich evropské verze v Kč:</p>
+      <div class="gate is-locked" data-gate>
+      <ol class="rows gate-body" data-rows inert>
         {rows.map((r) => (
           <li class="row" data-ticker={r.etf.ticker}>
             <div class="row-head">
@@ -99,7 +118,11 @@ const pctSigned = (v: number) => `${v > 0 ? '+' : ''}${formatPct(v)}`;
           </li>
         ))}
       </ol>
-      <p class="diff" data-diff></p>
+        <div class="gate-cta">
+          <a class="btn btn-primary" href="#lf-calculator-h" data-gate-open data-track="cta_click" data-cta="gate_fees">Odemknout všech 12 fondů</a>
+          <span class="fine">Zdarma, stačí e-mail</span>
+        </div>
+      </div>
       <p class="fine note">
         Počítáno jen z ročního poplatku fondu (TER) podle správců, data k {formatDate(dataRetrieved)}. Nezahrnuje poplatky brokera, převod měny ani daně. Nejde o investiční doporučení.
       </p>
@@ -172,9 +195,24 @@ const pctSigned = (v: number) => `${v > 0 ? '+' : ''}${formatPct(v)}`;
   .row:last-child .bar span { background: var(--c-ink-muted); }
   .eu { margin-top: var(--sp-1); display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-1) var(--sp-2); }
   .badge-navy { background: var(--c-navy-100); color: var(--c-navy-700); }
-  .diff { margin-top: var(--sp-5); padding: var(--sp-4); border-radius: var(--r-md); background: var(--c-green-100); color: var(--c-green-900); font-weight: var(--fw-medium); }
+  .diff { margin-bottom: var(--sp-5); padding: var(--sp-4); border-radius: var(--r-md); background: var(--c-green-100); color: var(--c-green-900); font-weight: var(--fw-medium); }
   .diff:empty { display: none; }
   .note { margin-top: var(--sp-4); }
+  .list-head { font-size: var(--fs-sm); font-weight: var(--fw-medium); margin-bottom: var(--sp-3); }
+
+  /* D25 gate: the detail stays in place, blurred and inert, until the e-mail is sent */
+  .gate { position: relative; }
+  .gate.is-locked .gate-body { filter: blur(7px); opacity: 0.7; user-select: none; pointer-events: none; }
+  .gate-cta { display: none; }
+  .gate.is-locked .gate-cta {
+    display: grid; justify-items: center; gap: var(--sp-2);
+    position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+    width: max-content; max-width: calc(100% - var(--sp-4));
+    padding: var(--sp-4); border-radius: var(--r-lg);
+    background: var(--glass-bg); box-shadow: var(--shadow-cta); text-align: center;
+  }
+  .gate.is-locked .gate-cta-sm { padding: 0; background: none; box-shadow: none; }
+  .gate-cta .fine { color: var(--c-ink-muted); }
 </style>
 
 <script>
@@ -270,6 +308,12 @@ const pctSigned = (v: number) => `${v > 0 ? '+' : ''}${formatPct(v)}`;
     }
     $('[data-paid]').textContent = formatCzk(feesForTer(0, s).paidInCzk);
     $('[data-years-txt]').textContent = `${s.years} let`;
+    const minF = rows[0].fees, maxF = rows[rows.length - 1].fees;
+    const at = (fee: number) => rows.filter((r) => r.fees === fee).map((r) => r.etf.ticker).join(', ');
+    $('[data-min]').textContent = formatCzk(minF);
+    $('[data-min-t]').textContent = at(minF);
+    $('[data-max]').textContent = formatCzk(maxF);
+    $('[data-max-t]').textContent = at(maxF);
     const spy = rows.find((r) => r.etf.ticker === 'SPY')!;
     const voo = rows.find((r) => r.etf.ticker === 'VOO')!;
     $('[data-diff]').textContent = `SPY a VOO sledují stejný index S&P 500. Rozdíl v poplatcích: ${formatCzk(spy.fees - voo.fees)} za ${s.years} let.`;
@@ -290,6 +334,20 @@ const pctSigned = (v: number) => `${v > 0 ? '+' : ''}${formatPct(v)}`;
     annualReturnPct: Number(field('annualReturnPct').value),
     touched: true,
   });
+
+  // D25: once the e-mail was sent in this tab the detail is open; until then the gate buttons lead to the form
+  const unlock = () => document.querySelectorAll<HTMLElement>('[data-gate]').forEach((g) => {
+    g.classList.remove('is-locked');
+    g.querySelector('.gate-body')?.removeAttribute('inert');
+  });
+  try { if (sessionStorage.getItem('fg:lead')) unlock(); } catch { /* storage blocked: stays locked */ }
+  document.querySelectorAll<HTMLAnchorElement>('[data-gate-open]').forEach((a) => a.addEventListener('click', (e) => {
+    const email = document.querySelector<HTMLInputElement>('#lf-calculator-email');
+    if (!email) return;
+    e.preventDefault();
+    email.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    email.focus({ preventScroll: true });
+  }));
 
   const saved = readCalc();
   if (saved.touched) {
