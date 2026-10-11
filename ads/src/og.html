@@ -1,0 +1,75 @@
+<!doctype html>
+<!--
+  Share preview (Open Graph) image, D36. Rendered to PNG at 1200×630 → public/og.png.
+  Same approach as the ads (ad.html): numbers from data/etf.json, colours from src/styles/tokens.css.
+  Follows ad B and the default first screen: "Stejný index, jiný poplatek." + SPY vs. VOO.
+-->
+<html lang="cs">
+<head>
+<meta charset="utf-8" />
+<title>Fingramo – náhled pro sdílení</title>
+<link rel="stylesheet" href="../../src/styles/tokens.css" />
+<style>
+  html, body { margin: 0; }
+  body { font-family: var(--font-display); color: var(--c-ink); -webkit-font-smoothing: antialiased; }
+  .og {
+    width: 1200px; height: 630px; box-sizing: border-box; position: relative; overflow: hidden;
+    padding: 64px 72px; display: grid; grid-template-columns: 1fr 500px; gap: 48px; align-items: center;
+    background:
+      radial-gradient(700px 480px at 100% -10%, rgba(26, 94, 64, 0.34), transparent 60%),
+      radial-gradient(600px 420px at -10% 60%, rgba(31, 63, 143, 0.12), transparent 60%),
+      linear-gradient(180deg, var(--c-bg) 0%, var(--c-bg-2) 100%);
+  }
+  .brand { display: flex; align-items: center; gap: 14px; font-weight: 700; font-size: 40px; color: var(--c-navy-900); letter-spacing: -0.03em; line-height: 1; }
+  .brand svg { width: 46px; height: 54px; }
+  .brand span { padding-top: 10px; }
+  h1 { font-size: 66px; line-height: 1.04; letter-spacing: -0.03em; margin: 40px 0 0; font-weight: 800; color: var(--c-navy-900); }
+  .sub { font-size: 28px; line-height: 1.3; color: var(--c-ink-muted); margin: 22px 0 0; }
+  .card {
+    border-radius: 36px; padding: 40px 40px;
+    background: rgba(255, 255, 255, 0.7); border: 2px solid rgba(255, 255, 255, 0.85);
+    box-shadow: 0 30px 80px rgba(12, 46, 31, 0.16);
+  }
+  .cap-top { font-size: 22px; font-weight: 600; color: var(--c-ink-muted); margin: 0 0 24px; }
+  .duel { display: grid; grid-template-columns: auto auto auto; justify-content: space-between; align-items: end; gap: 12px; }
+  .t { font-size: 32px; font-weight: 700; color: var(--c-navy-900); }
+  .ter { white-space: nowrap; font-size: 50px; font-weight: 800; letter-spacing: -0.04em; line-height: 1; font-variant-numeric: tabular-nums; color: var(--c-navy-900); }
+  .low { color: var(--c-green-700); }
+  .vs { font-size: 26px; color: var(--c-ink-faint); padding-bottom: 14px; }
+  .cap { font-size: 20px; color: var(--c-ink-muted); margin-top: 6px; }
+  .src { font-size: 17px; color: var(--c-ink-faint); margin: 28px 0 0; line-height: 1.35; }
+</style>
+</head>
+<body>
+  <div class="og">
+    <div>
+      <div class="brand">
+        <svg viewBox="0 0 48 56" aria-hidden="true"><path d="M6 26h10v8h12v8H16v12H6z" fill="var(--c-navy-900)"/><path d="M6 26V15L29.7 7.3 28.2 2.8 45.3 6.7 33.8 19.9 32.3 15.4 21 19Q16 20.6 16 24V26z" fill="var(--c-green-500)"/></svg>
+        <span>fingramo</span>
+      </div>
+      <h1>Stejný index,<br />jiný poplatek.</h1>
+      <p class="sub">Kolik vás stojí ETF z newyorské burzy v korunách? Srovnání 6 fondů a jejich evropských verzí zdarma.</p>
+    </div>
+    <div class="card">
+      <p class="cap-top">Stejný index S&amp;P 500</p>
+      <div class="duel" id="duel"></div>
+      <p class="src" id="src"></p>
+    </div>
+  </div>
+
+<script type="module">
+  const data = await (await fetch('../../data/etf.json')).json();
+  const pct = (n) => new Intl.NumberFormat('cs-CZ', { maximumFractionDigits: 4 }).format(n) + ' %';
+  const us = (t) => data.us.find((e) => e.ticker === t);
+  const spy = us('SPY'), voo = us('VOO');
+  document.getElementById('duel').innerHTML = `
+    <div><div class="t">${spy.ticker}</div><div class="ter">${pct(spy.expenseRatioPct)}</div><div class="cap">roční poplatek</div></div>
+    <div class="vs">vs.</div>
+    <div><div class="t">${voo.ticker}</div><div class="ter low">${pct(voo.expenseRatioPct)}</div><div class="cap">roční poplatek</div></div>`;
+  document.getElementById('src').textContent =
+    'Zdroj: State Street, Vanguard, staženo ' + new Date(data._meta.retrieved).toLocaleDateString('cs-CZ') +
+    '. Investování je spojeno s rizikem. Nejde o investiční doporučení.';
+  document.body.dataset.ready = '1';
+</script>
+</body>
+</html>

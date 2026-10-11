@@ -1,6 +1,7 @@
 # Reklamy – Meta (Instagram / Facebook), mobil
 
 **Stav:** texty SCHVÁLENY Mikym 11. 10. 2026 (D18). Vizuály hotové (11. 10.): `ad-a-4x5.png`, `ad-a-9x16.png`, `ad-b-4x5.png`, `ad-b-9x16.png`. Zdroj: `ads/src/ad.html` – stejné tokeny jako stránka, čísla načtená z `data/etf.json` (žádné ručně opsané). Render: Playwright, 1080×1350 a 1080×1920.
+**Náhled pro sdílení (OG, D36):** `ads/src/og.html` → `public/og.png` (1200×630), stejný přístup a data, navazuje na verzi B.
 Kanál a úhly: D6. Tón: vykání (D7). Žádné sliby výnosů, každé číslo ze `data/SOURCES.md`.
 
 Obě verze nabízejí **totéž** (zdarma srovnání ETF + poplatky v Kč). Liší se jen **úhel** – A/B test úhlu.

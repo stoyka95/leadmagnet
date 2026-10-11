@@ -390,3 +390,21 @@ test.describe('phone length (D35)', () => {
     }
   });
 });
+
+test.describe('share preview (D36)', () => {
+  test('Open Graph image is declared with its size and served as a 1200 × 630 PNG', async ({ page, request }) => {
+    await page.goto('/');
+    const og = await page.locator('meta[property="og:image"]').getAttribute('content');
+    expect(og).toBe('https://fingramo.vercel.app/og.png');
+    await expect(page.locator('meta[property="og:image:width"]')).toHaveAttribute('content', '1200');
+    await expect(page.locator('meta[property="og:image:height"]')).toHaveAttribute('content', '630');
+    await expect(page.locator('meta[name="twitter:card"]')).toHaveAttribute('content', 'summary_large_image');
+    const res = await request.get('/og.png');
+    expect(res.status()).toBe(200);
+    expect(res.headers()['content-type']).toContain('image/png');
+    const buf = await res.body();
+    expect(buf.readUInt32BE(16)).toBe(1200); // PNG header: width
+    expect(buf.readUInt32BE(20)).toBe(630); // height
+    expect(buf.length).toBeLessThan(300_000); // WhatsApp shows previews up to ~300 kB
+  });
+});

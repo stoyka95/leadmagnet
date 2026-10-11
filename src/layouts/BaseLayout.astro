@@ -24,6 +24,14 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta property="og:locale" content="cs_CZ" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
+    <!-- D36: share preview, rendered from ads/src/og.html (numbers from data/etf.json) -->
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content="Fingramo" />
+    <meta property="og:image" content={new URL('/og.png', Astro.site).href} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Stejný index, jiný poplatek: SPY 0,0945 % vs. VOO 0,03 % ročně – srovnání ETF od Fingramo" />
+    <meta name="twitter:card" content="summary_large_image" />
     <!-- D26 logo. ?v=2 makes browsers drop the cached old icon; .ico and PNG cover Safari, iOS and search results -->
     <link rel="icon" href="/favicon.ico?v=2" sizes="any" />
     <link rel="icon" href="/favicon.svg?v=2" type="image/svg+xml" />
