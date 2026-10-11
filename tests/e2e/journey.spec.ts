@@ -169,6 +169,10 @@ test.describe('lead form (D5, D13, D25)', () => {
     }
     for (const box of await page.locator('input[name=marketing_consent], input[name=phone_consent]').all()) await expect(box).not.toBeChecked();
     await expect(page.getByText('Firma', { exact: true })).toHaveCount(0);
+    // D35: the phone field says why we ask, and is linked to that text for screen readers
+    const phone = page.locator('#lf-calculator-phone');
+    await expect(phone).toHaveAttribute('aria-describedby', /lf-calculator-phone-why/);
+    await expect(page.locator('#lf-calculator-phone-why')).toContainText('zavoláme jen, když níže zaškrtnete souhlas');
     for (const hp of await page.locator('input[name=website]').all()) {
       await expect(hp).toHaveAttribute('tabindex', '-1');
       expect(await hp.isVisible() && (await hp.boundingBox())!.x >= 0).toBe(false);

@@ -39,7 +39,8 @@ const id = `lf-${location}`;
     <div class="field">
       <label for={`${id}-phone`}>Telefon <span class="opt">(nepovinné)</span></label>
       <input id={`${id}-phone`} name="phone" type="tel" inputmode="tel" autocomplete="tel" maxlength="30"
-        aria-describedby={`${id}-phone-err`} />
+        aria-describedby={`${id}-phone-why ${id}-phone-err`} />
+      <p class="hint" id={`${id}-phone-why`}>Proč se ptáme: zavoláme jen, když níže zaškrtnete souhlas – třeba pokud budete mít ke srovnání otázku. Investiční rady nedáváme.</p>
       <p class="err" id={`${id}-phone-err`} data-err-for="phone" hidden>Telefon vypadá neúplně. Můžete ho i vynechat.</p>
     </div>
     </div>
@@ -101,6 +102,7 @@ const id = `lf-${location}`;
   input:focus-visible { border-color: var(--c-blue-700); outline-offset: 1px; }
   input[aria-invalid='true'] { border-color: var(--c-danger); }
   .err { font-size: var(--fs-xs); color: var(--c-danger); }
+  .hint { font-size: var(--fs-xs); color: var(--c-ink-muted); line-height: var(--lh-snug); } /* D35: why we ask for the phone */
   .submit { font-size: var(--fs-lg); min-height: 56px; margin-top: var(--sp-1); }
   .assure { display: flex; align-items: center; justify-content: center; gap: var(--sp-2); margin-top: calc(-1 * var(--sp-2)); font-size: var(--fs-xs); font-weight: var(--fw-medium); color: var(--c-green-900); }
   @media (min-width: 900px) { :global(.is-wide) .assure { justify-content: flex-start; } }
