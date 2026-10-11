@@ -9,7 +9,13 @@ const HOST = (import.meta.env.PUBLIC_POSTHOG_HOST as string | undefined) ?? 'htt
 type Props = Record<string, string | number | boolean | null | undefined>;
 
 const init = async (): Promise<void> => {
-  if (!KEY) return;
+  // Local development and test runs must not reach the production project: events only go to the console
+  if (!KEY || import.meta.env.DEV) {
+    window.__fgCapture = (event: string, props: Props) => console.debug('[analytics]', event, props);
+    for (const [event, props] of window.__fgQueue ?? []) window.__fgCapture(event, props);
+    window.__fgQueue = [];
+    return;
+  }
   const { default: posthog } = await import('posthog-js');
 
   posthog.init(KEY, {

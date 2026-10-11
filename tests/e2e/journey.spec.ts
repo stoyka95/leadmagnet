@@ -252,6 +252,17 @@ test.describe('measurement (D11, D24)', () => {
     expect(await events(page)).toContainEqual(['cta_click', { cta: 'hero' }]);
   });
 
+  test('local development never sends events to the production PostHog project', async ({ page, baseURL }) => {
+    test.skip(!baseURL?.includes('localhost'), 'only meaningful against the dev server');
+    const calls: string[] = [];
+    page.on('request', (r) => { if (/posthog\.com/.test(r.url())) calls.push(r.url()); });
+    await page.goto('/');
+    await page.locator('#c-once').fill('150000');
+    await page.waitForTimeout(1500);
+    expect(calls).toEqual([]);
+    await expect.poll(() => eventNames(page)).toContain('tool_used'); // the funnel events still work locally
+  });
+
   test('nothing is stored in cookies (cookieless, D24)', async ({ page, context }) => {
     await page.goto(AD_B);
     await page.locator('#c-once').fill('150000');
