@@ -5,7 +5,7 @@ Podklad pro README §8. Rozhodnutí: D11 (PostHog EU + Vercel Analytics), D24 (b
 ## Nástroje
 | Nástroj | Co měří | Kde jsou čísla |
 |---|---|---|
-| **PostHog EU** (Frankfurt), projekt 301598 | celá cesta návštěvníka po jednotlivých událostech, trychtýř, rozpad A/B, souhrnné heatmapy kliknutí (záznamy relací vypnuté, D33) | Dashboard **„Fingramo – trychtýř leadů"**: https://eu.posthog.com/project/301598/dashboard/1014275 |
+| **PostHog EU** (Frankfurt), projekt 301598 | celá cesta návštěvníka po jednotlivých událostech, trychtýř, rozpad A/B, souhrnné heatmapy kliknutí (záznamy relací vypnuté, D33) | Dashboard **„Fingramo – trychtýř leadů"**: https://eu.posthog.com/project/301598/dashboard/1014275 (od 11. 10. i [cena za lead podle reklamy](https://eu.posthog.com/project/301598/insights/AxnLTldl), D35) |
 | **Vercel Web Analytics** | návštěvy, zdroje, země; kontrola počtu návštěv z PostHogu | Vercel → projekt `fingramo` → Analytics |
 | **Supabase** `leads` | skutečně uložené kontakty včetně `utm_*` a `form_location` (kontrola, že `form_submit` = řádek v DB) | Supabase → `fingramo-leads` → Table editor |
 
