@@ -1,0 +1,67 @@
+---
+// Sources page – the public face of data/SOURCES.md. Fund rows are generated from data/etf.json.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import GlassCard from '../components/GlassCard.astro';
+import { usEtfs, ucitsFor, formatPct, formatDate, dataRetrieved } from '../lib/etf';
+
+const host = (u: string) => new URL(u).hostname.replace('www.', '');
+const asOf = (d?: string) => (d ? formatDate(d) : `stav ke dni stažení`);
+---
+<BaseLayout title="Zdroje dat | Fingramo" description="Odkud pocházejí čísla na stránce Fingramo a kdy byla stažena.">
+  <main class="container doc">
+    <a class="brand" href="/">← Fingramo</a>
+    <h1>Zdroje dat</h1>
+    <p class="lead">Každé číslo na stránce pochází ze stránek správce fondu nebo z oficiálního zdroje. Staženo {formatDate(dataRetrieved)}.</p>
+
+    <h2>Fondy</h2>
+    <GlassCard solid>
+      <div class="scroll">
+        <table>
+          <thead><tr><th>Fond</th><th>Poplatek</th><th>Poplatek platí k</th><th>Zdroj</th></tr></thead>
+          <tbody>
+            {usEtfs.map((e) => {
+              const u = ucitsFor(e);
+              return (
+                <>
+                  <tr><td><strong>{e.ticker}</strong> {e.name}</td><td class="num">{formatPct(e.expenseRatioPct)}</td><td class="num">{asOf((e as { expenseRatioAsOf?: string }).expenseRatioAsOf)}</td><td><a href={e.source} rel="noopener">{host(e.source)}</a></td></tr>
+                  <tr><td>→ {u.ticker.split(' ')[0]} {u.name} <span class="fine">({u.isin})</span></td><td class="num">{formatPct(u.terPct)}</td><td class="num">{asOf(undefined)}</td><td><a href={u.source} rel="noopener">{host(u.source)}</a></td></tr>
+                </>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    </GlassCard>
+
+    <h2>Dostupnost amerických ETF</h2>
+    <ul>
+      <li><a href="https://www.interactivebrokers.com/lib/cstools/faq/content/1136192471" rel="noopener">Interactive Brokers – PRIIPs regulation</a></li>
+      <li><a href="https://www.fio.cz/akcie-investice/etf" rel="noopener">Fio banka – ETF</a></li>
+      <li><a href="https://www.cnb.cz/cs/dohled-financni-trh/legislativni-zakladna/stanoviska-k-regulaci-financniho-trhu/RS2018-12" rel="noopener">ČNB – Otázky a odpovědi k PRIIPs</a></li>
+    </ul>
+
+    <h2 id="dane">Daně</h2>
+    <ul>
+      <li><a href="https://www.zakonyprolidi.cz/cs/1992-586" rel="noopener">Zákon č. 586/1992 Sb., o daních z příjmů</a> – § 4 odst. 1 písm. t) a u), znění 1. 8. – 31. 12. 2026</li>
+      <li><a href="https://www.zakonyprolidi.cz/cs/1994-32" rel="noopener">Smlouva o zamezení dvojího zdanění ČR–USA (32/1994 Sb.)</a> – čl. 10</li>
+      <li><a href="https://www.irs.gov/forms-pubs/about-form-w-8-ben" rel="noopener">IRS – About Form W-8BEN</a></li>
+      <li><a href="https://financnisprava.gov.cz/cs/dane/dane/dan-z-prijmu/fyzicke-osoby/obecne-informace" rel="noopener">Finanční správa – daň z příjmů fyzických osob</a></li>
+    </ul>
+
+    <p class="fine">Podrobný záznam se citacemi je v repozitáři projektu v souboru data/SOURCES.md.</p>
+  </main>
+  <SiteFooter />
+</BaseLayout>
+
+<style>
+  .doc { padding-block: var(--sp-6) var(--sp-16); display: grid; gap: var(--sp-4); }
+  .brand { font-weight: var(--fw-bold); color: var(--c-green-800); text-decoration: none; }
+  h1 { font-size: var(--fs-2xl); }
+  h2 { font-size: var(--fs-lg); margin-top: var(--sp-6); }
+  .scroll { overflow-x: auto; }
+  table { width: 100%; min-width: 560px; border-collapse: collapse; font-size: var(--fs-sm); }
+  th { text-align: left; font-size: var(--fs-xs); color: var(--c-ink-faint); font-weight: var(--fw-medium); }
+  td, th { padding: var(--sp-2) var(--sp-2) var(--sp-2) 0; border-top: 1px solid var(--c-line); vertical-align: top; }
+  ul { padding-left: var(--sp-5); display: grid; gap: var(--sp-2); margin: 0; }
+</style>

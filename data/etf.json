@@ -27,7 +27,8 @@
       "inception": "1993-01-22",
       "distribution": "čtvrtletně",
       "source": "https://www.ssga.com/us/en/intermediary/etfs/spdr-sp-500-etf-trust-spy",
-      "ucits": "IE000XZSV718"
+      "ucits": "IE000XZSV718",
+      "expenseRatioAsOf": "2026-10-11"
     },
     {
       "ticker": "IVV",
