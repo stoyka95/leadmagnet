@@ -44,3 +44,11 @@ Surové exporty konverzací jsou v [`ai-log/`](../ai-log/).
 3. **Poplatek VWCE**: AI z paměti očekávala vyšší TER. justETF uvádí 0,14 %, což se ještě ověří proti KID.
 
 **Poučení:** u údajů z paměti AI je potřeba čekat, že můžou být zastaralé. Na stránku jde jen to, co je v `data/SOURCES.md`.
+
+### Oprava postupu na pokyn Mikyho
+- AI nechala dvě kontroly „na později", protože ji web zablokoval (IBKR vracel chybu 403) a daně nechtěla bez zdroje uvádět. **Miky upřesnil:** *„když ti něco blokuje, použij prohlížeč"* a *„daně najdi a přidej".*
+- Výsledek: stránka IBKR ověřena ve vestavěném prohlížeči. Všech 6 UCITS fondů ověřeno přímo u správců (dřív jen agregátor justETF). Daně dohledány ze zákona (§ 4 ZDP, aktuální znění), ze smlouvy ČR–USA, z IRS a z Finanční správy.
+- **Co ověření odhalilo:**
+  - justETF měl u CSPX o den jiné datum vzniku. Platí údaj iShares.
+  - AI z paměti počítala se stropem 40 mil. Kč pro osvobození cenných papírů, ale v aktuálním znění zákona se týká jen kryptoaktiv. Na stránce se proto neuvede.
+  - U SPYL a SPYD State Street uvádí registraci v ČR, což je silnější argument pro „co si Čech reálně koupí".

@@ -114,9 +114,18 @@ Drobnosti s rozumnou výchozí volbou rozhoduje Claude sám – jsou na konci v 
 - **Jak to provedeme:** Fingramo je název značky ukázky. Neuvádíme vymyšlené IČO ani právní formu („a.s."). V zásadách ochrany údajů je věta, že jde o ukázkový projekt, a jako kontakt pro dotazy k údajům je uveden Miky. Formulář totiž sbírá skutečné údaje hodnotitelů. README obsahuje seznam věcí, které se před ostrou kampaní vymění.
 - *Claude původně tlačil na „ostrou" právní úplnost. Miky upřesnil, že jde o ukázku. Zapsáno v AI-WORK-NOTES.*
 
-### D15 – Doména pro e-maily
+### D15 – Doména a hosting
 - **Varianty:** (a) bez domény, e-mail jako další krok *(doporučeno)* · (b) Miky má doménu · (c) koupit doménu
-- **Zvoleno:** (b) Miky má vlastní doménu. *Název domény a to, zda stránka poběží i na subdoméně, se doplní.* Doporučení Claude: odesílat e-maily ze subdomény (např. `mail.…`), aby se nic nerozbilo na hlavní doméně. DNS záznamy nastaví Miky.
+- **Zvoleno:** (b). Doména **`stoyka.eu`**. Miky ji sám ověří v Resendu (DNS záznamy). Stránka poběží na **Vercelu** pod adresou typu `fingramo.vercel.app`.
+- **Doporučení Claude:** odesílat ze subdomény (např. `mail.stoyka.eu`), aby se nic nerozbilo na hlavní doméně. Odesílatel např. `Fingramo <srovnani@mail.stoyka.eu>`.
+
+### D10 – doplnění (11. 10. 2026)
+- Supabase projekt **`fingramo-leads`** (ref `hfsfbpgoevutdfgjfqbs`, region eu-central-1 / Frankfurt) založil Claude na Mikyho pokyn přes Supabase konektor. Je v organizaci vedle projektu fakturr, free plán, cena 0 USD.
+- **Omezení (Miky): egress na free plánu jen 5 GB** a sdílí se s projektem fakturr. Proto:
+  - stránka **nečte** z databáze nic, data o ETF jsou statický soubor v buildu
+  - serverová funkce jen **vkládá** řádek a nevrací ho zpět (`Prefer: return=minimal`)
+  - žádné obrázky ani soubory v Supabase Storage
+  - z prohlížeče se do Supabase nevolá vůbec, jen ze serverové funkce na Vercelu
 
 ---
 
