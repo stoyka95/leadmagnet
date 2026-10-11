@@ -56,7 +56,8 @@ const asOf = (d?: string) => (d ? formatDate(d) : `stav ke dni stažení`);
 </BaseLayout>
 
 <style>
-  .doc { padding-block: var(--sp-6) var(--sp-16); display: grid; gap: var(--sp-4); }
+  /* minmax(0, 1fr): the wide sources table scrolls inside .scroll instead of widening the page on phones */
+  .doc { padding-block: var(--sp-6) var(--sp-16); display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--sp-4); }
   h1 { font-size: var(--fs-2xl); }
   h2 { font-size: var(--fs-lg); margin-top: var(--sp-6); }
   .scroll { overflow-x: auto; }
