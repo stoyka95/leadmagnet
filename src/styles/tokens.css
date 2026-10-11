@@ -9,7 +9,8 @@
   --c-navy-500: #3b5bb5;
   --c-navy-100: #e8effb;
   --c-green-900: #064e36;
-  --c-green-800: #0b6e4f;   /* buttons – white text 6.3:1 */
+  --c-green-800: #0a7a55;   /* buttons – white text ~5.4:1, solid (no gradient: avoids the generic template look) */
+  --c-green-850: #086447;   /* button hover */
   --c-green-700: #0e8a5f;
   --c-green-500: #12a16b;   /* bars, chart, large numbers only */
   --c-green-100: #e1f4ea;
@@ -27,12 +28,13 @@
   --c-on-dark-muted: rgba(255, 255, 255, 0.66);
 
   /* Surfaces */
-  --glass-bg: rgba(255, 255, 255, 0.58);
+  --glass-bg: rgba(255, 255, 255, 0.78); /* higher opacity: cards stay distinct on phones, glass still visible */
   --glass-border: rgba(255, 255, 255, 0.75);
   --glass-blur: 18px;
   --glass-fallback: rgba(255, 255, 255, 0.92);
   --solid-bg: rgba(255, 255, 255, 0.95);
   --shadow-1: 0 1px 2px rgba(15, 29, 69, 0.06), 0 8px 24px rgba(15, 29, 69, 0.08);
+  --shadow-cta: 0 4px 14px rgba(10, 122, 85, 0.22);
   --shadow-2: 0 2px 4px rgba(15, 29, 69, 0.08), 0 18px 48px rgba(15, 29, 69, 0.14);
 
   /* Type – system stack: SF on Apple devices, Roboto on Android, no font download */
@@ -77,6 +79,7 @@
   --w-text: 640px;
   --gutter: var(--sp-4);
   --tap: 48px;
+  --field-h: 52px;
 
   /* Motion */
   --ease: cubic-bezier(0.2, 0.7, 0.2, 1);

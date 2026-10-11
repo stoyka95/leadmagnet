@@ -93,11 +93,14 @@ a:hover { text-decoration-thickness: 2px; }
   transition: transform var(--dur) var(--ease), background-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
 }
 .btn:active { transform: scale(0.98); }
-.btn-primary { background: var(--c-green-800); color: var(--c-white); box-shadow: var(--shadow-1); }
-.btn-primary:hover { background: var(--c-green-900); }
+.btn-primary { background: var(--c-green-800); color: var(--c-white); box-shadow: var(--shadow-cta); }
+.btn-primary:hover { background: var(--c-green-850); }
 .btn-primary[disabled] { opacity: 0.6; cursor: progress; }
 .btn-ghost { background: transparent; color: var(--c-green-800); box-shadow: inset 0 0 0 1.5px var(--c-green-800); }
 .btn-ghost:hover { background: var(--c-green-100); }
+
+/* Factual label – e.g. lowest fee. Never "recommended": the page gives no investment advice. */
+.badge-mint { display: inline-block; font-size: var(--fs-xs); font-weight: var(--fw-medium); padding: 2px var(--sp-3); border-radius: var(--r-pill); background: var(--c-green-100); color: var(--c-green-900); white-space: nowrap; }
 .btn-block { width: 100%; }
 
 .visually-hidden {
