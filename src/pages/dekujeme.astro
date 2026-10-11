@@ -32,6 +32,17 @@ import { formatDate, dataRetrieved } from '../lib/etf';
       <p class="fine">Počítáno z ročního poplatku fondu (TER) bez růstu investice. Nezahrnuje poplatky brokera, převod měny ani daně. Data ze stránek správců, staženo {formatDate(dataRetrieved)} – <a href="/zdroje">zdroje</a>. Nejde o investiční doporučení.</p>
     </GlassCard>
 
+    <GlassCard solid class="growth">
+      <h2 id="growth-h">Jak by mohla investice vypadat za <span data-kid-years></span> let</h2>
+      <p class="muted">Čtyři scénáře z dokumentu KID fondu <span data-kid-ticker></span> (S&amp;P 500, evropská verze) pro vaši částku.</p>
+      <ul class="bars" data-bars aria-labelledby="growth-h"></ul>
+      <p class="fine" data-kid-note></p>
+
+      <h3 class="hist-h">Historie S&amp;P 500 za <span data-hist-years></span> let</h3>
+      <div class="hist" data-hist></div>
+      <p class="fine" data-hist-note></p>
+    </GlassCard>
+
     <section class="next" aria-labelledby="next-h">
       <h2 id="next-h">Co dál?</h2>
       <ol>
@@ -58,6 +69,17 @@ import { formatDate, dataRetrieved } from '../lib/etf';
   :global(.report td.r) { text-align: right; padding-left: var(--sp-2); white-space: nowrap; }
   :global(.report tr.us td) { border-top: 2px solid var(--c-line); font-weight: var(--fw-medium); }
   :global(.report .sub) { display: block; font-size: var(--fs-xs); color: var(--c-ink-faint); font-weight: var(--fw-regular); }
+  :global(.growth) h2 { font-size: var(--fs-xl); margin-bottom: var(--sp-2); }
+  .bars { list-style: none; margin: var(--sp-4) 0; padding: 0; display: grid; gap: var(--sp-3); }
+  :global(.bars li) { display: grid; grid-template-columns: 1fr auto; gap: var(--sp-1) var(--sp-3); font-size: var(--fs-sm); }
+  :global(.bars .v) { font-weight: var(--fw-bold); color: var(--c-navy-900); white-space: nowrap; }
+  :global(.bars .sub) { color: var(--c-ink-faint); white-space: nowrap; }
+  :global(.bars .track) { grid-column: 1 / -1; height: 10px; border-radius: var(--r-pill); background: var(--c-bg-2); overflow: hidden; }
+  :global(.bars .fill) { display: block; height: 100%; border-radius: inherit; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .hist-h { font-size: var(--fs-lg); margin: var(--sp-6) 0 var(--sp-3); }
+  .hist { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-3); padding: var(--sp-4); border-radius: var(--r-md); background: var(--c-navy-100); margin-bottom: var(--sp-3); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  :global(.hist div) { display: grid; gap: 2px; font-size: var(--fs-xs); color: var(--c-ink-muted); }
+  :global(.hist strong) { font-size: var(--fs-lg); color: var(--c-navy-900); white-space: nowrap; }
   .next ol { padding-left: var(--sp-5); display: grid; gap: var(--sp-3); max-width: var(--w-text); }
   .next h2 { font-size: var(--fs-xl); margin-bottom: var(--sp-3); }
   @media print {
@@ -67,7 +89,8 @@ import { formatDate, dataRetrieved } from '../lib/etf';
 </style>
 
 <script>
-  import { buildReport } from '../lib/report';
+  import { buildReport, buildGrowth, SCENARIO_COLOURS, PAID_COLOUR } from '../lib/report';
+  import { formatDate } from '../lib/etf';
   import { formatCzk } from '../lib/fees';
   import { formatPct } from '../lib/etf';
   import { readCalc } from '../lib/calc-state';
@@ -87,6 +110,29 @@ import { formatDate, dataRetrieved } from '../lib/etf';
       <tr class="us"><td>${esc(r.ticker)}<span class="sub">${esc(r.index)}</span></td><td class="r">${formatPct(r.ter)}</td><td class="r">${formatCzk(r.fees10)}</td><td class="r">${formatCzk(r.fees20)}</td></tr>
       <tr><td>→ ${esc(r.euTicker)}<span class="sub">${esc(r.euIsin)} · ${esc(r.euMatch)}</span></td><td class="r">${formatPct(r.euTer)}</td><td class="r">${formatCzk(r.euFees10)}</td><td class="r">${formatCzk(r.euFees20)}</td></tr>`)
     .join('');
+
+  // D27: the part the gate unlocked (scenarios + history), same numbers as the e-mail and the PDF
+  const g = buildGrowth(calc);
+  const signed = (v: number) => `${v > 0 ? '+' : ''}${formatPct(v)}`;
+  const max = Math.max(g.paidIn, ...g.scenarios.map((x) => x.end), 1);
+  const bar = (name: string, sub: string, value: number, colour: string) => `
+    <li><span>${name} <span class="sub">${sub}</span></span><span class="v">${formatCzk(value)}</span>
+    <span class="track" aria-hidden="true"><span class="fill" style="width:${Math.max(2, (value / max) * 100)}%;background:${colour}"></span></span></li>`;
+  document.querySelector('[data-kid-years]')!.textContent = String(g.kidYears);
+  document.querySelector('[data-kid-ticker]')!.textContent = g.kid.ticker;
+  document.querySelector('[data-bars]')!.innerHTML = [
+    bar('Vloženo', 'vaše vklady', g.paidIn, PAID_COLOUR),
+    ...g.scenarios.map((x) => bar(`${esc(x.label)} scénář`, `(${signed(x.avgAnnualPct)} ročně)`, x.end, SCENARIO_COLOURS[x.id] ?? '')),
+  ].join('');
+  document.querySelector('[data-kid-note]')!.innerHTML =
+    `<strong>Nejde o předpověď.</strong> Ilustrace podle průměrných ročních výnosů po nákladech z KID ze dne ${formatDate(g.kid.date)}. Hodnota investice může klesnout a můžete přijít o část vložených peněz. KID počítá s jednorázovou investicí, my průměrné výnosy používáme i na měsíční vklady. <a href="${esc(g.kid.source)}" rel="noopener">KID (PDF)</a>`;
+  const h = g.history;
+  document.querySelector('[data-hist-years]')!.textContent = String(h.years);
+  document.querySelector('[data-hist]')!.innerHTML = [
+    ['Nejhorší', h.worstPct, h.worstPeriod], ['Medián', h.medianPct, 'všech období'], ['Nejlepší', h.bestPct, h.bestPeriod],
+  ].map(([t, v, p]) => `<div><span>${t}</span><strong>${signed(v as number)}</strong><span>${esc(String(p))}</span></div>`).join('');
+  document.querySelector('[data-hist-note]')!.innerHTML =
+    `Průměrný roční výnos za všechna stejně dlouhá období v letech ${esc(g.historySource.years)}. <strong>Historie, ne předpověď.</strong> V amerických dolarech, včetně dividend, bez daní a poplatků. Zdroj: <a href="${esc(g.historySource.url)}" rel="noopener">A. Damodaran, NYU Stern</a>.`;
 
   document.querySelector('[data-print]')!.addEventListener('click', () => {
     track('cta_click', { cta: 'save_pdf' });
