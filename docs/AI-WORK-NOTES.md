@@ -138,3 +138,20 @@ Miky: rozmazat část obsahu, aby návštěvník musel zadat e-mail, a jméno i 
 ### Kde se AI spletla
 1. **Posun na formulář po kliknutí.** První verze posouvala na celý formulář (`block: center`), který je na mobilu vyšší než obrazovka, takže pole e-mail skončilo mimo ni. Opraveno posunem přímo na pole e-mail.
 2. **Chybná diagnóza při testu.** AI pak naměřila, že posun pořád nesedí, a hledala chybu v kódu. Ve skutečnosti headless prohlížeč spouští plynulý posun asi o 1,4 s později a měření proběhlo dřív. Prokázáno záznamem polohy po 150 ms. Poučení: u animací měřit průběh, ne jeden okamžik.
+
+---
+
+## Session 1, pokračování – 11. 10. 2026: logo a e-mail (D26)
+
+### Pokyn
+Miky poslal předlohu loga a požádal o SVG verzi v barvách webu, nasazení všude včetně e-mailu a o lepší vzhled e-mailu.
+
+### Co AI udělala a jak ověřovala
+- Značku kreslila ručně v SVG a porovnávala s předlohou na náhledech (Playwright): malá, velká, na světlém i tmavém pozadí, jako favicon. První verze byla moc malá a tenká, druhá příliš nízká, třetí odpovídá předloze.
+- E-mail vykreslila přes dočasnou lokální stránku (necommitovanou) a zkontrolovala ho na mobilu (375 px) i na desktopu, včetně textové verze.
+- Reklamy znovu vyrenderovala ze stejné šablony; čísla v nich se nezměnila.
+
+### Kde se AI spletla
+1. **E-mail měl od změny palety (D19) staré zelené barvy.** Při změně palety AI aktualizovala web, ale e-mail ne (barvy jsou v e-mailu zapsané přímo, ne přes tokeny). Nalezeno až teď. Opraveno, v kódu je poznámka, že barvy kopírují `tokens.css`.
+2. **Zavádějící zelená v e-mailu.** V prvním návrhu AI obarvila částky evropských verzí zeleně, jako by byly výhodnější. U SPYD je ale evropská verze výrazně dražší. Nalezeno při kontrole náhledu, opraveno před commitem: částky jsou neutrální a text vysvětluje, že poplatek může být nižší i vyšší.
+3. **Zalomená procenta na mobilu** („(0,03" / „%)") v e-mailu. Opraveno zákazem zalomení.

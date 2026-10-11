@@ -197,7 +197,15 @@ Drobnosti s rozumnou výchozí volbou rozhoduje Claude sám – jsou na konci v 
 - **Zvoleno:** (a). Vidět zůstane, kolik vložíte, poplatky u nejlevnějšího a nejdražšího fondu a rozdíl SPY vs. VOO v Kč. Rozmazané jsou: řádky všech 12 fondů v Kč, graf scénářů z KID a historický rozsah. Upozornění na riziko a zdroje zůstávají vždy čitelné. Po odeslání formuláře je detail na `/dekujeme`, v e-mailu i odemčený na stránce.
 - **Varianty (pole):** (a) e-mail + volitelné jméno, telefon pryč *(doporučeno)* · (b) e-mail + volitelné jméno i telefon · (c) jen e-mail
 - **Zvoleno:** (b). Povinný je jen e-mail. Jméno slouží k oslovení v e-mailu, telefon zůstává pro případný hovor (jen se souhlasem).
-- **Dopad:** sloupec `full_name` je volitelný (nová migrace), verze souhlasu `v2-2026-10-11`, zásady upravené. Pozor: rozmazání je jen vizuální, čísla jsou v kódu stránky. Pro lead magnet stačí, nejde o tajná data.
+- **Dopad (D25):** sloupec `full_name` je volitelný (nová migrace), verze souhlasu `v2-2026-10-11`, zásady upravené. Pozor: rozmazání je jen vizuální, čísla jsou v kódu stránky. Pro lead magnet stačí, nejde o tajná data.
+
+
+### D26 – Logo a vzhled e-mailu (11. 10. 2026)
+- **Zadání (Miky):** logo v SVG podle jeho předlohy („F" s horní příčkou jako stoupající šipka), barvy a design podle webu, logo všude, kde je potřeba, i v e-mailu. E-mail designově zdokonalit podle webu: odstupy, přehlednost, čitelnost.
+- **Provedení (rozhodl Claude podle zadání):** tvar podle předlohy, barvy z palety A (D19): nožka a název navy `#0f1d45`, šipka emerald `#12a16b`. Název malými písmeny „fingramo" jako na předloze. Varianty: světlá, tmavá (bílá nožka na navy, patička) a ikona/favicon (navy dlaždice).
+- **Kde je logo:** hero, `/dekujeme`, `/zasady`, `/zdroje` (odkaz na úvod), patička, favicon, obě reklamy (4 obrázky znovu vyrenderované), e-mail.
+- **E-mail jako PNG:** Gmail a Outlook SVG nezobrazí, proto `public/email-logo.png` (3× rozlišení, průhledné pozadí).
+- **E-mail:** barvy palety A místo staré zelené, logo, souhrn zadání, rozdíl SPY vs. VOO spočítaný ze stejných dat jako tabulka, přehledná tabulka po fondech, kroky „Co dál", tlačítko, upozornění na riziko. Částky evropských verzí jsou neutrální, ne zelené: zelená na webu znamená „výhodné" a evropská verze bývá i dražší (např. SPYD).
 
 ---
 
