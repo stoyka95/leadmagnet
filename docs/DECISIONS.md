@@ -216,6 +216,49 @@ Drobnosti s rozumnou výchozí volbou rozhoduje Claude sám – jsou na konci v 
 - **Zvoleno:** (a). Mění rozhodnutí „Lepivé CTA na mobilu" z drobností.
 - **Graf (rozhodl Claude):** v e-mailu z HTML tabulek (sloupce), ne obrázek: zobrazí ho každý klient a data neodcházejí žádné další službě.
 
+## Skupina 7 – Doladění před README (11. 10. 2026)
+
+Kontext: Miky se zeptal, jak funguje A/B test. Claude vysvětlil, že dnes se testuje jen úhel reklamy: `utm_content` přepíná nadpis a podnadpis, zbytek stránky je stejný a provoz se na stránce náhodně nedělí. Pak položil 15 otázek ve 4 skupinách.
+
+### D28 – A/B test na stránce
+- **Varianty (rozsah):** (a) 1 test reálně připravit, 2 popsat *(doporučeno)* · (b) všechny 3 připravit · (c) jen popsat v README
+- **Zvoleno:** (a).
+- **Tři hypotézy (Miky vybral), pořadí podle dopadu (doporučení přijato):** 1. míra brány (rozmazání) · 2. kalkulačka na 1. obrazovce · 3. pole formuláře.
+- **Živý test:** H2, kalkulačka na 1. obrazovce. Varianta B = v hero pole „Kolik chcete investovat měsíčně" a tlačítko „Spočítat". Hodnota se přenese do kalkulačky a stránka sjede k výsledku.
+- **Přiřazení:** náhodně 50/50 před vykreslením (bez problikávání), zapamatované jen v rámci záložky (sessionStorage). Nic trvalého se neukládá, režim bez cookies (D24) platí dál.
+- **Proč vlastní rozdělení a ne PostHog Experiments:** v režimu bez cookies se varianta z PostHogu načítá se zpožděním (podle dokumentace), stránka by mohla problikávat. Vyzkoušené to nemáme.
+- **Test reklamy (A/B podle `utm_content`) běží dál nezávisle,** takže vzniknou 4 kombinace.
+
+### D29 – Karta na 1. obrazovce podle reklamy
+- **Varianty:** (a) i karta v hero podle reklamy *(doporučeno)* · (b) karta i pořadí sekcí · (c) jen nadpis
+- **Zvoleno:** (a). Reklama A („váš broker ho možná nenabízí") dostane kartu s páry originál → evropská verze, reklama B dnešní SPY vs. VOO.
+
+### D30 – Tlačítko v horní liště
+- **Varianty:** (a) k poslednímu formuláři · (b) ke kalkulačce, dokud ji návštěvník nepoužil, potom k formuláři *(doporučeno)* · (c) k nejbližšímu formuláři
+- **Zvoleno:** (b). Mění D27.
+
+### D31 – Délka stránky a „Kdo za tím stojí"
+- **Varianty (délka):** (a) nechat sekce, zhustit KID a daně (část do FAQ) *(doporučeno)* · (b) výrazně zkrátit · (c) nechat
+- **Zvoleno:** (a).
+- **„Kdo za tím stojí":** krátký blok 2–3 věty: odkud jsou data (zdroje s odkazy), že nejde o brokera ani investičního poradce a že za srovnání nikdo neplatí. Žádné vymyšlené reference, počty uživatelů ani jméno autora (Miky).
+
+### D32 – Děkovací stránka
+- **Varianty:** (a) 1 dobrovolná otázka *(doporučeno)* · (b) nic · (c) sdílení s kamarádem
+- **Zvoleno:** (a) i (c): otázka „Už investujete?" jedním klikem a tlačítko sdílení.
+
+### D33 – Soukromí
+- **Záznamy relací (mění D24):** vypnout, souhrnné heatmapy kliknutí nechat.
+- **README dostane sekci „Soukromí a právní stránka":** co měříme a proč, co jsme vědomě nezapnuli (záznamy relací) a proč. K tomu seznam pro ostré nasazení: cookie lišta se souhlasem a možností odmítnout, záznamy relací jen po souhlasu, zásady s identifikací provozovatele, smlouvy o zpracování s dodavateli (PostHog, Supabase, hosting), doba uchování leadů a mazání na požádání, double opt-in, ověření právního textu u odborníka.
+- **Marketingový souhlas:** jednoduchý (nezaškrtnuté políčko), double opt-in jen popsat (doporučení přijato).
+
+### D34 – Co zatím neměníme
+- Doména zůstává `fingramo.vercel.app`.
+- Kalkulačka počítá jen TER.
+- Navazující e-maily jen popsat v README.
+- Žádné vyskakovací okno.
+- **OG obrázek (náhled odkazu) později,** spolu s grafikou (Miky).
+- **Grafika:** jednoduché vlastní SVG ikony a ilustrace v barvách webu, bez fotek. Až po funkčních změnách.
+
 ---
 
 ## Rozhodnuto Claudem (drobnosti)
