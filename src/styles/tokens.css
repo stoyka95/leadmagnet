@@ -79,6 +79,7 @@
   --w-text: 640px;
   --gutter: var(--sp-4);
   --tap: 48px;
+  --header-h: 64px; /* sticky top bar (D27) */
   --field-h: 52px;
 
   /* Motion */

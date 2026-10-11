@@ -2,7 +2,6 @@
 // First screen. Headline follows the ad the visitor came from (D17): utm_content=a -> "VOO" angle, otherwise B.
 // The variant is set on <html data-ad> by an inline script in <head> before first paint (no flicker).
 import GlassCard from './GlassCard.astro';
-import Logo from './Logo.astro';
 import { etfByTicker, formatPct, formatDate, dataRetrieved, usEtfs } from '../lib/etf';
 
 const spy = etfByTicker('SPY');
@@ -11,7 +10,6 @@ const voo = etfByTicker('VOO');
 const feeRatio = Math.round(spy.expenseRatioPct / voo.expenseRatioPct);
 ---
 <header class="hero container">
-  <Logo size={36} />
 
   <div class="hero-grid">
     <div class="hero-copy">
@@ -60,9 +58,9 @@ const feeRatio = Math.round(spy.expenseRatioPct / voo.expenseRatioPct);
 
 <style>
   .hero { padding-top: var(--sp-5); padding-bottom: var(--sp-10); }
-  .hero-grid { display: grid; gap: var(--sp-8); margin-top: var(--sp-8); align-items: center; }
+  .hero-grid { display: grid; gap: var(--sp-8); margin-top: var(--sp-2); align-items: center; }
   @media (min-width: 900px) {
-    .hero-grid { grid-template-columns: 1.15fr 0.85fr; gap: var(--sp-12); margin-top: var(--sp-16); }
+    .hero-grid { grid-template-columns: 1.15fr 0.85fr; gap: var(--sp-12); margin-top: var(--sp-10); }
     .hero { padding-bottom: var(--sp-16); }
   }
   .hero-copy { display: grid; gap: var(--sp-4); }

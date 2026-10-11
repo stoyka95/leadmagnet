@@ -148,7 +148,7 @@ const pctSigned = (v: number) => `${v > 0 ? '+' : ''}${formatPct(v)}`;
       grid-template-rows: auto auto 1fr;
       gap: var(--sp-6); align-items: start;
     }
-    .area-form { position: sticky; top: var(--sp-6); }
+    .area-form { position: sticky; top: calc(var(--header-h) + var(--sp-4)); }
   }
   :global(.area-inputs) { grid-area: inputs; }
   :global(.area-growth) { grid-area: growth; }

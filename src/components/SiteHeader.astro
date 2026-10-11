@@ -1,0 +1,54 @@
+---
+// Sticky top bar (D27): the logo stays visible and the button leads to the form at the end of the page.
+// It replaces the mobile sticky bottom CTA, so there is one sticky call to action on every screen size.
+import Logo from './Logo.astro';
+---
+<header class="site-header" data-site-header>
+  <div class="container bar">
+    <Logo size={32} href="/" />
+    <a class="btn btn-primary cta" href="#lf-footer-h" data-header-cta data-track="cta_click" data-cta="header">
+      Získat srovnání<span class="long">&nbsp;zdarma</span>
+    </a>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky; top: 0; z-index: 20;
+    background: transparent;
+    border-bottom: 1px solid transparent;
+    transition: background-color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+  }
+  /* Glass only once the page moves, so the hero keeps its open look */
+  .site-header.scrolled {
+    background: var(--glass-fallback);
+    border-bottom-color: var(--c-line);
+  }
+  @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .site-header.scrolled {
+      background: var(--glass-bg);
+      -webkit-backdrop-filter: blur(var(--glass-blur)); backdrop-filter: blur(var(--glass-blur));
+    }
+  }
+  .bar { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-3); min-height: var(--header-h); }
+  .cta { gap: 0; min-height: 44px; padding: var(--sp-2) var(--sp-5); font-size: var(--fs-sm); white-space: nowrap; }
+  .long { display: none; }
+  @media (min-width: 600px) { .long { display: inline; } .cta { font-size: var(--fs-md); } }
+  @media (prefers-reduced-motion: reduce) { .site-header { transition: none; } }
+</style>
+
+<script>
+  const header = document.querySelector<HTMLElement>('[data-site-header]')!;
+  const onScroll = () => header.classList.toggle('scrolled', window.scrollY > 8);
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  // Straight into the e-mail field of the last form (the link alone would only reach its heading)
+  document.querySelector('[data-header-cta]')?.addEventListener('click', (e) => {
+    const email = document.querySelector<HTMLInputElement>('#lf-footer-email');
+    if (!email) return;
+    e.preventDefault();
+    email.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    email.focus({ preventScroll: true });
+  });
+</script>

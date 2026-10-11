@@ -8,7 +8,7 @@ import WhatYouGet from '../components/WhatYouGet.astro';
 import TaxFacts from '../components/TaxFacts.astro';
 import Faq from '../components/Faq.astro';
 import SiteFooter from '../components/SiteFooter.astro';
-import StickyCta from '../components/StickyCta.astro';
+import SiteHeader from '../components/SiteHeader.astro';
 ---
 <BaseLayout
   title="Srovnání ETF z NYSE a poplatky v Kč | Fingramo"
@@ -21,6 +21,7 @@ import StickyCta from '../components/StickyCta.astro';
       if (v === 'a') document.documentElement.dataset.ad = 'a';
     } catch (e) {}
   </script>
+  <SiteHeader />
   <Hero />
   <main id="obsah">
     <Calculator />
@@ -31,5 +32,4 @@ import StickyCta from '../components/StickyCta.astro';
     <Faq />
   </main>
   <SiteFooter />
-  <StickyCta />
 </BaseLayout>

@@ -207,6 +207,15 @@ Drobnosti s rozumnou výchozí volbou rozhoduje Claude sám – jsou na konci v 
 - **E-mail jako PNG:** Gmail a Outlook SVG nezobrazí, proto `public/email-logo.png` (3× rozlišení, průhledné pozadí).
 - **E-mail:** barvy palety A místo staré zelené, logo, souhrn zadání, rozdíl SPY vs. VOO spočítaný ze stejných dat jako tabulka, přehledná tabulka po fondech, kroky „Co dál", tlačítko, upozornění na riziko. Částky evropských verzí jsou neutrální, ne zelené: zelená na webu znamená „výhodné" a evropská verze bývá i dražší (např. SPYD).
 
+### D27 – Lepivá horní lišta, graf a PDF v e-mailu (11. 10. 2026)
+- **Podnět (Miky):** horní řádek jako menu, logo viditelné při scrollování a vpravo tlačítko k formuláři dole. V e-mailu chybí graf a PDF; e-mail lépe přizpůsobit mobilu.
+- **Zjištění Clauda:** brána (D25) slibuje „Odemknout 4 scénáře", ale scénáře nebyly v e-mailu ani na děkovací stránce. PDF šlo uložit jen na děkovací stránce, formulář přitom slibuje „Do e-mailu a hned i k uložení jako PDF".
+- **Varianty (PDF):** (a) PDF jako příloha e-mailu *(doporučeno)* · (b) odkaz na stránku, kde si ho uloží · (c) bez PDF, upravit text
+- **Zvoleno:** (a).
+- **Varianty (lepivé tlačítko dole na mobilu):** (a) odebrat, zůstane jen horní lišta *(doporučeno)* · (b) nechat obojí · (c) na mobilu nahoře jen logo
+- **Zvoleno:** (a). Mění rozhodnutí „Lepivé CTA na mobilu" z drobností.
+- **Graf (rozhodl Claude):** v e-mailu z HTML tabulek (sloupce), ne obrázek: zobrazí ho každý klient a data neodcházejí žádné další službě.
+
 ---
 
 ## Rozhodnuto Claudem (drobnosti)
@@ -214,5 +223,5 @@ Drobnosti s rozumnou výchozí volbou rozhoduje Claude sám – jsou na konci v 
 - **Název značky:** před použitím ověřit, že „Fingramo" nepoužívá existující firma (ARES, web).
 - **Výchozí hodnoty kalkulačky (11. 10.):** 100 000 Kč jednorázově, 3 000 Kč měsíčně, 20 let. Odpovídají typickému začínajícímu investorovi a dají se snadno přepsat.
 - **Výchozí hero bez UTM:** varianta B (obecnější).
-- **Lepivé CTA na mobilu** po odscrollování hero.
+- ~~**Lepivé CTA na mobilu** po odscrollování hero.~~ Nahrazeno lepivou horní lištou (D27).
 - **Měření (11. 10.):** autocapture vypnuté, posílají se jen explicitní události trychtýře (čistší data, méně JS na mobilu). PostHog se načítá asynchronně, takže nezdržuje první vykreslení. `sendBeacon` kvůli přesměrování po odeslání.
