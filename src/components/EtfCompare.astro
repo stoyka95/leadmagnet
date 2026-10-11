@@ -62,7 +62,7 @@ import { groups, etfByTicker, ucitsFor, formatPct, formatUsdBig, formatDate, dat
     <button type="button" class="btn btn-ghost" data-open-compare-form aria-expanded="false" aria-controls="compare-form">Poslat srovnání e-mailem</button>
   </div>
   <div id="compare-form" class="form-wrap" hidden>
-    <LeadForm location="compare" heading="Pošleme vám všech 6 párů v jednom e-mailu" />
+    <LeadForm location="compare" wide heading="Pošleme vám všech 6 párů v jednom e-mailu" />
   </div>
 </section>
 
@@ -97,7 +97,7 @@ import { groups, etfByTicker, ucitsFor, formatPct, formatUsdBig, formatDate, dat
   .cta { margin-top: var(--sp-6); }
   .cta .btn { width: 100%; }
   @media (min-width: 600px) { .cta .btn { width: auto; } }
-  .form-wrap { margin-top: var(--sp-4); max-width: 560px; }
+  .form-wrap { margin-top: var(--sp-4); scroll-margin-top: var(--sp-6); }
 </style>
 
 <script>
@@ -121,6 +121,9 @@ import { groups, etfByTicker, ucitsFor, formatPct, formatUsdBig, formatDate, dat
     opener.setAttribute('aria-expanded', 'true');
     opener.hidden = true;
     track('cta_click', { cta: 'compare_send' });
-    wrap.querySelector<HTMLInputElement>('input')?.focus();
+    // Show the whole form including its heading, then put the cursor in the first field
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    wrap.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+    wrap.querySelector<HTMLInputElement>('input')?.focus({ preventScroll: true });
   });
 </script>
