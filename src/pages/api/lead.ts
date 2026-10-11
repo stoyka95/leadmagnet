@@ -86,6 +86,8 @@ export const POST: APIRoute = async ({ request, url }) => {
     },
     body: JSON.stringify(row),
   });
+  // More than 3 requests for one address in 24 h (database trigger, Fáze 5): no new row, no e-mail
+  if (insert.status === 429) return json(429, { ok: false, error: 'rate_limited' });
   if (!insert.ok) {
     console.error('lead: insert failed', insert.status, await insert.text());
     return json(502, { ok: false, error: 'store_failed' });

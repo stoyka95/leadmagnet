@@ -190,6 +190,15 @@ const id = `lf-${location}`;
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload),
         });
+        if (res.status === 429) {
+          // the same address asked 3× within 24 h: the comparison is already in the inbox
+          track('form_error', { form_location: location, reason: 'rate_limited' });
+          status.dataset.kind = 'error';
+          status.textContent = 'Srovnání jsme na tento e-mail už poslali. Zkontrolujte prosím schránku i složku hromadné pošty.';
+          button.disabled = false;
+          button.textContent = 'Získat srovnání zdarma';
+          return;
+        }
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         track('form_submit', {
           form_location: location,

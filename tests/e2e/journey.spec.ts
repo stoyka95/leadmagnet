@@ -183,6 +183,17 @@ test.describe('lead form (D5, D13, D25)', () => {
     expect(await events(page)).toContainEqual(['form_error', expect.objectContaining({ reason: 'server' })]);
   });
 
+  test('the 4th request for one address within a day explains the comparison is already sent', async ({ page, leadApi }) => {
+    leadApi.status = 429;
+    await page.goto('/');
+    const form = page.locator('[data-lead-form][data-location=footer]');
+    await form.locator('input[name=email]').fill('jana@example.cz');
+    await form.getByRole('button', { name: 'Získat srovnání zdarma' }).click();
+    await expect(form.locator('[data-status]')).toHaveText(/už poslali/);
+    expect(page.url()).not.toContain('/dekujeme');
+    expect(await events(page)).toContainEqual(['form_error', expect.objectContaining({ reason: 'rate_limited' })]);
+  });
+
   test('a double click sends the form only once', async ({ page, leadApi }) => {
     await page.goto('/');
     const form = page.locator('[data-lead-form][data-location=footer]');

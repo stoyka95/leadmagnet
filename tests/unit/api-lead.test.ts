@@ -140,6 +140,14 @@ describe('storing the lead', () => {
     expect(calls.some((c) => c.url.startsWith('https://api.resend.com'))).toBe(false);
   });
 
+  it('passes on the database rate limit (3 per address in 24 h) and sends no e-mail', async () => {
+    supabaseStatus = 429;
+    const res = await post(VALID);
+    expect(res.status).toBe(429);
+    expect(await res.json()).toEqual({ ok: false, error: 'rate_limited' });
+    expect(calls.some((c) => c.url.startsWith('https://api.resend.com'))).toBe(false);
+  });
+
   it('answers 503 when the server is not configured', async () => {
     delete process.env.SUPABASE_URL;
     expect((await post(VALID)).status).toBe(503);
