@@ -64,7 +64,7 @@ Na stránku přichází z reklamy na mobilu a má **pár sekund**. Musí hned vi
   - „Nejdražší: **SPY (0,0945 %)** → zhruba **Y Kč**"
   - „Rozdíl: **Z Kč** za stejný index"
   - Malý sloupcový graf 6 fondů.
-  - Poznámka: *Počítáno jen z ročního poplatku fondu (TER) a kurzu ČNB ze 9. 10. 2026. Nezahrnuje poplatky brokera, převod měny ani daně. Nejde o investiční doporučení.*
+  - Poznámka: *Počítáno jen z ročního poplatku fondu (TER). Nezahrnuje poplatky brokera, převod měny ani daně. Nejde o investiční doporučení.*
 - **Formulář pod výsledkem:**
   - Nadpis: **Pošleme vám celé srovnání pro vaši částku**
   - Podtext: Všech 6 fondů, jejich evropské verze, poplatky v Kč na 10 a 20 let a odkazy na zdroje. Do e-mailu, zdarma.
@@ -131,3 +131,4 @@ Závěrečný formulář: stejný jako u kalkulačky; pokud návštěvník kalku
 - Výchozí hodnoty kalkulačky (100 000 Kč / 3 000 Kč / 20 let) – typická částka pro začínajícího investora, snadno přepsatelná.
 - Výchozí hero bez UTM = varianta B (obecnější, funguje i bez kontextu reklamy).
 - Lepivé CTA na mobilu.
+- **Úprava při stavbě (11. 10.):** z poznámky u kalkulačky vypuštěn „kurz ČNB" – poplatek je procento z hodnoty investice, kurz výsledek neovlivňuje (AI-WORK-NOTES).

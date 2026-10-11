@@ -1,0 +1,122 @@
+<!doctype html>
+<!--
+  Ad creative source. Rendered to PNG at 1080×1350 (4:5) and 1080×1920 (9:16).
+  Usage (served from the repo root): ad.html?v=a&f=4x5
+  Numbers come from data/etf.json, colours from src/styles/tokens.css – same as the page.
+-->
+<html lang="cs">
+<head>
+<meta charset="utf-8" />
+<title>Fingramo – reklama</title>
+<link rel="stylesheet" href="../../src/styles/tokens.css" />
+<style>
+  html, body { margin: 0; }
+  body { font-family: var(--font-display); color: var(--c-ink); -webkit-font-smoothing: antialiased; }
+  .ad {
+    width: 1080px; height: 1350px; position: relative; overflow: hidden;
+    padding: 80px 88px 72px; box-sizing: border-box; display: flex; flex-direction: column;
+    background:
+      radial-gradient(900px 600px at 95% -5%, rgba(26, 94, 64, 0.38), transparent 60%),
+      radial-gradient(700px 500px at -10% 40%, rgba(31, 63, 143, 0.12), transparent 60%),
+      linear-gradient(180deg, var(--c-bg) 0%, var(--c-bg-2) 100%);
+  }
+  .ad.f9x16 { height: 1920px; padding: 260px 88px; } /* Stories safe zone ~250px top/bottom */
+  .brand { display: flex; align-items: center; gap: 18px; font-weight: 700; font-size: 44px; color: var(--c-green-800); letter-spacing: -0.02em; }
+  .brand svg { width: 64px; height: 64px; }
+  h1 { font-size: 84px; line-height: 1.04; letter-spacing: -0.03em; margin: 48px 0 0; font-weight: 800; }
+  .f9x16 h1 { font-size: 104px; margin-top: 96px; }
+  .sub { font-size: 38px; line-height: 1.3; color: var(--c-ink-muted); margin: 28px 0 48px; max-width: 860px; }
+  .card {
+    margin-top: auto; border-radius: 44px; padding: 36px 56px;
+    background: rgba(255, 255, 255, 0.62); border: 2px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 0 30px 80px rgba(12, 46, 31, 0.16);
+    -webkit-backdrop-filter: blur(24px); backdrop-filter: blur(24px);
+  }
+  .f9x16 .card { margin-top: 120px; }
+  .pair { display: grid; grid-template-columns: 1fr 80px 1fr; align-items: center; padding: 16px 0; border-top: 2px solid rgba(17, 24, 19, 0.08); font-size: 44px; }
+  .pair:first-of-type { border-top: 0; }
+  .pair .us { color: var(--c-ink-faint); }
+  .pair .us b { color: var(--c-ink-muted); }
+  .pair .arrow { text-align: center; color: var(--c-green-700); font-weight: 700; }
+  .pair .eu b { color: var(--c-green-800); }
+  .label { display: grid; grid-template-columns: 1fr 80px 1fr; font-size: 26px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--c-ink-faint); margin-bottom: 8px; }
+  .label span:last-child { color: var(--c-green-700); }
+  .duel { display: grid; grid-template-columns: auto auto auto; justify-content: space-between; align-items: end; gap: 24px; }
+  .duel .t { font-size: 48px; font-weight: 700; }
+  .duel .ter { white-space: nowrap; font-size: 92px; font-weight: 800; letter-spacing: -0.04em; line-height: 1; font-variant-numeric: tabular-nums; }
+  .duel .low { color: var(--c-green-700); }
+  .duel .vs { font-size: 40px; color: var(--c-ink-faint); padding-bottom: 24px; }
+  .duel .cap { font-size: 30px; color: var(--c-ink-muted); }
+  .cta { display: flex; align-items: center; justify-content: space-between; margin-top: 40px; }
+  .pill { background: var(--c-green-800); color: #fff; font-size: 40px; font-weight: 700; padding: 30px 48px; border-radius: 999px; }
+  .free { font-size: 32px; color: var(--c-ink-muted); font-weight: 600; }
+  .legal { font-size: 24px; color: var(--c-ink-faint); margin: 28px 0 0; }
+  .v-b { display: none; }
+  body.b .v-a { display: none; }
+  body.b .v-b { display: block; }
+</style>
+</head>
+<body>
+  <div class="ad" id="ad">
+    <div class="brand">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="currentColor"/><path d="M9 23V9h13v3.2h-9.2v2.6h8v3.1h-8V23z" fill="#fff"/></svg>
+      Fingramo
+    </div>
+
+    <!-- A: pain angle -->
+    <div class="v-a">
+      <h1>Chcete VOO?<br/>Váš broker ho možná nenabízí.</h1>
+      <p class="sub">Ukážeme vám evropské verze populárních ETF z newyorské burzy – a kolik vás budou stát poplatky v korunách.</p>
+    </div>
+    <!-- B: numbers angle -->
+    <div class="v-b">
+      <h1>Stejný index S&amp;P&nbsp;500.<br/>Jiný poplatek.</h1>
+      <p class="sub">Kolik to dělá v korunách u vaší částky? Spočítejte si to za 10 vteřin.</p>
+    </div>
+
+    <div class="card v-a" id="pairs">
+      <div class="label"><span>Originál (NYSE)</span><span></span><span>Evropská verze</span></div>
+    </div>
+    <div class="card v-b">
+      <div class="duel" id="duel"></div>
+    </div>
+
+    <div class="cta">
+      <span class="free" id="free"></span>
+      <span class="pill">Zjistit více</span>
+    </div>
+    <p class="legal" id="legal"></p>
+  </div>
+
+<script type="module">
+  const q = new URLSearchParams(location.search);
+  const v = q.get('v') === 'b' ? 'b' : 'a';
+  const f = q.get('f') === '9x16' ? '9x16' : '4x5';
+  document.body.classList.add(v);
+  document.getElementById('ad').classList.add('f' + f);
+
+  const data = await (await fetch('../../data/etf.json')).json();
+  const pct = (n) => new Intl.NumberFormat('cs-CZ', { maximumFractionDigits: 4 }).format(n) + ' %';
+  const us = (t) => data.us.find((e) => e.ticker === t);
+  const eu = (e) => data.ucits.find((u) => u.isin === e.ucits);
+
+  const pairs = document.getElementById('pairs');
+  for (const t of ['VOO', 'SPY', 'VT']) {
+    const e = us(t), u = eu(e);
+    pairs.insertAdjacentHTML('beforeend',
+      `<div class="pair"><span class="us"><b>${e.ticker}</b> ${pct(e.expenseRatioPct)}</span><span class="arrow">→</span><span class="eu"><b>${u.ticker.split(' ')[0]}</b> ${pct(u.terPct)}</span></div>`);
+  }
+
+  const spy = us('SPY'), voo = us('VOO');
+  document.getElementById('duel').innerHTML = `
+    <div><div class="t">${spy.ticker}</div><div class="ter">${pct(spy.expenseRatioPct)}</div><div class="cap">roční poplatek</div></div>
+    <div class="vs">vs.</div>
+    <div><div class="t">${voo.ticker}</div><div class="ter low">${pct(voo.expenseRatioPct)}</div><div class="cap">roční poplatek</div></div>`;
+
+  document.getElementById('free').textContent = v === 'a' ? 'Srovnání 6 ETF zdarma' : 'Kalkulačka zdarma · bez registrace';
+  document.getElementById('legal').textContent =
+    'Poplatky dle správců fondů, ' + new Date(data._meta.retrieved).toLocaleDateString('cs-CZ') + '. Investování je spojeno s rizikem. Nejde o investiční doporučení.';
+  document.body.dataset.ready = '1';
+</script>
+</body>
+</html>

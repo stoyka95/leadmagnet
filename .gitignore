@@ -18,3 +18,7 @@ Thumbs.db
 # logs
 npm-debug.log*
 *.log
+
+# local tooling
+.playwright-mcp/
+.claude/launch.json
