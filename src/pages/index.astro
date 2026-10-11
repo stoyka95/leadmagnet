@@ -20,6 +20,21 @@ import SiteHeader from '../components/SiteHeader.astro';
       var v = new URLSearchParams(location.search).get('utm_content');
       if (v === 'a') document.documentElement.dataset.ad = 'a';
     } catch (e) {}
+    // D28: live A/B test of the first screen (hypothesis H2). 50/50 at random, before first paint (no flicker),
+    // remembered only in this tab (sessionStorage) – nothing persistent, cookieless measurement (D24) stays.
+    // ?exp=control | hero_input forces a variant for checks and tests.
+    (function () {
+      var KEY = 'fg:exp_hero_calc', ok = { control: 1, hero_input: 1 }, exp;
+      try {
+        exp = new URLSearchParams(location.search).get('exp');
+        if (!ok[exp]) exp = sessionStorage.getItem(KEY);
+        if (!ok[exp]) exp = Math.random() < 0.5 ? 'control' : 'hero_input';
+        sessionStorage.setItem(KEY, exp);
+      } catch (e) {
+        exp = Math.random() < 0.5 ? 'control' : 'hero_input';
+      }
+      document.documentElement.dataset.expHero = exp;
+    })();
   </script>
   <SiteHeader />
   <Hero />

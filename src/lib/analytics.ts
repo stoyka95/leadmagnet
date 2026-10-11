@@ -27,7 +27,12 @@ const init = async (): Promise<void> => {
 
   // Ad variant on every event of this page, so each funnel step can be split by ad A / B
   const utm = readUtm();
-  posthog.register({ ad_variant: utm.utm_content ?? 'none', ...utm });
+  // D28: the first-screen test variant, also on /dekujeme (read from this tab's memory there)
+  let exp = document.documentElement.dataset.expHero;
+  if (!exp) {
+    try { exp = sessionStorage.getItem('fg:exp_hero_calc') ?? undefined; } catch { /* storage blocked */ }
+  }
+  posthog.register({ ad_variant: utm.utm_content ?? 'none', exp_hero_calc: exp ?? 'none', ...utm });
 
   window.__fgCapture = (event: string, props: Props) => {
     // sendBeacon survives the redirect to /dekujeme right after form_submit

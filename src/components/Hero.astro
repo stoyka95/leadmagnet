@@ -30,6 +30,14 @@ const pairs = ['VOO', 'SPY', 'VT'].map((t) => {
       <div class="cta-row">
         <a class="btn btn-primary hero-cta" href="#kalkulacka" data-track="cta_click" data-cta="hero">Spočítat moje poplatky</a>
       </div>
+      <!-- D28 live test, variant hero_input: the calculator starts right here -->
+      <form class="hero-calc" data-hero-calc novalidate>
+        <label for="h-monthly">Kolik chcete investovat měsíčně?</label>
+        <div class="hero-calc-row">
+          <div class="money"><input id="h-monthly" name="monthly" type="text" inputmode="numeric" autocomplete="off" value="3 000" /><span>Kč</span></div>
+          <button class="btn btn-primary" type="submit">Spočítat</button>
+        </div>
+      </form>
       <p class="fine trust">
         Data z webů správců: <span class="issuers">Vanguard · iShares · State Street · Schwab</span><br />
         Staženo {formatDate(dataRetrieved)} · bez registrace
@@ -90,6 +98,26 @@ const pairs = ['VOO', 'SPY', 'VT'].map((t) => {
   @media (min-width: 900px) { .hero-copy h1 { max-width: 18ch; } }
   .lead { max-width: 34ch; }
   .cta-row { margin-top: var(--sp-2); }
+
+  /* D28: control shows the button, hero_input the amount field (set on <html> before first paint) */
+  .hero-calc { display: none; }
+  :global(html[data-exp-hero='hero_input']) .hero-calc { display: grid; }
+  :global(html[data-exp-hero='hero_input']) .cta-row { display: none; }
+  .hero-calc { gap: var(--sp-2); margin-top: var(--sp-2); max-width: 30rem; min-width: 0; }
+  .hero-calc label { font-size: var(--fs-sm); font-weight: var(--fw-medium); color: var(--c-navy-900); }
+  .hero-calc-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--sp-2); } /* minmax: the field never widens the page on phones */
+  .hero-calc .money {
+    display: flex; align-items: center; min-width: 0; min-height: 56px; padding-inline: var(--sp-4);
+    background: var(--c-white); border: 1.5px solid var(--c-line); border-radius: var(--r-md);
+  }
+  .hero-calc .money:focus-within { border-color: var(--c-navy-700); outline: 3px solid var(--c-navy-700); outline-offset: 1px; }
+  .hero-calc input {
+    flex: 1; min-width: 0; border: 0; background: transparent; color: var(--c-ink);
+    font: inherit; font-size: var(--fs-lg); font-weight: var(--fw-medium); font-variant-numeric: tabular-nums;
+  }
+  .hero-calc input:focus-visible { outline: none; }
+  .hero-calc .money span { color: var(--c-ink-faint); }
+  .hero-calc button { min-height: 56px; font-size: var(--fs-lg); padding-inline: var(--sp-6); }
   .hero-cta { width: 100%; font-size: var(--fs-lg); min-height: 56px; }
   @media (min-width: 600px) { .hero-cta { width: auto; } }
   .trust { max-width: 46ch; padding: var(--sp-2) var(--sp-3); border-radius: var(--r-sm); background: var(--c-navy-100); color: var(--c-navy-700); }
@@ -128,3 +156,35 @@ const pairs = ['VOO', 'SPY', 'VT'].map((t) => {
     background: var(--c-navy-100); color: var(--c-navy-700);
   }
 </style>
+
+<script>
+  import { track } from '../lib/track';
+  import { readCalc } from '../lib/calc-state';
+
+  // D28 variant hero_input: hand the amount to the calculator (its own input handler recalculates,
+  // remembers it and reports tool_used), then show the result
+  const form = document.querySelector<HTMLFormElement>('[data-hero-calc]');
+  const input = form?.querySelector<HTMLInputElement>('input');
+  if (form && input) {
+    const nf = new Intl.NumberFormat('cs-CZ');
+    const digits = (s: string) => Number(s.replace(/\D/g, '').slice(0, 9)) || 0;
+    const saved = readCalc();
+    if (saved.touched) input.value = nf.format(saved.monthlyCzk);
+    input.addEventListener('input', () => {
+      const n = digits(input.value);
+      input.value = n ? nf.format(n) : '';
+    });
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const monthly = digits(input.value);
+      const target = document.querySelector<HTMLInputElement>('#c-monthly');
+      if (target) {
+        target.value = nf.format(monthly);
+        target.dispatchEvent(new Event('input', { bubbles: true }));
+      }
+      track('hero_calc_submit', { monthly_czk: monthly });
+      const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      document.querySelector('.area-fees')?.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+    });
+  }
+</script>

@@ -36,6 +36,8 @@ export const test = base.extend<Fixtures>({
   page: async ({ page }, use) => {
     await page.route(/posthog\.com|vercel-scripts\.com|\/_vercel\/insights/, (route) => route.abort());
     await page.addInitScript(() => {
+      // D28 live test: tests run the control variant unless they ask for one (?exp=hero_input) or already have one
+      if (!sessionStorage.getItem('fg:exp_hero_calc')) sessionStorage.setItem('fg:exp_hero_calc', 'control');
       // kept in sessionStorage so events survive the redirect to /dekujeme (test-only, the page itself stores nothing)
       const KEY = '__e2e_events';
       const w = window as unknown as { __events: unknown[]; __fgCapture?: unknown };
