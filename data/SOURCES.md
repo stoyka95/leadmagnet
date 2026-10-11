@@ -71,7 +71,26 @@ Poznámky:
 
 **Co na stránce NEBUDE** (bez dostatečného zdroje): daňové srovnání akumulačních UCITS proti distribučním US ETF (zdanění uvnitř fondu), výpočty daně v kalkulačce, sazba daně z dividend v ČR.
 
-## 6. Název značky „Fingramo"
+## 6. Scénáře výnosu z KID (graf na 5 let, D21)
+
+- **Fond:** SPDR S&P 500 UCITS ETF (Acc), SPYL, ISIN IE000XZSV718. **KID ze dne 19. 2. 2026**, staženo 11. 10. 2026: [ssga.com – KID (PDF)](https://www.ssga.com/library-content/kids?isin=IE000XZSV718&documentType=kid&country=ie&language=en_gb&ticker=spyl-gy)
+- Doporučená doba držení **5 let**, příklad investice 10 000 USD. Průměrný roční výnos po nákladech při ukončení po 5 letech:
+  - stresový **−21,8 %**
+  - nepříznivý **3,7 %** (období 9/2024–10/2025)
+  - umírněný **14,8 %** (2/2017–2/2022)
+  - příznivý **18,5 %** (10/2016–10/2021)
+- KID uvádí, že jde o ilustrace podle nejhoršího, průměrného a nejlepšího výsledku produktu za posledních 10 let a že trhy se mohou vyvíjet úplně jinak.
+- PDF je šifrované, text byl vytažen knihovnou `pypdf`. Hodnoty jsou v [`kid_scenarios.json`](kid_scenarios.json).
+- **Omezení:** KID ilustruje jednorázovou investici. Na stránce aplikujeme průměrné roční výnosy i na měsíční vklady, a proto je u grafu popisek „ilustrace podle scénářů KID, ne předpověď".
+
+## 7. Historické výnosy S&P 500 (delší horizont, D21)
+
+- **Zdroj:** Aswath Damodaran, NYU Stern: [Historical Returns on Stocks, Bonds and Bills](https://pages.stern.nyu.edu/~adamodar/New_Home_Page/datafile/histretSP.html), sloupec *S&P 500 (includes dividends)*. Stránka uvádí „Updated: January 5, 2026", data za roky 1928–2025. Staženo 11. 10. 2026.
+- Roční výnosy jsou v [`sp500_annual_returns.csv`](sp500_annual_returns.csv). Tabulka byla vyparsována přímo z HTML a 5 hodnot (1931, 1954, 2008, 2022, 2025) bylo křížově ověřeno nezávislým přepisem.
+- **Výpočet** ([`sp500_rolling.json`](sp500_rolling.json)): pro každé N = 5–30 let všechna klouzavá N-letá období, z nich průměrný roční (geometrický) výnos: nejhorší, medián a nejlepší, s obdobím.
+- **Vlastnosti:** nominální výnos v **USD**, včetně dividend, **bez daní, poplatků a vlivu kurzu CZK**. Jde o historii, ne předpověď.
+
+## 8. Název značky „Fingramo"
 
 - [ARES](https://ares.gov.cz/) (11. 10. 2026): „Fingramo" bez výsledku. Existuje podobná **FINGRAM CS s.r.o.** (IČO 05876761, Náchod, jiný obor).
 - Web: přesná shoda nenalezena. Podobná španělská Fingrama S.L. (nemovitosti).

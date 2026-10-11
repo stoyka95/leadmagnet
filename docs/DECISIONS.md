@@ -144,6 +144,29 @@ Drobnosti s rozumnou výchozí volbou rozhoduje Claude sám – jsou na konci v 
 
 ---
 
+## Skupina 6 – Úpravy po Mikyho kontrole stránky (11. 10. 2026)
+
+### D19 – Barevná paleta
+- **Podnět (Miky):** zelená je příliš jednoduchá a chybí modrá (modrá = důvěra, zelená = peníze).
+- **Varianty (s vizuální ukázkou):** (a) smaragd + námořní modř *(doporučeno)* · (b) modrá vede, zelená jen pro částky · (c) teal + indigo
+- **Zvoleno:** (a). Námořní modrá na nadpisy, odkazy a prvky důvěry (zdroje, „data od správců"). Svěží smaragdová na tlačítka a částky.
+
+### D20 – Rozložení kalkulačky na desktopu
+- **Podnět (Miky):** vlevo pod vstupy je hodně prázdného místa.
+- **Zvoleno (návrh Claude):** vlevo vstupy a pod nimi formulář, který se při scrollu drží na místě. Vpravo graf a poplatky. Na mobilu zůstává pořadí vstupy → výsledek → formulář.
+
+### D21 – Kolik můžu vydělat (mění D16)
+- **Podnět (Miky):** chybí, kolik investuji a kolik můžu vydělat. Chtěl graf se 3 úrovněmi vývoje.
+- **Varianty zdroje výnosů:** (a) scénáře z KID fondu *(doporučeno)* · (b) pevná 2/5/8 % (bez zdroje) · (c) historický výnos S&P 500
+- **Zjištění při ověřování:** scénáře v KID SPYL platí pro **5 let** (umírněný 14,8 % ročně). Protáhnout je na 20 let by vedlo k číslům v milionech Kč, která KID netvrdí a která by působila jako slib.
+- **Zvoleno (vlastní zadání Mikyho):**
+  - **graf na 5 let se 4 scénáři z KID** (stresový, nepříznivý, umírněný, příznivý) pro zadanou částku,
+  - pro horizont **10–20 let se scénáře KID neprodlužují**; místo toho (a) dopad poplatků v Kč na zvolený horizont a (b) **historický rozsah ročních výnosů S&P 500** za stejně dlouhá období (nejhorší / medián / nejlepší) z veřejných dat, s popiskem „historie, ne předpověď", poznámkou o měně (USD) a bez daní a poplatků,
+  - všechna data v `data/`, zdroje v SOURCES.md §6–7.
+- **Vztah k D16:** výsledek poplatků zůstává bez růstu („minimálně"). Výnosy jsou samostatný blok se zdrojem.
+
+---
+
 ## Rozhodnuto Claudem (drobnosti)
 - **Definice konverze (11. 10.):** konverze = `form_submit` potvrzený serverem (kontakt skutečně uložený) ÷ unikátní návštěvníci s `utm_source` z reklamy. Proč: kliknutí na tlačítko, které skončí chybou, není kontakt.
 - **Název značky:** před použitím ověřit, že „Fingramo" nepoužívá existující firma (ARES, web).

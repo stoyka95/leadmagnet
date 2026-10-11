@@ -1,0 +1,20 @@
+{
+  "_meta": {
+    "description": "PRIIPs KID performance scenarios – average return each year after costs, if you exit after the recommended holding period. Used for the 5-year chart (D21). Not a forecast.",
+    "fund": "SPDR S&P 500 UCITS ETF (Acc)",
+    "isin": "IE000XZSV718",
+    "ticker": "SPYL",
+    "kidDate": "2026-02-19",
+    "source": "https://www.ssga.com/library-content/kids?isin=IE000XZSV718&documentType=kid&country=ie&language=en_gb&ticker=spyl-gy",
+    "retrieved": "2026-10-11",
+    "recommendedHoldingYears": 5,
+    "exampleInvestment": "10,000 USD",
+    "kidNote": "The unfavourable, moderate, and favourable scenarios shown are illustrations using the worst, average, and best performance of the product over the last 10 years. Markets could develop very differently in the future."
+  },
+  "scenarios": [
+    { "id": "stress", "label": "Stresový", "avgAnnualPct": -21.8, "valueAfter5y": "2,920 USD" },
+    { "id": "unfavourable", "label": "Nepříznivý", "avgAnnualPct": 3.7, "valueAfter5y": "12,010 USD", "period": "9/2024–10/2025" },
+    { "id": "moderate", "label": "Umírněný", "avgAnnualPct": 14.8, "valueAfter5y": "19,910 USD", "period": "2/2017–2/2022" },
+    { "id": "favourable", "label": "Příznivý", "avgAnnualPct": 18.5, "valueAfter5y": "23,350 USD", "period": "10/2016–10/2021" }
+  ]
+}
