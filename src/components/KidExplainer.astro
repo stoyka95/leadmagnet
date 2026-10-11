@@ -1,0 +1,53 @@
+---
+// CONTENT.md §3.4 – every claim is backed by a source in data/SOURCES.md §4.
+const points = [
+  {
+    title: 'Chybí „KID“.',
+    text: 'Evropská pravidla (PRIIPs) vyžadují pro drobné investory dokument klíčových informací. Američtí správci ho obvykle nevydávají.',
+    sources: [
+      { label: 'IBKR', href: 'https://www.interactivebrokers.com/lib/cstools/faq/content/1136192471' },
+      { label: 'ČNB', href: 'https://www.cnb.cz/cs/dohled-financni-trh/legislativni-zakladna/stanoviska-k-regulaci-financniho-trhu/RS2018-12' },
+    ],
+  },
+  {
+    title: 'Záleží na brokerovi.',
+    text: 'Někteří brokeři americká ETF drobným investorům z EU blokují (např. Interactive Brokers), jiní je zpřístupňují (např. Fio).',
+    sources: [
+      { label: 'IBKR', href: 'https://www.interactivebrokers.com/lib/cstools/faq/content/1136192471' },
+      { label: 'Fio', href: 'https://www.fio.cz/akcie-investice/etf' },
+    ],
+  },
+  {
+    title: 'Evropská verze často sleduje stejný index.',
+    text: 'U S&P 500 existují evropské fondy od stejných správců s podobně nízkým poplatkem.',
+    sources: [{ label: 'správci', href: '/zdroje' }],
+  },
+];
+---
+<section id="proc-voo" class="section container" aria-labelledby="kid-h">
+  <div class="section-head">
+    <p class="eyebrow">Proč to nejde koupit</p>
+    <h2 id="kid-h">Proč VOO u svého brokera možná nenajdete</h2>
+  </div>
+  <ol class="points">
+    {points.map((p, i) => (
+      <li>
+        <span class="n num" aria-hidden="true">{i + 1}</span>
+        <div>
+          <h3>{p.title}</h3>
+          <p class="muted">{p.text}</p>
+          <p class="fine">Zdroj: {p.sources.map((s, j) => <>{j > 0 && ', '}<a href={s.href} rel={s.href.startsWith('http') ? 'noopener' : undefined}>{s.label}</a></>)}</p>
+        </div>
+      </li>
+    ))}
+  </ol>
+</section>
+
+<style>
+  .points { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--sp-6); max-width: var(--w-text); }
+  @media (min-width: 900px) { .points { grid-template-columns: repeat(3, 1fr); max-width: none; } }
+  li { display: grid; grid-template-columns: auto 1fr; gap: var(--sp-4); }
+  .n { width: 36px; height: 36px; border-radius: var(--r-pill); background: var(--c-green-800); color: var(--c-white); display: grid; place-items: center; font-weight: var(--fw-bold); }
+  h3 { margin-bottom: var(--sp-1); }
+  .fine { margin-top: var(--sp-2); }
+</style>
