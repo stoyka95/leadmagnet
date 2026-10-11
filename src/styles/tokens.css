@@ -3,18 +3,23 @@
  * Components use these variables only; no colour/spacing literals elsewhere.
  */
 :root {
-  /* Colour – deep green accent, dark blue links, near-black text */
-  --c-green-900: #0c2e1f;
-  --c-green-800: #134a32;
-  --c-green-700: #1a5e40;
-  --c-green-100: #e3efe8;
-  --c-blue-700: #1f3f8f;
-  --c-ink: #111813;
-  --c-ink-muted: #47524b;
-  --c-ink-faint: #6b756e;
-  --c-line: rgba(17, 24, 19, 0.1);
-  --c-bg: #f3f5f2;
-  --c-bg-2: #e9eee9;
+  /* Colour (D19): navy = trust (text, headings, links, sources), emerald = money (buttons, amounts) */
+  --c-navy-900: #0f1d45;
+  --c-navy-700: #1e3a8a;
+  --c-navy-500: #3b5bb5;
+  --c-navy-100: #e8effb;
+  --c-green-900: #064e36;
+  --c-green-800: #0b6e4f;   /* buttons – white text 6.3:1 */
+  --c-green-700: #0e8a5f;
+  --c-green-500: #12a16b;   /* bars, chart, large numbers only */
+  --c-green-100: #e1f4ea;
+  --c-blue-700: var(--c-navy-700);
+  --c-ink: #0f1b33;
+  --c-ink-muted: #46506a;
+  --c-ink-faint: #69728a;
+  --c-line: rgba(15, 29, 69, 0.1);
+  --c-bg: #f4f6fa;
+  --c-bg-2: #eaeff6;
   --c-white: #ffffff;
   --c-danger: #a3261c;
   --c-ok: var(--c-green-700);
@@ -27,8 +32,8 @@
   --glass-blur: 18px;
   --glass-fallback: rgba(255, 255, 255, 0.92);
   --solid-bg: rgba(255, 255, 255, 0.95);
-  --shadow-1: 0 1px 2px rgba(12, 46, 31, 0.06), 0 8px 24px rgba(12, 46, 31, 0.08);
-  --shadow-2: 0 2px 4px rgba(12, 46, 31, 0.08), 0 18px 48px rgba(12, 46, 31, 0.14);
+  --shadow-1: 0 1px 2px rgba(15, 29, 69, 0.06), 0 8px 24px rgba(15, 29, 69, 0.08);
+  --shadow-2: 0 2px 4px rgba(15, 29, 69, 0.08), 0 18px 48px rgba(15, 29, 69, 0.14);
 
   /* Type – system stack: SF on Apple devices, Roboto on Android, no font download */
   --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;

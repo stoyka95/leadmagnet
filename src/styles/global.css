@@ -25,13 +25,14 @@ body {
   inset: 0;
   z-index: -1;
   background:
-    radial-gradient(60vmax 40vmax at 85% -5%, rgba(26, 94, 64, 0.32), transparent 60%),
-    radial-gradient(50vmax 35vmax at -10% 30%, rgba(31, 63, 143, 0.10), transparent 60%),
+    radial-gradient(60vmax 40vmax at 85% -5%, rgba(18, 161, 107, 0.26), transparent 60%),
+    radial-gradient(55vmax 40vmax at -10% 25%, rgba(30, 58, 138, 0.16), transparent 60%),
     linear-gradient(180deg, var(--c-bg) 0%, var(--c-bg-2) 100%);
   pointer-events: none;
 }
 
 h1, h2, h3 {
+  color: var(--c-navy-900);
   font-family: var(--font-display);
   letter-spacing: var(--tracking-tight);
   line-height: var(--lh-tight);
@@ -69,7 +70,7 @@ a:hover { text-decoration-thickness: 2px; }
   font-weight: var(--fw-medium);
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--c-green-700);
+  color: var(--c-navy-700);
 }
 .lead { font-size: var(--fs-lg); color: var(--c-ink-muted); line-height: var(--lh-snug); }
 .muted { color: var(--c-ink-muted); }
