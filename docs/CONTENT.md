@@ -26,13 +26,12 @@ Na stránku přichází z reklamy na mobilu a má **pár sekund**. Musí hned vi
 | 1 | **Hero** | Navázat na reklamu, říct, co návštěvník dostane, jedno tlačítko | Návštěvník z reklamy rozhoduje za pár sekund. První obrazovka musí opakovat slib reklamy (message match) a nabídnout jediný krok. |
 | 2 | **Kalkulačka poplatků** (hlavní nástroj) | Zadat částku → okamžitě vidět rozdíl v Kč → formulář pod výsledkem | Hodnota musí přijít **před** žádostí o kontakt (zadání). Kalkulačka dává osobní výsledek za ~10 s a vytváří důvod chtít „celé srovnání". Formulář je hned pod výsledkem = moment největšího zájmu (D3). |
 | 3 | **Srovnání 6 ETF** (interaktivní) | Přepínání „Co chci" (S&P 500 / celé USA / svět / dividendy), US fond vs. evropská verze | Pro analytičtější návštěvníky a pro ty, kteří přišli z reklamy A („kde je VOO"). Druhý nástroj z D4, CTA vede ke stejnému formuláři. |
-| 4 | **Proč VOO u brokera možná nenajdete** | 3 krátké body o KID/PRIIPs + zdroje (ČNB, IBKR, Fio) | Odstraní hlavní nejasnost cílovky a buduje důvěru (ověřená fakta se zdrojem). Až po nástrojích – kdo chce jen čísla, nemusí číst teorii. |
-| 5 | **Co vám pošleme** | Náhled obsahu e-mailu (3 body + obrázek náhledu) | Opakuje hodnotu pro ty, kdo formulář u kalkulačky přeskočili. |
-| 6 | **Daně v kostce** | 3 ověřená fakta (časový test, 100 000 Kč, 15 % z dividend USA) + odkazy | Bonusová hodnota, častá otázka začátečníků; posiluje důvěryhodnost. |
-| 7 | **Časté otázky + závěrečný formulář** | 4 otázky, druhý (poslední) formulář | Záchyt pro ty, kdo dojeli na konec. |
-| 8 | **Patička** | Upozornění na riziko, zdroje a datum dat, zásady ochrany údajů, poznámka „ukázkový projekt" | Povinné náležitosti, pro hodnotitele i pro důvěru. |
+| 4 | **Dobré vědět** *(D31: dřív dvě sekce)* | Vlevo „Proč VOO u brokera možná nenajdete" (2 body o KID/PRIIPs a brokerech + zdroje ČNB, IBKR, Fio), vpravo „Kdy se z prodeje daň neplatí" (časový test 3 roky, limit 100 000 Kč) | Odstraní hlavní nejasnost cílovky hned za srovnáním, kde vznikne („proč nejde VOO?"), a přidá častou otázku začátečníků. Jedna sekce místo dvou: návštěvník z reklamy má málo času. |
+| 5 | **Co vám pošleme** | Náhled obsahu e-mailu (5 bodů: fondy, Kč, 4 scénáře a historie, otázky pro brokera, PDF v příloze) | Opakuje hodnotu těsně před posledním formulářem pro ty, kdo formulář u kalkulačky přeskočili. |
+| 6 | **Časté otázky + Kdo za srovnáním stojí + závěrečný formulář** | 6 otázek (mezi nimi dividendy z USA a proč nepočítáme poplatky brokera), blok důvěry (zdroje, nejsme broker ani poradce, nikdo neplatí), poslední formulář | Záchyt pro ty, kdo dojeli na konec. Důvěra těsně před formulářem. |
+| 7 | **Patička** | Logo, upozornění na riziko, zdroje a datum dat, zásady ochrany údajů, poznámka „ukázkový projekt" | Povinné náležitosti, pro hodnotitele i pro důvěru. |
 
-**Lepivé CTA na mobilu:** po odscrollování hero se dole objeví tenký pruh „Spočítat moje poplatky" (skryje se, když je kalkulačka nebo formulář na obrazovce).
+**Lepivá horní lišta (D27, D30):** logo a tlačítko. Dokud návštěvník nepočítal, ukazuje „Spočítat poplatky" (ke kalkulačce), potom „Získat srovnání" (k formuláři). Nahradila spodní lepivé CTA na mobilu.
 
 ---
 

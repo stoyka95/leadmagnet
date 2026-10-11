@@ -1,0 +1,21 @@
+---
+// D31: one compact section instead of two – why VOO may be missing at your broker, and when no tax is due on a sale.
+// Side by side on desktop, one after the other on phones.
+import KidExplainer from './KidExplainer.astro';
+import TaxFacts from './TaxFacts.astro';
+---
+<section id="dobre-vedet" class="section container" aria-labelledby="know-h">
+  <div class="section-head">
+    <p class="eyebrow">Dobré vědět</p>
+    <h2 id="know-h">Než začnete investovat</h2>
+  </div>
+  <div class="know">
+    <KidExplainer />
+    <TaxFacts />
+  </div>
+</section>
+
+<style>
+  .know { display: grid; gap: var(--sp-10); }
+  @media (min-width: 900px) { .know { grid-template-columns: 1fr 1fr; gap: var(--sp-12); align-items: start; } }
+</style>

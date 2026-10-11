@@ -1,12 +1,16 @@
 ---
 // CONTENT.md §3.7 + the last (catch-all) form.
 import LeadForm from './LeadForm.astro';
+import WhoWeAre from './WhoWeAre.astro';
 import { etfByTicker, formatPct } from '../lib/etf';
 const spy = etfByTicker('SPY');
 const voo = etfByTicker('VOO');
-const faqs = [
+type Faq = { q: string; a: string; source?: { label: string; href: string } };
+const faqs: Faq[] = [
   { q: 'Je mezi SPY, IVV a VOO rozdíl?', a: `Sledují stejný index S&P 500, liší se hlavně správcem a poplatkem (${formatPct(spy.expenseRatioPct)} vs. ${formatPct(voo.expenseRatioPct)}).` },
-  { q: 'Co je UCITS?', a: 'Evropská pravidla pro fondy. UCITS ETF mají dokument KID, proto je drobní investoři v EU běžně koupí.' },
+  { q: 'Co je UCITS a sleduje evropská verze stejný index?', a: 'UCITS jsou evropská pravidla pro fondy. UCITS ETF mají dokument KID, proto je drobní investoři v EU běžně koupí. U S&P 500 sledují evropské verze stejný index, u VTI, VT a SCHD jde o nejbližší alternativu s jiným indexem – ve srovnání je to vždy uvedené.', source: { label: 'weby správců', href: '/zdroje' } },
+  { q: 'Jak se daní dividendy z amerických ETF?', a: 'V USA se srazí nejvýše 15 %, pokud má broker váš formulář W-8BEN. V Česku se dividendy uvádějí v daňovém přiznání a americkou daň lze započíst. Obecná informace, ne daňové poradenství.', source: { label: 'smlouva ČR–USA čl. 10, IRS, Finanční správa', href: '/zdroje#dane' } },
+  { q: 'Proč kalkulačka nepočítá poplatky brokera a směnu měny?', a: 'Liší se podle brokera a často se mění. Počítáme jen roční poplatek fondu (TER) podle správce. Poplatky za nákup a převod měny si ověřte u svého brokera – otázky pro něj najdete ve srovnání, které vám pošleme.' },
   { q: 'Je to investiční doporučení?', a: 'Ne. Srovnáváme veřejné údaje správců. Rozhodnutí je na vás.' },
   { q: 'Co s mými údaji?', a: 'Použijeme je k zaslání srovnání. Další e-maily jen pokud zaškrtnete souhlas. Odhlásit se můžete jedním klikem.' },
 ];
@@ -22,10 +26,11 @@ const faqs = [
         {faqs.map((f) => (
           <details>
             <summary>{f.q}</summary>
-            <p class="muted">{f.a}</p>
+            <p class="muted">{f.a}{f.source && <> Zdroj: <a href={f.source.href}>{f.source.label}</a>.</>}</p>
           </details>
         ))}
       </div>
+      <WhoWeAre />
     </div>
     <LeadForm location="footer" />
   </div>

@@ -16,8 +16,9 @@ const preview = ['VOO', 'SPY'].flatMap((t) => {
 const items = [
   'Všech 6 fondů a jejich evropské verze vedle sebe',
   'Poplatky v korunách pro vaši částku na 10 a 20 let',
+  '4 scénáře vývoje investice z dokumentu KID a historie S&P 500',
   'Na co se zeptat brokera a odkazy na oficiální zdroje',
-  'Hned po odeslání i na stránce k uložení jako PDF',
+  'V e-mailu i jako PDF v příloze',
 ];
 ---
 <section id="co-posleme" class="section container" aria-labelledby="get-h">
@@ -35,7 +36,7 @@ const items = [
       <p class="fine">Od: Fingramo · Předmět: Vaše srovnání ETF</p>
       <p class="hello">Dobrý den, tady je vaše srovnání pro {nf.format(DEFAULT_CALC.onceCzk)} Kč + {nf.format(DEFAULT_CALC.monthlyCzk)} Kč měsíčně na {DEFAULT_CALC.years} let.</p>
       {preview.map((r) => <div class="mock-row"><span>{r.label}</span><span class="num">{formatPct(r.ter)}</span></div>)}
-      <p class="fine more">… a další 4 fondy, poplatky v Kč a zdroje</p>
+      <p class="fine more">… a další 4 fondy, poplatky v Kč, scénáře a zdroje · PDF v příloze</p>
     </GlassCard>
   </div>
 </section>

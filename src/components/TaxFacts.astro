@@ -1,5 +1,6 @@
 ---
 // CONTENT.md §3.6 – only facts verified in data/SOURCES.md §5. General information, not tax advice.
+// D31: the two sale exemptions here; US dividends are a question in the FAQ.
 const facts = [
   {
     title: 'Po 3 letech bez daně z prodeje',
@@ -11,32 +12,28 @@ const facts = [
     text: 'Příjmy z prodeje cenných papírů jsou osvobozeny, pokud za rok v úhrnu nepřesáhnou 100 000 Kč.',
     source: { label: '§ 4 odst. 1 písm. t) zákona o daních z příjmů', href: 'https://www.zakonyprolidi.cz/cs/1992-586' },
   },
-  {
-    title: 'Dividendy z USA',
-    text: 'V USA se srazí nejvýše 15 %, pokud má broker váš formulář W-8BEN. V Česku se dividendy uvádějí v přiznání a americkou daň lze započíst.',
-    source: { label: 'smlouva ČR–USA čl. 10, IRS, Finanční správa', href: '/zdroje#dane' },
-  },
 ];
 ---
-<section id="dane" class="section container" aria-labelledby="tax-h">
-  <div class="section-head">
-    <p class="eyebrow">Daně v kostce</p>
-    <h2 id="tax-h">Tři věci, které se hodí vědět</h2>
-    <p class="fine">Obecná informace pro daňového rezidenta ČR, ne daňové poradenství.</p>
-  </div>
+<section id="dane" class="block" aria-labelledby="tax-h">
+  <h3 id="tax-h" class="block-h">Kdy se z prodeje daň neplatí</h3>
   <div class="facts">
     {facts.map((f) => (
       <article>
-        <h3>{f.title}</h3>
+        <h4>{f.title}</h4>
         <p class="muted">{f.text}</p>
         <p class="fine">Zdroj: <a href={f.source.href} rel={f.source.href.startsWith('http') ? 'noopener' : undefined}>{f.source.label}</a></p>
       </article>
     ))}
   </div>
+  <p class="fine note">Obecná informace pro daňového rezidenta ČR, ne daňové poradenství. Dividendy z USA najdete v častých otázkách.</p>
 </section>
 
 <style>
   .facts { display: grid; gap: var(--sp-4); }
-  @media (min-width: 900px) { .facts { grid-template-columns: repeat(3, 1fr); } }
-  article { padding: var(--sp-5); border-radius: var(--r-lg); background: var(--solid-bg); border: 1px solid var(--c-line); display: grid; gap: var(--sp-2); align-content: start; }
+  .block-h { font-size: var(--fs-xl); margin-bottom: var(--sp-5); }
+  h4 { margin: 0; font-size: var(--fs-md); color: var(--c-navy-900); }
+  .note { margin-top: var(--sp-3); }
+  /* D31: compact like the list next to it – a line instead of a card */
+  article { padding-left: var(--sp-4); border-left: 3px solid var(--c-green-500); display: grid; gap: var(--sp-1); align-content: start; }
+  .facts { gap: var(--sp-5); }
 </style>

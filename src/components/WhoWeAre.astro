@@ -1,0 +1,28 @@
+---
+// D31: who is behind the comparison – 3 sentences, only what is true: where the numbers come from,
+// that this is neither a broker nor an investment adviser, and that nobody pays for the comparison.
+// No testimonials, no user counts, no author name.
+import { dataRetrieved, formatDate } from '../lib/etf';
+---
+<section id="kdo-za-tim-stoji" class="who" aria-labelledby="who-h">
+    <h3 id="who-h">Kdo za srovnáním stojí</h3>
+    <p>
+      Čísla bereme přímo z webů správců fondů (Vanguard, iShares, State Street, Schwab, Xtrackers), z dokumentu KID
+      a z historických dat A. Damodarana (NYU Stern). U každého čísla je zdroj a datum, viz <a href="/zdroje">zdroje dat</a>{' '}(staženo {formatDate(dataRetrieved)}).
+    </p>
+    <p>
+      Fingramo <strong>není broker ani investiční poradce</strong> a žádné fondy neprodává.
+      Za srovnání nám <strong>nikdo neplatí</strong>, ani správci fondů, ani brokeři.
+    </p>
+</section>
+
+<style>
+  .who {
+    display: grid; gap: var(--sp-3); max-width: var(--w-text);
+    margin-top: var(--sp-6); padding: var(--sp-5); border-radius: var(--r-lg); font-size: var(--fs-sm);
+    background: var(--c-navy-100); color: var(--c-navy-900);
+  }
+  h3 { font-size: var(--fs-lg); }
+  p { margin: 0; line-height: var(--lh-body); }
+  a { color: var(--c-navy-700); }
+</style>

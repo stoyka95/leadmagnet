@@ -262,6 +262,37 @@ test.describe('compare section', () => {
   });
 });
 
+test.describe('content (D31)', () => {
+  test('sections in the agreed order, KID and taxes merged into one', async ({ page }) => {
+    await page.goto('/');
+    const ids = await page.locator('main > section').evaluateAll((els) => els.map((e) => e.id));
+    expect(ids).toEqual(['kalkulacka', 'srovnani', 'dobre-vedet', 'co-posleme', 'zaver']);
+  });
+
+  test('who is behind it: no broker, nobody pays, link to the sources', async ({ page }) => {
+    await page.goto('/');
+    const who = page.locator('#kdo-za-tim-stoji');
+    await expect(who).toContainText('není broker ani investiční poradce');
+    await expect(who).toContainText('nikdo neplatí');
+    await expect(who).toContainText('zdroje dat (staženo');
+    await expect(who.locator('a[href="/zdroje"]')).toBeVisible();
+  });
+
+  test('US dividends moved to the FAQ with their source', async ({ page }) => {
+    await page.goto('/');
+    await page.getByText('Jak se daní dividendy z amerických ETF?').click();
+    await expect(page.getByText(/nejvýše 15 %, pokud má broker váš formulář W-8BEN/)).toBeVisible();
+    await expect(page.locator('#zaver a[href="/zdroje#dane"]')).toBeVisible();
+  });
+
+  test('“Co vám pošleme” promises exactly what the e-mail contains', async ({ page }) => {
+    await page.goto('/');
+    const list = page.locator('#co-posleme .list');
+    await expect(list).toContainText('4 scénáře vývoje investice');
+    await expect(list).toContainText('PDF v příloze');
+  });
+});
+
 test.describe('measurement (D11, D24)', () => {
   test('scroll_50 and the hero cta_click are recorded once', async ({ page }) => {
     await page.goto(AD_B);
