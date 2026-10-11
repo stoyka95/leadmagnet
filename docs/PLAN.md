@@ -11,7 +11,7 @@ Legenda: `[ ]` zbývá · `[x]` hotovo · `[~]` rozpracováno
 - [x] Kontrola prostředí: Git 2.54, `git config` (stoyka95 / mykolastoyka@gmail.com), GitHub CLI přihlášený (účet `stoyka95`), Node 24 + npm 12
 - [x] Vercel: připojený přes konektor (tým „stoyka95's projects"), Vercel CLI není nainstalovaný (není nutný – nasazení přes GitHub)
 - [x] Supabase: přihlášené 2 účty (projekty fakturr, foodphore, wallana) – pro tento úkol zatím žádný projekt
-- [ ] PostHog: konektor existuje, účet/projekt pro tento úkol ověřit – závisí na rozhodnutí č. 11
+- [x] PostHog: projekt 301598 (EU), rozhodnutí D11
 - [x] Schválení tohoto plánu (11. 10.)
 - [x] Rozhodnutí ze sekce 7 CLAUDE.md (po skupinách) → `docs/DECISIONS.md` (zbývá doplnit název domény, D15)
 - [x] Založení veřejného repozitáře `stoyka95/leadmagnet`, struktura, `.gitignore`, `.env.example`
@@ -24,7 +24,8 @@ Legenda: `[ ]` zbývá · `[x]` hotovo · `[~]` rozpracováno
 - [~] Ověření dostupnosti US ETF pro české retailové investory (PRIIPs/KID) u konkrétních brokerů – se zdrojem; případně UCITS ekvivalenty
 - [x] Ověření daňových informací – zatím bez oficiálního zdroje → neuvádět
 - [x] Commit `data: ...` + push
-- [ ] Zbývá: TER UCITS proti KID správců (hlavně XD9U, VWCE), stránka IBKR ručně v prohlížeči
+- [x] TER UCITS proti KID správců (hlavně XD9U, VWCE) – 11. 10., vše sedí (SOURCES.md, „Druhá kontrola TER")
+- [ ] Zbývá: stránka IBKR ručně v prohlížeči
 
 ## Fáze 2 – Obsah: cílovka, texty, reklamy (po 12. 10.)
 - [x] Persona a slib reklamy → struktura první obrazovky
@@ -88,6 +89,18 @@ Každý krok: změna, testy (unit/E2E) upravené nebo nové, kontrola na mobilu 
 8. [ ] **Hypotézy H1 a H3** připravit textem pro README (hypotéza, změna, metrika, odhad dopadu).
 9. [ ] **Testy:** celá sada lokálně i proti produkci, Lighthouse znovu.
 10. [ ] **Potom (s Mikym):** SVG ikony a ilustrace, OG obrázek.
+
+## Fáze 5c – Mikyho kontrola stránky (11. 10.) ✅ – D35
+- [x] TER všech 12 fondů znovu u správců a v KID (vše sedí)
+- [x] Dva samostatné souhlasy (e-mail / telefon), past na roboty bez popisku „Firma"
+- [x] Základ 2 formuláře, varianta `?forms=3`
+- [x] Mobil 10 442 → 9 538 px, formulář výš, nic nepřetéká na 390 px
+- [x] Dotykové plochy ≥ 44 px (+ test)
+- [x] Vysvětlení u telefonu, otázka na částku ne
+- [x] README – sekce Měření, insight „Cena za lead podle reklamy"
+- [x] Test obou reklam (`utm_content=a` / `b`) → DECISIONS
+- [ ] Ověřit `anonymize_ips` (MEASUREMENT.md to uvádí, v kódu není)
+- [ ] Záznamy relací vypnout i v nastavení PostHog projektu – Miky
 
 ## Fáze 6 – README a odevzdání (čt 15. 10. večer)
 - [ ] README se všemi 13 sekcemi (sekce 5 CLAUDE.md), včetně očekávané konverze a 3 A/B hypotéz
