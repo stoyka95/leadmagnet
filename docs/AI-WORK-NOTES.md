@@ -98,3 +98,13 @@ Surové exporty konverzací jsou v [`ai-log/`](../ai-log/).
 - **Bod 3:** AI doporučila scénáře z KID. Při stahování KID ale zjistila, že platí jen pro 5 let a že by jejich protažení na 20 let dávalo čísla v milionech Kč. Řekla to Mikymu dřív, než cokoli postavila. Miky pak zadal vlastní řešení: 5 let podle KID a pro delší horizont historický rozsah S&P 500 (D21).
 - **Ověření dat:** KID je šifrované PDF, text byl vytažen knihovnou `pypdf`. Historická data poskytl nástroj WebFetch, ale ten prochází zjednodušujícím modelem, takže AI tabulku vyparsovala znovu přímo z HTML a 5 hodnot porovnala. Výpočet ověřen proti KID: 10 000 při 14,8 % ročně za 5 let = 19 953 vs. KID 19 910 USD (rozdíl jen zaokrouhlením).
 - **Iterace vzhledu:** na desktopu po první úpravě stále zůstávala mezera (řádek mřížky měl výšku grafu) a na mobilu byly osy grafu nečitelné a „%" se zalamovalo. Vše nalezeno screenshoty v Playwright na 1440 a 375 px a opraveno před pushem.
+
+### Kontrola doporučení od jiného AI (Antigravity, Google)
+- Miky vložil 12 designových doporučení z Antigravity. Claude je **nepřevzal naslepo**: každé ověřil proti datům v `etf.json`, rozhodnutím a regulačním pravidlům a dal k němu verdikt (D23).
+- **Chyby, které tím Claude zachytil v cizím výstupu:**
+  - „VUAA jako nejlevnější evropská volba" – fakticky špatně (0,07 % vs. SPYL 0,03 %)
+  - „doporučená volba pro ČR" – investiční doporučení, v rozporu s FAQ stránky
+  - „PDF tahák pro nákup u XTB, Portu, Fio" – slib obsahu, který neexistuje, s neověřenými brokery
+  - gradient Tailwind emerald-500 s bílým textem – kontrast ~2,5:1
+- **Ověření po úpravách:** `npm run check` 0 chyb; `data-track` atributy beze změny (diff před/po); mobil 375 px bez přetékání, pole 52 px, formulář u kalkulačky o ~720 px výš.
+- **Poučení pro README:** výstup AI (vlastní i cizí) se kontroluje stejně, tedy proti datům a pravidlům, ne proti tomu, jak přesvědčivě zní.
