@@ -1,16 +1,18 @@
 ---
-// Placeholder to verify the Vercel pipeline; replaced section by section in Fáze 3.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
 ---
-<!doctype html>
-<html lang="cs">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="robots" content="noindex" />
-    <title>Fingramo – srovnání ETF</title>
-  </head>
-  <body>
-    <h1>Fingramo</h1>
-    <p>Stránka se připravuje.</p>
-  </body>
-</html>
+<BaseLayout
+  title="Srovnání ETF z NYSE a poplatky v Kč | Fingramo"
+  description="SPY, IVV, VOO, VTI, VT a SCHD vedle jejich evropských verzí. Spočítejte si poplatky v korunách pro vaši částku – zdarma, data přímo od správců."
+>
+  <script is:inline slot="head">
+    // D17: pick the hero variant before first paint from utm_content (a | b); default b.
+    try {
+      var v = new URLSearchParams(location.search).get('utm_content');
+      if (v === 'a') document.documentElement.dataset.ad = 'a';
+    } catch (e) {}
+  </script>
+  <Hero />
+  <main id="obsah"></main>
+</BaseLayout>
