@@ -9,7 +9,7 @@ Pravidlo: každé číslo na stránce musí mít zdroj (URL) a datum stažení. 
 
 | Ticker | Poplatek (TER) | Velikost (ETF třída) | Platí k | Burza | Index | Zdroj |
 |---|---|---|---|---|---|---|
-| SPY | 0,0945 % *(gross)* | 817,2 mld. USD | 8. 10. 2026 | NYSE Arca | S&P 500 | [ssga.com](https://www.ssga.com/us/en/intermediary/etfs/spdr-sp-500-etf-trust-spy) |
+| SPY | 0,0945 % *(gross)* | 817,2 mld. USD | 8. 10. 2026 | NYSE Arca | S&P 500 | [ssga.com](https://www.ssga.com/us/en/intermediary/etfs/state-street-spdr-sp-500-etf-trust-spy) |
 | IVV | 0,03 % | 896,4 mld. USD | 9. 10. 2026 | NYSE Arca | S&P 500 | [ishares.com](https://www.ishares.com/us/products/239726/ishares-core-sp-500-etf) |
 | VOO | 0,03 % *(k 28. 4. 2026)* | 1,0 bil. USD *(fond celkem 1,7 bil.)* | 30. 9. 2026 | NYSE Arca | S&P 500 | [vanguard.com](https://investor.vanguard.com/investment-products/etfs/profile/voo) |
 | VTI | 0,03 % *(k 28. 4. 2026)* | 690,1 mld. USD *(fond celkem 2,3 bil.)* | 31. 8. 2026 | NYSE Arca ([nyse.com](https://www.nyse.com/quote/ARCX:VTI)) | Morningstar US Total Market | [vanguard.com](https://investor.vanguard.com/investment-products/etfs/profile/vti) |
@@ -39,6 +39,29 @@ Poznámky:
 - **Registrace v ČR:** State Street u SPYL a SPYD výslovně uvádí „Countries of Registration: … Czech Republic …". U ostatních jsme registraci na stránce nenašli, a proto ji netvrdíme.
 - Rozdíl oproti justETF: datum vzniku CSPX je podle iShares 18. 5. 2010 (justETF uvádí 19. 5.). Platí údaj správce.
 - Pro VTI a SCHD neexistuje UCITS fond se stejným indexem (nenašli jsme ho). Jde o **nejbližší alternativu** a na stránce bude takto označená.
+
+### Druhá kontrola TER (11. 10. 2026, odpoledne)
+
+Na Mikyho žádost jsme TER všech 12 fondů ověřili znovu přímo u správců a u UCITS fondů navíc v dokumentu KID (PRIIPs) nebo v nákladových údajích MiFID. **Všech 12 hodnot sedí, data ani přepočty v kalkulačce se nemění.**
+
+| Fond | Web správce | KID / náklady dle MiFID | Výsledek |
+|---|---|---|---|
+| SPY | Gross Expense Ratio 0,0945 % | (US fond, KID nevydává) | sedí |
+| IVV | Expense Ratio 0,03 % | (US fond, KID nevydává) | sedí |
+| VOO | Expense ratio 0,03 % k 28. 4. 2026 | (US fond, KID nevydává) | sedí |
+| VTI | Expense ratio 0,03 % k 28. 4. 2026 | (US fond, KID nevydává) | sedí |
+| VT | Expense ratio 0,06 % k 27. 2. 2026 | (US fond, KID nevydává) | sedí |
+| SCHD | Total Expense Ratio 0,060 % | (US fond, KID nevydává) | sedí |
+| SPYL | TER 0,03 % | KID: správa a provoz 0,03 % ročně | sedí |
+| CSPX | Total Expense Ratio 0,07 % | KIID: Ongoing Charges 0,07 % | sedí |
+| VUAA | OCF/TER 0,07 % | KID (17. 2. 2026): ongoing charges 0,07 % | sedí |
+| **XD9U** | All-in fee (TER) 0,03 % = správa 0,01 % + fixní 0,02 % | MiFID na webu DWS: ongoing costs 0,030 % ročně, navíc transakční náklady 0,012 % | sedí |
+| **VWCE** | OCF/TER 0,14 % | KID (28. 7. 2026): ongoing charges 0,14 % | sedí |
+| SPYD | TER 0,35 % | KID: správa a provoz 0,35 % ročně, transakční náklady 0,03 % | sedí |
+
+- KID: [VWCE](https://fund-docs.vanguard.com/ie00bk5bqt80-en.pdf), [VUAA](https://fund-docs.vanguard.com/ie00bfmxxd54-en.pdf), [CSPX](https://www.ishares.com/gls-download/literature/kiid/ucits_kiid-ishares-core-sp-500-ucits-etf-usd-acc-gb-ie00b5bmr087-en.pdf), [SPYL](https://www.ssga.com/library-content/kids?isin=IE000XZSV718&documentType=kid&country=ie&language=en_gb&ticker=spyl-gy), [SPYD](https://www.ssga.com/library-content/kids?isin=IE00B6YX5D40&documentType=kid&country=ie&language=en_gb&ticker=spyd-gy).
+- Transakční náklady (XD9U 0,012 %, SPYD 0,03 %) nejsou součástí TER. Kalkulačka počítá jen s TER (rozhodnutí z Fáze 5b: „jen TER"), FAQ na stránce uvádí, že počítáme jen roční poplatek fondu (TER).
+- Web SPY se přesunul na adresu `.../state-street-spdr-sp-500-etf-trust-spy`. Odkaz jsme aktualizovali, stará adresa přesměrovává.
 
 ## 3. Kurz USD/CZK a EUR/CZK – ČNB
 
