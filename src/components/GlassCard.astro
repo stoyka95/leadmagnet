@@ -1,0 +1,39 @@
+---
+// Frosted-glass surface (D8). `solid` = near-opaque variant for tables and long text.
+interface Props {
+  as?: 'div' | 'section' | 'article' | 'aside';
+  solid?: boolean;
+  class?: string;
+  [key: string]: unknown;
+}
+const { as: Tag = 'div', solid = false, class: className = '', ...rest } = Astro.props;
+---
+<Tag class:list={['card', solid ? 'card-solid' : 'card-glass', className]} {...rest}>
+  <slot />
+</Tag>
+
+<style>
+  .card {
+    border-radius: var(--r-lg);
+    padding: var(--sp-5);
+    box-shadow: var(--shadow-1);
+  }
+  @media (min-width: 768px) {
+    .card { padding: var(--sp-8); }
+  }
+  .card-solid {
+    background: var(--solid-bg);
+    border: 1px solid var(--c-line);
+  }
+  .card-glass {
+    background: var(--glass-fallback);
+    border: 1px solid var(--glass-border);
+  }
+  @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .card-glass {
+      background: var(--glass-bg);
+      -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+      backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+    }
+  }
+</style>
