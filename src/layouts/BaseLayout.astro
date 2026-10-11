@@ -24,7 +24,10 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta property="og:locale" content="cs_CZ" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <!-- D26 logo. ?v=2 makes browsers drop the cached old icon; .ico and PNG cover Safari, iOS and search results -->
+    <link rel="icon" href="/favicon.ico?v=2" sizes="any" />
+    <link rel="icon" href="/favicon.svg?v=2" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=2" />
     <slot name="head" />
     <!-- Vercel Web Analytics (D11): cookieless page views as a cross-check for PostHog -->
     <Analytics />
