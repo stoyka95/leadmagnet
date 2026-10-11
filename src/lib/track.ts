@@ -1,5 +1,5 @@
-// Funnel events (CLAUDE.md §8). Components call track(); Fáze 4 wires the queue to PostHog.
-// Events: page_view, scroll_50, cta_click, tool_used, form_start, form_submit, form_error, thank_you_view.
+// Funnel events (CLAUDE.md §8). Components call track(); src/lib/analytics.ts forwards them to PostHog.
+// Events: $pageview (automatic, with UTM), scroll_50, cta_click, tool_used, form_start, form_submit, form_error, thank_you_view.
 
 type Props = Record<string, string | number | boolean | null | undefined>;
 
@@ -16,31 +16,25 @@ export const track = (event: string, props: Props = {}): void => {
     window.__fgCapture(event, props);
     return;
   }
+  // PostHog loads asynchronously; events before that are queued and flushed on init
   (window.__fgQueue ??= []).push([event, props]);
 };
 
-// UTM parameters are kept for the session so a lead can be attributed to ad A or B.
+// UTM parameters come straight from the current URL (in-page anchors keep the query string).
+// Nothing is stored in the browser – the lead row gets them from the page the form was sent from.
 const UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content'] as const;
 export type Utm = Partial<Record<(typeof UTM_KEYS)[number], string>>;
 
-export const rememberUtm = (): void => {
+export const readUtm = (): Utm => {
+  const utm: Utm = {};
   try {
     const params = new URLSearchParams(location.search);
-    const utm: Utm = {};
     for (const key of UTM_KEYS) {
       const value = params.get(key);
       if (value) utm[key] = value.slice(0, 100);
     }
-    if (Object.keys(utm).length) sessionStorage.setItem('fg:utm', JSON.stringify(utm));
   } catch {
-    /* storage unavailable – attribution falls back to PostHog's own UTM capture */
+    /* no URL access – no attribution */
   }
-};
-
-export const readUtm = (): Utm => {
-  try {
-    return JSON.parse(sessionStorage.getItem('fg:utm') ?? '{}') as Utm;
-  } catch {
-    return {};
-  }
+  return utm;
 };

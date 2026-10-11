@@ -32,5 +32,9 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
   <body>
     <div class="page-bg" aria-hidden="true"></div>
     <slot />
+    <script>
+      // Funnel measurement – PostHog EU, cookieless (D11, D24)
+      import '../lib/analytics';
+    </script>
   </body>
 </html>
