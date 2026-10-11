@@ -1,6 +1,6 @@
 # Testy (Fáze 5)
 
-Stav k 11. 10. 2026 (po grafice, D36): **75 unit testů a 109 E2E testů prochází** lokálně (7 testů běží jen na mobilu, proto se v projektu desktop přeskočí). Proti produkci 107 prošlo a 9 se přeskočilo (navíc 2 testy jen pro lokální server). Po Fázi 5c to bylo 107 E2E. Předtím (po Fázi 5b) 74 unit a 90 E2E. Lighthouse na mobilu (produkce): **100 / 100 / 100 / 100** v obou variantách A/B testu.
+Stav k 11. 10. 2026 (po grafice D36 a grafu scénářů po odeslání): **75 unit testů a 111 E2E testů prochází** lokálně (7 testů běží jen na mobilu, proto se v projektu desktop přeskočí). Proti produkci 107 prošlo a 9 se přeskočilo (navíc 2 testy jen pro lokální server). Po Fázi 5c to bylo 107 E2E. Předtím (po Fázi 5b) 74 unit a 90 E2E. Lighthouse na mobilu (produkce): **100 / 100 / 100 / 100** v obou variantách A/B testu.
 
 ## Jak spustit
 

@@ -201,7 +201,7 @@ Základní verze má 2 formuláře (u kalkulačky a na konci). Varianta se třet
 - **Data proti zdroji, ne proti paměti AI.** Každé číslo je z webu správce nebo z dokumentu KID a poplatky jsou ověřené dvakrát. Když web blokoval stahování, AI ho otevřela v prohlížeči.
 - **Testy:**
   - 75 unit testů hlídá výpočty, shodu dat se zdroji, API, e-mail a PDF.
-  - 109 E2E testů běží v prohlížeči na mobilu i desktopu, lokálně i proti produkci. Pokrývají celou cestu z obou reklam, přístupnost (axe), dotykové plochy 44 px, souhlasy a měření.
+  - 111 E2E testů běží v prohlížeči na mobilu i desktopu, lokálně i proti produkci. Pokrývají celou cestu z obou reklam, přístupnost (axe), dotykové plochy 44 px, souhlasy a měření.
   - Lighthouse na mobilu: 100 / 100 / 100 / 100.
   - Detail je v [docs/TESTING.md](docs/TESTING.md).
 - **Kontrola na produkci, ne jen lokálně:** testovací kontakt na produkci, kontrola řádku v databázi, doručení e-mailu s PDF v Resendu a událostí v PostHogu.

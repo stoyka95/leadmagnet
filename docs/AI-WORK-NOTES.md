@@ -299,3 +299,22 @@ Miky si stránku prošel v prohlížeči a poslal 8 bodů: ověřit TER (hlavně
 1. **První pokus o zápis README selhal**, protože shell nezvládl dlouhý text v jednom příkazu. Nic se nezapsalo (ověřeno `git diff`) a README vzniklo po částech.
 2. **CONTENT.md byl zastaralý** (jeden společný souhlas, tři body v „Proč VOO…"), přitom README na něj odkazuje jako na texty stránky. Doplněna poznámka, že sekce 3 je historický návrh a platí stránka a DECISIONS.
 3. Text o ukázce scénářů v README nejdřív citoval „není to předpověď", na stránce ale stojí „Nejde o předpověď". Opraveno před commitem.
+
+---
+
+## Session 1, pokračování – 11. 10. 2026: graf scénářů po odeslání
+
+### Pokyn
+Miky (screenshot zamčeného grafu): „tento graf se pak někde ukáže? v e-mailu/PDF? případně uprav."
+
+### Co AI zjistila a udělala
+- Zjištění z kódu: scénáře po odeslání v e-mailu, PDF i na děkovací stránce **byly**, ale jen jako pruhy s konečnou částkou. Čárový graf rok po roku viděl návštěvník jen na hlavní stránce po návratu.
+- Kreslení grafu se přesunulo do jedné sdílené funkce (`src/lib/growth-chart.ts`). Kalkulačka i děkovací stránka teď kreslí totéž. PDF má stejný graf nakreslený přes pdf-lib.
+- E-mail zůstal u pruhů a v DECISIONS je proč.
+- Ověřeno: PDF prohlédnuté stránku po stránce, děkovací stránka na mobilu, nový E2E test kontroluje, že graf má 5 čar a jeho částky se shodují s legendou. Celkem 111 E2E testů.
+
+### Kde se AI spletla
+1. **Graf přidal PDF třetí stranu** (jen poslední krok a patička). Nejdřív zkusila graf a pruhy zmenšit, nestačilo to. Pak nahradila pruhy kompaktní legendou s barevnou čarou, protože pruhy ukazovaly totéž co graf. PDF má znovu 2 strany.
+2. **Zacyklený Python:** AI omylem spustila prázdný interaktivní Python, který se zasekl a zapisoval chyby do logu. Zastavila jen tu jednu úlohu podle jejího ID (poučení z minula, ne všechny procesy).
+3. **Nalezená nesrovnalost:** barva stresového scénáře v e-mailu a PDF zůstala na staré hodnotě z doby před opravou kontrastu. Opraveno samostatným `fix:` commitem.
+4. Nový test nejdřív selhal na pevné mezeře v českém formátu čísel (`280 000 Kč`). Šlo o chybu testu, ne stránky.
