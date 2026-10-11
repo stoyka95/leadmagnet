@@ -233,3 +233,26 @@ Miky: projít projekt a položit co nejvíc otázek s výběrem. Pak plán, pak 
 3. **První pokus o zhuštění stránku prodloužil** (+296 px). Nový blok měl plné odsazení sekce. AI to zjistila měřením a strukturu změnila: dvě sekce sloučila do jedné a blok důvěry vložila do FAQ.
 4. **Chybějící mezera „zdroje dat(staženo"** kvůli zalomení řádku v šabloně. Viděno na screenshotu, opraveno, test hlídá přesný text.
 5. **Falešný poplach v Lighthouse:** varianta s polem jednou vyšla 98 (LCP 2,4 s). Opakované běhy daly obě varianty 100, takže šlo o rozptyl měření, ne o zpomalení.
+
+---
+
+## Session 1, pokračování – 11. 10. 2026: Fáze 5c, Mikyho kontrola stránky (D35)
+
+### Pokyn
+Miky si stránku prošel v prohlížeči a poslal 8 bodů: ověřit TER (hlavně XD9U a VWCE), vyhodit pole Firma a rozdělit souhlasy, max. 2 formuláře, zkrátit mobil, dotykové plochy 44 px, zvážit otázku na částku a vysvětlit telefon, doplnit README o dashboard a otestovat obě reklamy. Chtěl krátký plán, otázky jen kde si AI není jistá, a malé commity.
+
+### Co AI udělala a jak ověřovala
+- **Body nejdřív ověřila v kódu, ne naslepo.** Dva body neodpovídaly stavu stránky: pole „Firma" je neviditelná past na roboty (návštěvník ho nevidí) a částku formulář už posílá z kalkulačky. Místo slepého provedení se zeptala (4 otázky, D35).
+- **TER:** všech 12 fondů znovu na webech správců ve vestavěném prohlížeči, u UCITS navíc KID (PDF přečtené přes extrakci textu, u State Street šifrované PDF dešifrované prázdným heslem). Vše sedí, žádná změna dat.
+- **Souhlasy:** nejdřív migrace databáze (sloupec `phone_consent`), až potom kód, aby produkce ani na chvíli neposílala neznámý sloupec.
+- **Mobil:** změřila výšky všech sekcí na 390 px, pak cíleně zkrátila dvě největší (srovnání vedle sebe, zamčený seznam jako ukázka). 10 442 → 9 404 px. Kontrola snímkem celé stránky a testem hlídajícím výšku a přetečení.
+- **44 px:** nejdřív audit všech ovládacích prvků (26 pod limitem), pak oprava a trvalý test, který „klepne" 21 px od středu každého odkazu.
+- **Obě reklamy:** nový test 2 × 2 × mobil/desktop, proti produkci, a snímky první obrazovky vedle obrázku reklamy.
+
+### Kde se AI spletla nebo co našla
+1. **První verze zápisu v SOURCES tvrdila, že „transakční náklady vysvětluje FAQ".** FAQ ale mluví jen o TER. Opraveno před commitem na přesné znění.
+2. **Neviditelná dotyková plocha u odkazů zalomených na dva řádky** nefungovala (Chrome ji počítá jinak u rozděleného odkazu). Tři pokusy s větší plochou nepomohly, řešením bylo nedělit odkaz mezi řádky na mobilu (`inline-block`). Ověřeno testem i snímkem, řádkování textu zůstalo.
+3. **Mezery mezi zdroji na /zdroje se neprojevily**, protože pozdější pravidlo ve stejném souboru přebilo nové. Zjištěno z vypočteného stylu, opraveno úpravou původního pravidla.
+4. **Chyby v nových testech, ne na stránce:** test nepočkal 0,8 s na `tool_used` a na produkci na `thank_you_view`, test vyžadoval atribut `data-ad` i u výchozí varianty B. Opraveno v testech, stránka se neměnila.
+5. **Nesrovnalost v dokumentaci:** MEASUREMENT.md uvádí `anonymize_ips: true`, ale v kódu to není. Do README AI tuto větu nedala, dokud se neověří. Otevřené.
+6. **Záznamy relací jsou v nastavení PostHog projektu pořád povolené** (kód je blokuje). README to říká otevřeně. Vypnutí v nastavení je na Mikym.

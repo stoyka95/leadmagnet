@@ -1,6 +1,6 @@
 # Testy (Fáze 5)
 
-Stav k 11. 10. 2026 (po Fázi 5b): **74 unit testů a 90 E2E testů prochází**, lokálně i proti produkci (2 testy jen pro lokální server se proti produkci přeskočí). Lighthouse na mobilu (produkce): **100 / 100 / 100 / 100** v obou variantách A/B testu.
+Stav k 11. 10. 2026 (po Fázi 5c, D35): **75 unit testů a 107 E2E testů prochází** lokálně (7 testů běží jen na mobilu, proto se v projektu desktop přeskočí). Proti produkci 105 prošlo a 9 se přeskočilo (navíc 2 testy jen pro lokální server). Předtím (po Fázi 5b) 74 unit a 90 E2E. Lighthouse na mobilu (produkce): **100 / 100 / 100 / 100** v obou variantách A/B testu.
 
 ## Jak spustit
 
@@ -27,6 +27,11 @@ E2E testy používají Chrome nainstalovaný v počítači. Odeslání formulá�
 ### E2E (`tests/e2e/`, mobil i desktop)
 - první obrazovka podle reklamy A/B a bez UTM, odznak spočítaný z dat
 - žádná stránka nescrolluje do šířky (`/`, `/dekujeme`, `/zasady`, `/zdroje`)
+- **obě reklamy × obě varianty 1. obrazovky** celou cestou až na děkovací stránku, lead nese správné `utm_content` (`ad-variants.spec.ts`, D35)
+- **dotykové plochy ≥ 44 px** na 6 stránkách: vstupy, zaškrtávací pole s popiskem, tlačítka a každý odkaz (klepnutí 21 px od středu musí trefit odkaz) (`touch.spec.ts`, D35)
+- **mobil 390 px:** stránka pod 9 600 px, formulář u kalkulačky v prvních 2 400 px, nic nepřetéká (D35)
+- **2 formuláře v základu, 3 ve variantě `?forms=3`**, tlačítko u srovnání vede k formuláři u kalkulačky (D35)
+- dva samostatné nezaškrtnuté souhlasy, past na roboty bez popisku „Firma", vysvětlení u telefonu (D35)
 - lepivá lišta: zůstává nahoře, tlačítko vede do e-mailu posledního formuláře
 - kalkulačka: přepočet, formát čísel, písmena v částce, horizont, paměť v rámci záložky, událost `tool_used`
 - brána: hlavní výsledek vidět, 3 rozmazané bloky `inert`, tlačítko „Odemknout" vede do e-mailu

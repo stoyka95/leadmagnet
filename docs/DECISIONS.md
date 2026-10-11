@@ -267,6 +267,23 @@ Miky si stránku prošel v prohlížeči a poslal 8 bodů. Claude je nejdřív o
 - **Počet formulářů:** základní verze má 2 (u kalkulačky a na konci). Varianty: odebrat (a) ten pod srovnáním *(doporučeno)* · (b) ten na konci. **Zvoleno (a).**
 - **Varianta se 3 formuláři:** (a) přepínač `?forms=3` a hypotéza do README *(doporučeno)* · (b) druhý živý test 50/50. **Zvoleno (a):** ostře dál běží jediný test (H2, D28).
 - **Otázka na částku ve formuláři:** (a) nepřidávat, jen vysvětlit, proč chceme telefon *(doporučeno)* · (b) nepovinný výběr rozmezí. **Zvoleno (a):** částku už posílá kalkulačka, další pole by konverzi spíš snížilo.
+- **Mobil:** srovnání má originál a evropskou verzi vedle sebe, zamčený seznam 12 fondů je na mobilu jen ukázka. Stránka na 390 px: 10 442 → 9 404 px, formulář u kalkulačky začíná o 290 px výš. Dotykové plochy mají min. 44 px.
+- **Dashboard:** nový insight „Cena za lead podle reklamy (A vs. B)" (Miky souhlasil s vytvořením). Útrata je prázdná, dokud kampaň neběží.
+
+#### Test obou verzí reklamy (11. 10. 2026)
+Ověřeno na produkci https://fingramo.vercel.app a lokálně, nový test `tests/e2e/ad-variants.spec.ts`. Kombinace: 2 reklamy × 2 varianty první obrazovky × mobil a desktop = 8 průchodů.
+
+| | `utm_content=a` | `utm_content=b` |
+|---|---|---|
+| Slib reklamy | „Chcete VOO? Váš broker ho možná nenabízí." | „Stejný index S&P 500. Jiný poplatek." |
+| Nadpis na stránce | „Chcete VOO nebo SPY? Ukážeme vám, co si z Česka opravdu koupíte." ✅ | „Stejný index, jiný poplatek. Kolik vás ETF stojí v korunách?" ✅ |
+| Karta na 1. obrazovce | páry VOO → VUAA, SPY → SPYL, VT → VWCE (stejné jako v reklamě) ✅ | SPY 0,0945 % vs. VOO 0,03 % (stejné jako v reklamě) ✅ |
+| Vstup do kalkulačky na 1. obrazovce | tlačítko i pole (`hero_input`) viditelné bez scrollu ✅ | ✅ |
+| Kalkulačka → formulář → děkovací stránka | prošlo, `tool_used` → `form_start` → `form_submit` → `thank_you_view` ✅ | ✅ |
+| Lead nese UTM | `utm_content = a` a celá kampaň ✅ | `utm_content = b` ✅ |
+| Vodorovný scroll / chyby v konzoli | žádné ✅ | žádné ✅ |
+
+**Výsledek:** obě verze reklamy fungují, první obrazovka navazuje na slib své reklamy a lead jde přiřadit k reklamě (UTM v databázi i `ad_variant` v PostHogu). Celá E2E sada proti produkci: 105 prošlo, 9 přeskočeno (testy jen pro lokální server nebo jen pro mobil). Jak si reklamy vedou u lidí, ukáže až běžící kampaň na dashboardu (trychtýř a cena za lead podle varianty).
 
 ---
 
