@@ -3,6 +3,7 @@
 // Only the e-mail is required (D25), name and phone are optional; the button is the request.
 // D35: two separate, unticked consents – e-mail tips and a phone call.
 import GlassCard from './GlassCard.astro';
+import Icon from './Icon.astro';
 
 interface Props {
   location: 'calculator' | 'compare' | 'footer';
@@ -53,7 +54,7 @@ const id = `lf-${location}`;
 
     <button class="btn btn-primary btn-block submit" type="submit">Získat srovnání zdarma</button>
     <p class="assure">
-      <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M6 11V8a6 6 0 0 1 12 0v3M5 11h14v10H5z"/></svg>
+      <Icon name="lock" size={16} />
       Zdarma · Bez spamu · Hned v e-mailu
     </p>
     <p class="fine legal">

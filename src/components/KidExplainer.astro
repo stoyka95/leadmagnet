@@ -18,9 +18,10 @@ const points = [
     ],
   },
 ];
+import Icon from './Icon.astro';
 ---
 <section id="proc-voo" class="block" aria-labelledby="kid-h">
-  <h3 id="kid-h" class="block-h">Proč VOO u svého brokera možná nenajdete</h3>
+  <h3 id="kid-h" class="block-h"><Icon name="document" size={28} />Proč VOO u svého brokera možná nenajdete</h3>
   <ol class="points">
     {points.map((p, i) => (
       <li>
@@ -36,7 +37,8 @@ const points = [
 </section>
 
 <style>
-  .block-h { font-size: var(--fs-xl); margin-bottom: var(--sp-5); }
+  .block-h { font-size: var(--fs-xl); margin-bottom: var(--sp-5); display: flex; align-items: center; gap: var(--sp-3); color: var(--c-navy-900); }
+  .block-h :global(.icon) { color: var(--c-navy-700); } /* D36 */
   .points { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--sp-5); }
   li { display: grid; grid-template-columns: auto 1fr; gap: var(--sp-4); }
   .n { width: 36px; height: 36px; border-radius: var(--r-pill); background: var(--c-navy-700); color: var(--c-white); display: grid; place-items: center; font-weight: var(--fw-bold); }

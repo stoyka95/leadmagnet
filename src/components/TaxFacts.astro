@@ -13,9 +13,10 @@ const facts = [
     source: { label: '§ 4 odst. 1 písm. t) zákona o daních z příjmů', href: 'https://www.zakonyprolidi.cz/cs/1992-586' },
   },
 ];
+import Icon from './Icon.astro';
 ---
 <section id="dane" class="block" aria-labelledby="tax-h">
-  <h3 id="tax-h" class="block-h">Kdy se z prodeje daň neplatí</h3>
+  <h3 id="tax-h" class="block-h"><Icon name="receipt" size={28} />Kdy se z prodeje daň neplatí</h3>
   <div class="facts">
     {facts.map((f) => (
       <article>
@@ -30,7 +31,8 @@ const facts = [
 
 <style>
   .facts { display: grid; gap: var(--sp-4); }
-  .block-h { font-size: var(--fs-xl); margin-bottom: var(--sp-5); }
+  .block-h { font-size: var(--fs-xl); margin-bottom: var(--sp-5); display: flex; align-items: center; gap: var(--sp-3); color: var(--c-navy-900); }
+  .block-h :global(.icon) { color: var(--c-navy-700); } /* D36 */
   h4 { margin: 0; font-size: var(--fs-md); color: var(--c-navy-900); }
   .note { margin-top: var(--sp-3); }
   /* D31: compact like the list next to it – a line instead of a card */
