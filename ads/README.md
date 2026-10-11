@@ -1,6 +1,6 @@
 # Reklamy – Meta (Instagram / Facebook), mobil
 
-**Stav:** texty – NÁVRH k schválení. Vizuály (`ad-a-4x5.png`, `ad-a-9x16.png`, `ad-b-…`) vzniknou ve Fázi 3 ze stejného designového systému jako stránka.
+**Stav:** texty SCHVÁLENY Mikym 11. 10. 2026 (D18). Vizuály (`ad-a-4x5.png`, `ad-a-9x16.png`, `ad-b-…`) vzniknou ve Fázi 3 ze stejného designového systému jako stránka.
 Kanál a úhly: D6. Tón: vykání (D7). Žádné sliby výnosů, každé číslo ze `data/SOURCES.md`.
 
 Obě verze nabízejí **totéž** (zdarma srovnání ETF + poplatky v Kč). Liší se jen **úhel** – A/B test úhlu.

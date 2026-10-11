@@ -27,11 +27,11 @@ Legenda: `[ ]` zbývá · `[x]` hotovo · `[~]` rozpracováno
 - [ ] Zbývá: TER UCITS proti KID správců (hlavně XD9U, VWCE), stránka IBKR ručně v prohlížeči
 
 ## Fáze 2 – Obsah: cílovka, texty, reklamy (po 12. 10.)
-- [ ] Persona a slib reklamy → struktura první obrazovky
-- [ ] Texty sekcí (česky, podle zvoleného tónu), CTA, mikrotexty formuláře
-- [ ] Dvě verze reklamy (`ads/`) s UTM odkazy (`utm_content=a|b`)
-- [ ] Právní texty: upozornění na riziko, souhlas GDPR, zásady zpracování, údaj o správci
-- [ ] Commity `docs:`/`feat:` + push
+- [x] Persona a slib reklamy → struktura první obrazovky
+- [x] Texty sekcí (česky, podle zvoleného tónu), CTA, mikrotexty formuláře
+- [x] Dvě verze reklamy (`ads/`) – texty; vizuály ve Fázi 3 s UTM odkazy (`utm_content=a|b`)
+- [~] Právní texty: upozornění na riziko, souhlas GDPR, zásady zpracování, údaj o správci
+- [x] Commity `docs:`/`feat:` + push
 
 ## Fáze 3 – Stavba stránky (út 13. – st 14. 10.)
 - [ ] Kostra projektu podle zvolené technologie, nasazení prázdné stránky na Vercel hned na začátku (ověříme pipeline)

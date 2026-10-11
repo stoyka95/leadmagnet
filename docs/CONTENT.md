@@ -1,6 +1,6 @@
 # Obsah stránky – Fingramo (návrh, Fáze 2)
 
-**Stav:** NÁVRH – čeká na schválení Mikym.
+**Stav:** SCHVÁLENO Mikym 11. 10. 2026 (D18). Kalkulačka podle D16, hero podle D17.
 Tón: česky, vykání, věcně (D7). Čísla pouze z `data/SOURCES.md`. Žádné sliby výnosů.
 Značka: **Fingramo** (fiktivní, ukázkový projekt, D14).
 
@@ -73,7 +73,7 @@ Na stránku přichází z reklamy na mobilu a má **pár sekund**. Musí hned vi
   - Pod tlačítkem: *Odesláním žádáte o zaslání srovnání. Údaje zpracujeme podle [Zásad ochrany osobních údajů].*
   - Políčko (nezaškrtnuté): ☐ *Chci dostávat další tipy k investování do ETF e-mailem a souhlasím, že mě můžete kontaktovat telefonicky (pokud jsem ho vyplnil/a).*
 
-> ⚠️ **Otevřená otázka pro Mikyho:** jak kalkulačka počítá růst (viz otázka K1 níže).
+> Výpočet (D16): hlavní výsledek bez růstu („minimálně zaplatíte"). Rozbalovací „A co kdyby investice rostla?" s posuvníkem výnosu 0–10 %, výchozí 0 %, popisek „váš předpoklad, ne náš slib".
 
 ### 3.3 Srovnání 6 ETF
 

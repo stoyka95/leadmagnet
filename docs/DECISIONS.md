@@ -127,8 +127,26 @@ Drobnosti s rozumnou výchozí volbou rozhoduje Claude sám – jsou na konci v 
   - žádné obrázky ani soubory v Supabase Storage
   - z prohlížeče se do Supabase nevolá vůbec, jen ze serverové funkce na Vercelu
 
+## Skupina 5 – Obsah (Fáze 2, 11. 10. 2026)
+
+### D16 – Výpočet v kalkulačce
+- **Varianty:** (a) bez růstu + volitelný scénář s výnosem, který si nastaví návštěvník *(doporučeno)* · (b) ilustrativní výnos (např. 5 %) jako výchozí · (c) jen bez růstu
+- **Zvoleno:** (a). Hlavní výsledek je „minimálně zaplatíte X Kč", počítaný z vložených peněz bez růstu. Pod ním je rozbalovací „A co kdyby investice rostla?" s posuvníkem výnosu, výchozí hodnota 0 % a popisek „váš předpoklad, ne náš slib".
+- **Proč:** u reklamy na investice nesmí stránka naznačovat výnosy. Předpoklad 5 % nemá zdroj. Rozdíl mezi fondy je dobře vidět i bez růstu.
+
+### D17 – Nadpis hero podle reklamy
+- **Varianty:** (a) měnit podle `utm_content` *(doporučeno)* · (b) jeden nadpis pro obě
+- **Zvoleno:** (a). `utm_content=a` zobrazí nadpis o VOO, `b` nebo žádný UTM zobrazí nadpis o poplatcích v Kč. Nadpis se vybírá před vykreslením, takže nebliká.
+- **Proč:** zadání chce, aby první obrazovka navazovala na slib reklamy. Test A/B pak měří celou cestu reklama → stránka.
+
+### D18 – Pořadí sekcí a texty
+- **Zvoleno:** návrh v `docs/CONTENT.md` a `ads/README.md` **schválen bez změn**. Pořadí: hero → kalkulačka s formulářem → srovnání 6 ETF → proč VOO nenajdete → co pošleme → daně → FAQ + formulář → patička. Zdůvodnění je v CONTENT.md §2.
+
 ---
 
 ## Rozhodnuto Claudem (drobnosti)
 - **Definice konverze (11. 10.):** konverze = `form_submit` potvrzený serverem (kontakt skutečně uložený) ÷ unikátní návštěvníci s `utm_source` z reklamy. Proč: kliknutí na tlačítko, které skončí chybou, není kontakt.
 - **Název značky:** před použitím ověřit, že „Fingramo" nepoužívá existující firma (ARES, web).
+- **Výchozí hodnoty kalkulačky (11. 10.):** 100 000 Kč jednorázově, 3 000 Kč měsíčně, 20 let. Odpovídají typickému začínajícímu investorovi a dají se snadno přepsat.
+- **Výchozí hero bez UTM:** varianta B (obecnější).
+- **Lepivé CTA na mobilu** po odscrollování hero.
