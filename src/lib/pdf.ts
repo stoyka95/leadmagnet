@@ -4,9 +4,10 @@
 // drops glyphs of this font (letters went missing in the first test).
 import { PDFDocument, rgb, type PDFFont, type PDFPage, type RGB } from 'pdf-lib';
 import fontkit from '@pdf-lib/fontkit';
-import { buildReport, buildGrowth, brokerQuestions, SCENARIO_COLOURS, PAID_COLOUR, type ReportInput } from './report';
+import { buildReport, buildGrowth, brokerQuestions, SCENARIO_COLOURS, type ReportInput } from './report';
 import { formatCzk } from './fees';
 import { formatPct, formatDate, dataRetrieved } from './etf';
+import { kidScenarios, KID_YEARS, valuePath, paidInPath } from './growth';
 
 // Colours mirror src/styles/tokens.css (palette A, D19)
 const hex = (h: string): RGB => rgb(parseInt(h.slice(1, 3), 16) / 255, parseInt(h.slice(3, 5), 16) / 255, parseInt(h.slice(5, 7), 16) / 255);
@@ -143,23 +144,51 @@ export const buildPdf = async (input: ReportInput & { years: number }, siteUrl: 
     page.drawLine({ start: { x: M, y }, end: { x: M + W, y }, thickness: 0.6, color: C.line });
   }
 
-  // Scenarios as bars (D21)
+  // Scenarios (D21): the same line chart as on the page and /dekujeme, the bars below are its legend with the amounts
   heading(`Jak by mohla investice vypadat za ${growth.kidYears} let`, 26);
   para(`Čtyři scénáře z dokumentu KID fondu ${growth.kid.ticker} (S&P 500, evropská verze) pro vaši částku.`, { size: 9.5, gap: 6 });
-  const max = Math.max(growth.paidIn, ...growth.scenarios.map((s) => s.end), 1);
-  const barRow = (name: string, sub: string, value: number, colour: RGB) => {
-    ensure(34);
+  {
+    const chartH = 115, cL = M + 46, cR = M + W - 16;
+    ensure(chartH + 30);
+    const top = y - 8, bottom = top - chartH;
+    const paidPts = paidInPath(input.onceCzk, input.monthlyCzk);
+    const series = kidScenarios.map((k) => ({ id: k.id, pts: valuePath(input.onceCzk, input.monthlyCzk, k.avgAnnualPct) }));
+    const cMax = Math.max(...series.flatMap((sr) => sr.pts), ...paidPts, 1);
+    const cx = (i: number) => cL + (i / KID_YEARS) * (cR - cL);
+    const cy = (v: number) => bottom + (v / cMax) * chartH;
+    const axisNum = new Intl.NumberFormat('cs-CZ', { maximumFractionDigits: 2 });
+    for (let i = 0; i <= 4; i++) {
+      const v = (cMax / 4) * i;
+      page.drawLine({ start: { x: cL, y: cy(v) }, end: { x: cR, y: cy(v) }, thickness: 0.5, color: C.line });
+      const label = v >= 1e6 ? `${axisNum.format(v / 1e6)} mil.` : `${axisNum.format(Math.round(v / 1000))} tis.`;
+      right(label, cL - 6, cy(v) - 2.5, reg, 7.5, C.faint);
+    }
+    for (let i = 0; i <= KID_YEARS; i++) {
+      const label = i === 0 ? 'dnes' : `${i}. rok`;
+      page.drawText(label, { x: cx(i) - reg.widthOfTextAtSize(label, 7.5) / 2, y: bottom - 12, size: 7.5, font: reg, color: C.faint });
+    }
+    const polyline = (pts: number[], colour: RGB, thickness: number, dashArray?: number[]) => {
+      for (let i = 1; i < pts.length; i++) {
+        page.drawLine({ start: { x: cx(i - 1), y: cy(pts[i - 1]) }, end: { x: cx(i), y: cy(pts[i]) }, thickness, color: colour, dashArray, lineCap: 1 });
+      }
+    };
+    polyline(paidPts, C.faint, 1.3, [4, 3]);
+    for (const sr of series) polyline(sr.pts, hex(SCENARIO_COLOURS[sr.id] ?? '#0f1d45'), sr.id === 'moderate' ? 2.4 : 1.8);
+    y = bottom - 16;
+  }
+  // Legend with the amounts after 5 years: a short line in the chart colour (dashed for the deposits)
+  const legendRow = (name: string, sub: string, value: number, colour: RGB, dashed = false) => {
+    ensure(16);
     y -= 14;
-    page.drawText(name, { x: M, y, size: 10, font: bold, color: C.ink });
-    page.drawText(sub, { x: M + bold.widthOfTextAtSize(name, 10) + 6, y, size: 8.5, font: reg, color: C.faint });
-    right(formatCzk(value), M + W, y, bold, 10, C.navy);
-    y -= 12;
-    page.drawRectangle({ x: M, y, width: W, height: 8, color: C.track });
-    page.drawRectangle({ x: M, y, width: Math.max(4, (value / max) * W), height: 8, color: colour });
-    y -= 4;
+    page.drawLine({ start: { x: M, y: y + 3 }, end: { x: M + 18, y: y + 3 }, thickness: dashed ? 1.3 : 2.4, color: colour, dashArray: dashed ? [4, 3] : undefined, lineCap: 1 });
+    page.drawText(name, { x: M + 26, y, size: 9.5, font: bold, color: C.ink });
+    page.drawText(sub, { x: M + 26 + bold.widthOfTextAtSize(name, 9.5) + 6, y, size: 8, font: reg, color: C.faint });
+    right(formatCzk(value), M + W, y, bold, 9.5, C.navy);
+    y -= 3;
+    page.drawLine({ start: { x: M, y }, end: { x: M + W, y }, thickness: 0.5, color: C.line });
   };
-  barRow('Vloženo', 'vaše vklady', growth.paidIn, hex(PAID_COLOUR));
-  for (const s of growth.scenarios) barRow(`${s.label} scénář`, `(${signed(s.avgAnnualPct)} ročně)`, s.end, hex(SCENARIO_COLOURS[s.id] ?? '#0f1d45'));
+  legendRow('Vloženo', 'vaše vklady', growth.paidIn, C.faint, true);
+  for (const s of growth.scenarios) legendRow(`${s.label} scénář`, `(${signed(s.avgAnnualPct)} ročně)`, s.end, hex(SCENARIO_COLOURS[s.id] ?? '#0f1d45'));
   y -= 6;
   para(`Nejde o předpověď. Ilustrace podle průměrných ročních výnosů po nákladech z KID ze dne ${formatDate(growth.kid.date)}. Hodnota investice může klesnout a můžete přijít o část vložených peněz. KID počítá s jednorázovou investicí, my průměrné výnosy používáme i na měsíční vklady. Zdroj: ${growth.kid.source}`, { size: 8, color: C.muted });
 
