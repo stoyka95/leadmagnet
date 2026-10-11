@@ -43,7 +43,7 @@ Legenda: `[ ]` zbývá · `[x]` hotovo · `[~]` rozpracováno
 - [x] `LeadForm` (UI, validace, stavy) – použit 3×
 - [x] Srovnání 6 ETF (EtfCompare)
 - [x] Sekce: proč VOO nenajdete, co pošleme, daně, FAQ, patička, lepivé CTA
-- [~] API `/api/lead` + `/dekujeme` – běží na produkci (validace a honeypot ověřeny); ostrý test s uložením a e-mailem po doplnění klíčů Mikym
+- [x] API `/api/lead` + `/dekujeme` – ostrý test na produkci 11. 10.: řádek v Supabase ✓, e-mail přes Resend `delivered` ✓ (testovací záznam `utm_source=test`, smazat před odevzdáním)
 - [x] `/zasady`, `/zdroje`
 - [x] Vizuály reklam A/B (PNG 4:5 a 9:16) ze stejných tokenů
 
@@ -61,6 +61,7 @@ Legenda: `[ ]` zbývá · `[x]` hotovo · `[~]` rozpracováno
 
 ## Fáze 4 – Měření (st 14. 10.)
 - [ ] Události: `page_view` (s UTM) → `scroll_50` → `cta_click` → `tool_used` → `form_start` → `form_submit` → `thank_you_view`
+- [x] Vercel Web Analytics zapojeno (skript /_vercel/insights 200)
 - [ ] Trychtýř v analytice, ověření, že události reálně dorazí (test z mobilu)
 - [ ] Commit + push
 
