@@ -1,0 +1,199 @@
+---
+// The one lead form (D5, D13), used 3× – under the calculator, by the comparison, at the end.
+// Name + e-mail required, phone optional; the button is the request, the marketing box is separate and unticked.
+import GlassCard from './GlassCard.astro';
+
+interface Props {
+  location: 'calculator' | 'compare' | 'footer';
+  heading?: string;
+  sub?: string;
+}
+const {
+  location,
+  heading = 'Pošleme vám celé srovnání pro vaši částku',
+  sub = 'Všech 6 fondů, jejich evropské verze, poplatky v Kč na 10 a 20 let a odkazy na zdroje. Do e-mailu, zdarma.',
+} = Astro.props;
+const id = `lf-${location}`;
+---
+<GlassCard as="section" class="lead-form" aria-labelledby={`${id}-h`}>
+  <form class="form" data-lead-form data-location={location} novalidate>
+    <h3 id={`${id}-h`}>{heading}</h3>
+    <p class="muted sub">{sub}</p>
+
+    <div class="field">
+      <label for={`${id}-name`}>Jméno a příjmení</label>
+      <input id={`${id}-name`} name="full_name" type="text" autocomplete="name" required minlength="2" maxlength="120"
+        aria-describedby={`${id}-name-err`} />
+      <p class="err" id={`${id}-name-err`} data-err-for="full_name" hidden>Napište prosím jméno a příjmení.</p>
+    </div>
+
+    <div class="field">
+      <label for={`${id}-email`}>E-mail</label>
+      <input id={`${id}-email`} name="email" type="email" inputmode="email" autocomplete="email" required maxlength="254"
+        aria-describedby={`${id}-email-err`} />
+      <p class="err" id={`${id}-email-err`} data-err-for="email" hidden>Zkontrolujte prosím e-mail, sem vám srovnání pošleme.</p>
+    </div>
+
+    <div class="field">
+      <label for={`${id}-phone`}>Telefon <span class="opt">(nepovinné)</span></label>
+      <input id={`${id}-phone`} name="phone" type="tel" inputmode="tel" autocomplete="tel" maxlength="30"
+        aria-describedby={`${id}-phone-err`} />
+      <p class="err" id={`${id}-phone-err`} data-err-for="phone" hidden>Telefon vypadá neúplně. Můžete ho i vynechat.</p>
+    </div>
+
+    <!-- honeypot: invisible to people, bots fill it -->
+    <div class="hp" aria-hidden="true">
+      <label for={`${id}-company`}>Firma</label>
+      <input id={`${id}-company`} name="company" type="text" tabindex="-1" autocomplete="off" />
+    </div>
+
+    <button class="btn btn-primary btn-block submit" type="submit">Poslat mi srovnání</button>
+    <p class="fine legal">
+      Odesláním žádáte o zaslání srovnání. Údaje zpracujeme podle <a href="/zasady">Zásad ochrany osobních údajů</a>.
+    </p>
+
+    <label class="check">
+      <input type="checkbox" name="marketing_consent" value="yes" />
+      <span>Chci dostávat další tipy k investování do ETF e-mailem a souhlasím, že mě můžete kontaktovat telefonicky (pokud jsem ho vyplnil/a).</span>
+    </label>
+
+    <p class="form-status" role="status" aria-live="polite" data-status></p>
+  </form>
+</GlassCard>
+
+<style>
+  .form { display: grid; gap: var(--sp-4); }
+  .sub { font-size: var(--fs-sm); line-height: var(--lh-snug); margin-top: calc(-1 * var(--sp-2)); }
+  .field { display: grid; gap: var(--sp-1); }
+  label { font-size: var(--fs-sm); font-weight: var(--fw-medium); }
+  .opt { font-weight: var(--fw-regular); color: var(--c-ink-faint); }
+  input[type='text'], input[type='email'], input[type='tel'] {
+    width: 100%;
+    min-height: var(--tap);
+    padding: var(--sp-3) var(--sp-4);
+    font: inherit;
+    font-size: var(--fs-md); /* ≥16px: iOS does not zoom */
+    color: var(--c-ink);
+    background: var(--c-white);
+    border: 1.5px solid var(--c-line);
+    border-radius: var(--r-md);
+    transition: border-color var(--dur) var(--ease);
+  }
+  input:focus-visible { border-color: var(--c-blue-700); outline-offset: 1px; }
+  input[aria-invalid='true'] { border-color: var(--c-danger); }
+  .err { font-size: var(--fs-xs); color: var(--c-danger); }
+  .submit { font-size: var(--fs-lg); min-height: 56px; margin-top: var(--sp-1); }
+  .legal { margin-top: calc(-1 * var(--sp-2)); }
+  .check { display: grid; grid-template-columns: auto 1fr; gap: var(--sp-3); align-items: start; font-weight: var(--fw-regular); font-size: var(--fs-xs); color: var(--c-ink-muted); line-height: var(--lh-snug); cursor: pointer; }
+  .check input { width: 20px; height: 20px; margin: 0; accent-color: var(--c-green-800); }
+  .form-status { font-size: var(--fs-sm); }
+  .form-status[data-kind='error'] { color: var(--c-danger); }
+  .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+</style>
+
+<script>
+  import { track, readUtm } from '../lib/track';
+  import { readCalc } from '../lib/calc-state';
+
+  const CONSENT_VERSION = 'v1-2026-10-11';
+  const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+  type FieldName = 'full_name' | 'email' | 'phone';
+
+  const validate = (form: HTMLFormElement): FieldName[] => {
+    const data = new FormData(form);
+    const bad: FieldName[] = [];
+    if (String(data.get('full_name') ?? '').trim().length < 2) bad.push('full_name');
+    if (!EMAIL_RE.test(String(data.get('email') ?? '').trim())) bad.push('email');
+    const phone = String(data.get('phone') ?? '').replace(/[\s()-]/g, '');
+    if (phone && !/^\+?\d{6,15}$/.test(phone)) bad.push('phone');
+    return bad;
+  };
+
+  const showErrors = (form: HTMLFormElement, bad: FieldName[]): void => {
+    for (const name of ['full_name', 'email', 'phone'] as FieldName[]) {
+      const input = form.elements.namedItem(name) as HTMLInputElement;
+      const err = form.querySelector<HTMLElement>(`[data-err-for="${name}"]`);
+      const isBad = bad.includes(name);
+      input.setAttribute('aria-invalid', String(isBad));
+      if (err) err.hidden = !isBad;
+    }
+    if (bad.length) (form.elements.namedItem(bad[0]) as HTMLInputElement).focus();
+  };
+
+  for (const form of document.querySelectorAll<HTMLFormElement>('[data-lead-form]')) {
+    const location = form.dataset.location ?? 'unknown';
+    const status = form.querySelector<HTMLElement>('[data-status]')!;
+    const button = form.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+    let started = false;
+
+    form.addEventListener('focusin', () => {
+      if (started) return;
+      started = true;
+      track('form_start', { form_location: location });
+    });
+
+    // Re-validate a field once it was flagged, so the error clears as soon as it is fixed
+    form.addEventListener('input', (e) => {
+      const target = e.target as HTMLInputElement;
+      if (target.getAttribute('aria-invalid') !== 'true') return;
+      if (validate(form).includes(target.name as FieldName)) return;
+      target.setAttribute('aria-invalid', 'false');
+      const err = form.querySelector<HTMLElement>(`[data-err-for="${target.name}"]`);
+      if (err) err.hidden = true;
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const bad = validate(form);
+      showErrors(form, bad);
+      if (bad.length) {
+        track('form_error', { form_location: location, reason: 'validation', fields: bad.join(',') });
+        return;
+      }
+
+      const data = new FormData(form);
+      const calc = readCalc();
+      const payload = {
+        full_name: String(data.get('full_name')).trim(),
+        email: String(data.get('email')).trim(),
+        phone: String(data.get('phone') ?? '').trim() || null,
+        marketing_consent: data.get('marketing_consent') === 'yes',
+        consent_version: CONSENT_VERSION,
+        form_location: location,
+        company: String(data.get('company') ?? ''),
+        calc: { onceCzk: calc.onceCzk, monthlyCzk: calc.monthlyCzk, years: calc.years },
+        utm: readUtm(),
+        analytics_id: (window as unknown as { posthog?: { get_distinct_id?: () => string } }).posthog?.get_distinct_id?.() ?? null,
+      };
+
+      button.disabled = true;
+      button.textContent = 'Odesílám…';
+      status.textContent = '';
+      status.removeAttribute('data-kind');
+
+      try {
+        const res = await fetch('/api/lead', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        track('form_submit', {
+          form_location: location,
+          marketing_consent: payload.marketing_consent,
+          has_phone: Boolean(payload.phone),
+          used_calculator: calc.touched,
+        });
+        try { sessionStorage.setItem('fg:lead', JSON.stringify({ firstName: payload.full_name.split(' ')[0], email: payload.email })); } catch { /* ignore */ }
+        window.location.assign('/dekujeme');
+      } catch (err) {
+        track('form_error', { form_location: location, reason: 'server', detail: String(err) });
+        status.dataset.kind = 'error';
+        status.textContent = 'Odeslání se nepovedlo. Zkuste to prosím za chvíli znovu.';
+        button.disabled = false;
+        button.textContent = 'Poslat mi srovnání';
+      }
+    });
+  }
+</script>
