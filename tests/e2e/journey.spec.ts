@@ -45,17 +45,40 @@ test.describe('first screen (D17)', () => {
 });
 
 test.describe('sticky top bar (D27)', () => {
-  test('stays visible while scrolling and leads to the last form', async ({ page }) => {
+  test('stays visible while scrolling; leads to the calculator first (D30)', async ({ page }) => {
     await page.goto(AD_B);
     await noSmoothScroll(page);
     const header = page.locator('[data-site-header]');
+    const cta = page.locator('[data-header-cta]');
     await page.mouse.wheel(0, 3000);
     await expect(header).toHaveClass(/scrolled/);
     expect((await header.boundingBox())!.y).toBe(0);
-    await page.locator('[data-header-cta]').click();
+    await expect(cta).toHaveText(/Spočítat poplatky/);
+    await cta.click();
+    await expect(page.locator('#kalkulacka')).toBeInViewport();
+    expect(await events(page)).toContainEqual(['cta_click', { cta: 'header_calc' }]);
+  });
+
+  test('after the calculator is used it leads to the last form', async ({ page }) => {
+    await page.goto(AD_B);
+    await noSmoothScroll(page);
+    await page.locator('#c-once').fill('80000');
+    const cta = page.locator('[data-header-cta]');
+    await expect(cta).toHaveText(/Získat srovnání/);
+    await cta.click();
     await expect(page.locator('#lf-footer-email')).toBeFocused();
     await expect(page.locator('#lf-footer-email')).toBeInViewport();
     expect(await events(page)).toContainEqual(['cta_click', { cta: 'header' }]);
+    // remembered within the tab
+    await page.reload();
+    await expect(cta).toHaveText(/Získat srovnání/);
+  });
+
+  test('the hero field (variant hero_input) also switches the bar to the form', async ({ page }) => {
+    await page.goto('/?exp=hero_input');
+    await page.locator('#h-monthly').fill('3000');
+    await page.locator('#h-monthly').press('Enter');
+    await expect(page.locator('[data-header-cta]')).toHaveText(/Získat srovnání/);
   });
 
   test('the old mobile bottom bar is gone', async ({ page }) => {
