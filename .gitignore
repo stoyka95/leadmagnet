@@ -22,3 +22,7 @@ npm-debug.log*
 # local tooling
 .playwright-mcp/
 .claude/launch.json
+
+# test output
+test-results/
+playwright-report/
