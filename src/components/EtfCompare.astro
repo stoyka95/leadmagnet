@@ -2,7 +2,8 @@
 // Second tool (D4): pick what you want → US original vs. European (UCITS) version. Leads to the same form.
 import GlassCard from './GlassCard.astro';
 import LeadForm from './LeadForm.astro';
-import { groups, etfByTicker, ucitsFor, formatPct, formatUsdBig, formatDate, dataRetrieved } from '../lib/etf';
+import { groups, etfByTicker, ucitsFor, ucitsEtfs, formatPct, formatUsdBig, formatDate, dataRetrieved } from '../lib/etf';
+const minEuTer = Math.min(...ucitsEtfs.map((u) => u.terPct));
 ---
 <section id="srovnani" class="section container" aria-labelledby="cmp-h">
   <div class="section-head">
@@ -45,6 +46,7 @@ import { groups, etfByTicker, ucitsFor, formatPct, formatUsdBig, formatDate, dat
               </dl>
               <p class="badges">
                 <span class:list={['badge', sameIndex ? 'badge-ok' : 'badge-warn']}>{sameIndex ? 'Stejný index' : 'Podobný, jiný index'}</span>
+                {eu.terPct === minEuTer && <span class="badge-mint">Nejnižší poplatek</span>}
                 {eu.registeredCZ && <span class="badge badge-ok">Registrováno pro ČR</span>}
               </p>
             </GlassCard>

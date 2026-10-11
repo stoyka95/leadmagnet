@@ -4,7 +4,7 @@
 import GlassCard from './GlassCard.astro';
 import LeadForm from './LeadForm.astro';
 import { DEFAULT_CALC } from '../lib/calc-state';
-import { usEtfs, ucitsFor, formatPct, formatDate, dataRetrieved } from '../lib/etf';
+import { usEtfs, ucitsEtfs, ucitsFor, formatPct, formatDate, dataRetrieved } from '../lib/etf';
 import { feesForTer, formatCzk } from '../lib/fees';
 import { kidMeta, kidScenarios, KID_YEARS, historyFor, historyMeta } from '../lib/growth';
 
@@ -12,6 +12,8 @@ const rows = usEtfs
   .map((e) => ({ etf: e, ucits: ucitsFor(e), fees: feesForTer(e.expenseRatioPct, DEFAULT_CALC).feesCzk }))
   .sort((a, b) => a.fees - b.fees);
 const maxFees = Math.max(...rows.map((r) => r.fees));
+// Factual label for the European fund(s) with the lowest TER – never "recommended" (no investment advice)
+const minEuTer = Math.min(...ucitsEtfs.map((u) => u.terPct));
 const nf = new Intl.NumberFormat('cs-CZ');
 const hist = historyFor(DEFAULT_CALC.years);
 const pctSigned = (v: number) => `${v > 0 ? '+' : ''}${formatPct(v)}`;
@@ -89,7 +91,11 @@ const pctSigned = (v: number) => `${v > 0 ? '+' : ''}${formatPct(v)}`;
               <span class="kc num" data-kc>{formatCzk(r.fees)}</span>
             </div>
             <div class="bar" aria-hidden="true"><span style={`width:${Math.max(2, (r.fees / maxFees) * 100)}%`} data-bar></span></div>
-            <p class="eu fine">Evropská verze {r.ucits.ticker.split(' ')[0]}: {formatPct(r.ucits.terPct)} → <span class="num" data-eu-kc>{formatCzk(feesForTer(r.ucits.terPct, DEFAULT_CALC).feesCzk)}</span></p>
+            <p class="eu fine">
+              Evropská verze {r.ucits.ticker.split(' ')[0]}: {formatPct(r.ucits.terPct)} → <span class="num" data-eu-kc>{formatCzk(feesForTer(r.ucits.terPct, DEFAULT_CALC).feesCzk)}</span>
+              {r.ucits.terPct === minEuTer && <span class="badge-mint">Nejnižší poplatek</span>}
+              {r.ucits.registeredCZ && <span class="badge-mint badge-navy">Registrováno pro ČR</span>}
+            </p>
           </li>
         ))}
       </ol>
@@ -108,7 +114,8 @@ const pctSigned = (v: number) => `${v > 0 ? '+' : ''}${formatPct(v)}`;
 <style>
   .calc-grid {
     display: grid; gap: var(--sp-4);
-    grid-template-areas: 'inputs' 'growth' 'fees' 'form';
+    /* mobile: result and form right under the inputs; the 5-year chart follows the form */
+    grid-template-areas: 'inputs' 'fees' 'form' 'growth';
   }
   @media (min-width: 960px) {
     .calc-grid {
@@ -128,7 +135,7 @@ const pctSigned = (v: number) => `${v > 0 ? '+' : ''}${formatPct(v)}`;
   .calc-form { display: grid; gap: var(--sp-5); }
   .field { display: grid; gap: var(--sp-2); }
   label { font-size: var(--fs-sm); font-weight: var(--fw-medium); }
-  .money { display: flex; align-items: center; background: var(--c-white); border: 1.5px solid var(--c-line); border-radius: var(--r-md); padding-inline: var(--sp-4); min-height: var(--tap); }
+  .money { display: flex; align-items: center; background: var(--c-white); border: 1.5px solid var(--c-line); border-radius: var(--r-md); padding-inline: var(--sp-4); min-height: var(--field-h); }
   .money:focus-within { border-color: var(--c-navy-700); outline: 3px solid var(--c-navy-700); outline-offset: 1px; }
   .money input { flex: 1; min-width: 0; border: 0; background: transparent; font: inherit; font-size: var(--fs-lg); font-weight: var(--fw-medium); font-variant-numeric: tabular-nums; padding-block: var(--sp-2); color: var(--c-ink); }
   .money input:focus-visible { outline: none; }
@@ -163,7 +170,8 @@ const pctSigned = (v: number) => `${v > 0 ? '+' : ''}${formatPct(v)}`;
   .bar { height: 8px; border-radius: var(--r-pill); background: var(--c-bg-2); margin-top: var(--sp-1); overflow: hidden; }
   .bar span { display: block; height: 100%; border-radius: inherit; background: var(--c-green-500); transition: width var(--dur) var(--ease); }
   .row:last-child .bar span { background: var(--c-ink-muted); }
-  .eu { margin-top: var(--sp-1); }
+  .eu { margin-top: var(--sp-1); display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-1) var(--sp-2); }
+  .badge-navy { background: var(--c-navy-100); color: var(--c-navy-700); }
   .diff { margin-top: var(--sp-5); padding: var(--sp-4); border-radius: var(--r-md); background: var(--c-green-100); color: var(--c-green-900); font-weight: var(--fw-medium); }
   .diff:empty { display: none; }
   .note { margin-top: var(--sp-4); }
