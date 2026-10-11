@@ -106,7 +106,9 @@ const id = `lf-${location}`;
   @media (min-width: 900px) { :global(.is-wide) .assure { justify-content: flex-start; } }
   .legal { margin-top: calc(-1 * var(--sp-2)); }
   .check { display: grid; grid-template-columns: auto 1fr; gap: var(--sp-3); align-items: start; font-weight: var(--fw-regular); font-size: var(--fs-xs); color: var(--c-ink-muted); line-height: var(--lh-snug); cursor: pointer; }
-  .check input { width: 20px; height: 20px; margin: 0; accent-color: var(--c-green-800); }
+  /* D35: the whole row (box + text) is the touch target, at least 44 px tall; the box itself 24 px */
+  .check { min-height: 44px; align-items: center; }
+  .check input { width: 24px; height: 24px; margin: 0; accent-color: var(--c-green-800); }
   .form-status { font-size: var(--fs-sm); }
   .form-status[data-kind='error'] { color: var(--c-danger); }
   .consents { border: 0; padding: 0; margin: 0; display: grid; gap: var(--sp-2); min-width: 0; }

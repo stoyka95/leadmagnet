@@ -28,7 +28,7 @@ const points = [
         <div>
           <h4>{p.title}</h4>
           <p class="muted">{p.text}</p>
-          <p class="fine">Zdroj: {p.sources.map((s, j) => <>{j > 0 && ', '}<a href={s.href} rel={s.href.startsWith('http') ? 'noopener' : undefined}>{s.label}</a></>)}</p>
+          <p class="fine">Zdroj: {p.sources.map((s, j) => <>{j > 0 && <span class="sep" aria-hidden="true">·</span>}<a href={s.href} rel={s.href.startsWith('http') ? 'noopener' : undefined}>{s.label}</a></>)}</p>
         </div>
       </li>
     ))}
@@ -42,4 +42,5 @@ const points = [
   .n { width: 36px; height: 36px; border-radius: var(--r-pill); background: var(--c-navy-700); color: var(--c-white); display: grid; place-items: center; font-weight: var(--fw-bold); }
   h4 { margin: 0 0 var(--sp-1); font-size: var(--fs-md); color: var(--c-navy-900); }
   .fine { margin-top: var(--sp-2); }
+  .sep { margin-inline: var(--sp-3); } /* D35: neighbouring source links do not share one touch area */
 </style>

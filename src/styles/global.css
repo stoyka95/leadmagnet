@@ -110,3 +110,13 @@ a:hover { text-decoration-thickness: 2px; }
   overflow: hidden; clip: rect(0 0 0 0);
   white-space: nowrap; border: 0;
 }
+
+/* D35: on phones every link in running text gets a touch area of at least 44 × 44 px.
+   An invisible ::after around the link – the text and the line spacing stay exactly as they are. */
+@media (max-width: 767px) {
+  a:not(.btn):not(.logo) { position: relative; display: inline-block; } /* one box, never split across two lines */
+  a:not(.btn):not(.logo)::after {
+    content: ''; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+    width: max(100%, 44px); height: max(100%, 44px);
+  }
+}

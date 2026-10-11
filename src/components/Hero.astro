@@ -112,7 +112,7 @@ const pairs = ['VOO', 'SPY', 'VT'].map((t) => {
   }
   .hero-calc .money:focus-within { border-color: var(--c-navy-700); outline: 3px solid var(--c-navy-700); outline-offset: 1px; }
   .hero-calc input {
-    flex: 1; min-width: 0; border: 0; background: transparent; color: var(--c-ink);
+    flex: 1; min-width: 0; align-self: stretch; border: 0; background: transparent; color: var(--c-ink); /* D35: the whole box is the touch target */
     font: inherit; font-size: var(--fs-lg); font-weight: var(--fw-medium); font-variant-numeric: tabular-nums;
   }
   .hero-calc input:focus-visible { outline: none; }

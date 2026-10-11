@@ -160,10 +160,10 @@ const pctSigned = (v: number) => `${v > 0 ? '+' : ''}${formatPct(v)}`;
   label { font-size: var(--fs-sm); font-weight: var(--fw-medium); }
   .money { display: flex; align-items: center; background: var(--c-white); border: 1.5px solid var(--c-line); border-radius: var(--r-md); padding-inline: var(--sp-4); min-height: var(--field-h); }
   .money:focus-within { border-color: var(--c-navy-700); outline: 3px solid var(--c-navy-700); outline-offset: 1px; }
-  .money input { flex: 1; min-width: 0; border: 0; background: transparent; font: inherit; font-size: var(--fs-lg); font-weight: var(--fw-medium); font-variant-numeric: tabular-nums; padding-block: var(--sp-2); color: var(--c-ink); }
+  .money input { flex: 1; min-width: 0; align-self: stretch; min-height: 44px; /* D35: the whole box is the touch target */ border: 0; background: transparent; font: inherit; font-size: var(--fs-lg); font-weight: var(--fw-medium); font-variant-numeric: tabular-nums; padding-block: var(--sp-2); color: var(--c-ink); }
   .money input:focus-visible { outline: none; }
   .money span { color: var(--c-ink-faint); }
-  input[type='range'] { width: 100%; accent-color: var(--c-green-800); min-height: 32px; }
+  input[type='range'] { width: 100%; accent-color: var(--c-green-800); min-height: 44px; /* D35 */ }
   .growth-opt summary { cursor: pointer; color: var(--c-navy-700); font-size: var(--fs-sm); font-weight: var(--fw-medium); min-height: var(--tap); display: flex; align-items: center; }
 
   h3 { margin-bottom: var(--sp-1); }

@@ -24,6 +24,7 @@ const Tag = href ? 'a' : 'span';
     display: inline-flex; align-items: center; gap: calc(var(--logo-h) * 0.22);
     text-decoration: none; line-height: 1;
   }
+  a.logo { min-height: 44px; } /* D35: touch target */
   .mark { height: var(--logo-h); width: calc(var(--logo-h) * 48 / 56); flex: none; }
   .stem { fill: var(--c-navy-900); }
   .arrow { fill: var(--c-green-500); }
