@@ -1,0 +1,53 @@
+---
+// CONTENT.md §3.5 – repeats the value for visitors who skipped the form under the calculator.
+import GlassCard from './GlassCard.astro';
+import { etfByTicker, ucitsFor, formatPct } from '../lib/etf';
+import { DEFAULT_CALC } from '../lib/calc-state';
+
+const nf = new Intl.NumberFormat('cs-CZ');
+const preview = ['VOO', 'SPY'].flatMap((t) => {
+  const us = etfByTicker(t);
+  const eu = ucitsFor(us);
+  return [
+    { label: us.ticker, ter: us.expenseRatioPct },
+    { label: `→ ${eu.ticker.split(' ')[0]} (UCITS)`, ter: eu.terPct },
+  ];
+});
+const items = [
+  'Všech 6 fondů a jejich evropské verze vedle sebe',
+  'Poplatky v korunách pro vaši částku na 10 a 20 let',
+  'Na co se zeptat brokera a odkazy na oficiální zdroje',
+];
+---
+<section id="co-posleme" class="section container" aria-labelledby="get-h">
+  <div class="grid">
+    <div class="section-head">
+      <p class="eyebrow">Zdarma do e-mailu</p>
+      <h2 id="get-h">Co vám pošleme</h2>
+      <ul class="list">
+        {items.map((t) => <li>{t}</li>)}
+      </ul>
+      <a class="btn btn-primary" href="#zaver" data-track="cta_click" data-cta="what_you_get">Chci srovnání</a>
+    </div>
+
+    <GlassCard class="preview" aria-label="Náhled e-mailu se srovnáním">
+      <p class="fine">Od: Fingramo · Předmět: Vaše srovnání ETF</p>
+      <p class="hello">Dobrý den, tady je vaše srovnání pro {nf.format(DEFAULT_CALC.onceCzk)} Kč + {nf.format(DEFAULT_CALC.monthlyCzk)} Kč měsíčně na {DEFAULT_CALC.years} let.</p>
+      {preview.map((r) => <div class="mock-row"><span>{r.label}</span><span class="num">{formatPct(r.ter)}</span></div>)}
+      <p class="fine more">… a další 4 fondy, poplatky v Kč a zdroje</p>
+    </GlassCard>
+  </div>
+</section>
+
+<style>
+  .grid { display: grid; gap: var(--sp-8); align-items: center; }
+  @media (min-width: 900px) { .grid { grid-template-columns: 1fr 1fr; } }
+  .section-head { margin-bottom: 0; }
+  .list { list-style: none; padding: 0; margin: var(--sp-2) 0 var(--sp-4); display: grid; gap: var(--sp-3); }
+  .list li { padding-left: var(--sp-8); position: relative; }
+  .list li::before { content: '✓'; position: absolute; left: 0; top: 0; width: 24px; height: 24px; border-radius: var(--r-pill); background: var(--c-green-100); color: var(--c-green-800); display: grid; place-items: center; font-size: var(--fs-xs); font-weight: var(--fw-bold); }
+  .btn { justify-self: start; }
+  .hello { margin: var(--sp-3) 0 var(--sp-4); font-weight: var(--fw-medium); }
+  .mock-row { display: flex; justify-content: space-between; padding-block: var(--sp-2); border-top: 1px solid var(--c-line); font-size: var(--fs-sm); }
+  .more { margin-top: var(--sp-3); }
+</style>
