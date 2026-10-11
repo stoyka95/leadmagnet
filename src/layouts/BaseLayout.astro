@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import Analytics from '@vercel/analytics/astro';
 
 interface Props {
   title: string;
@@ -25,6 +26,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta property="og:description" content={description} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <slot name="head" />
+    <!-- Vercel Web Analytics (D11): cookieless page views as a cross-check for PostHog -->
+    <Analytics />
   </head>
   <body>
     <div class="page-bg" aria-hidden="true"></div>
