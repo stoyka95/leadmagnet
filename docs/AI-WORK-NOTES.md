@@ -245,7 +245,7 @@ Miky si stránku prošel v prohlížeči a poslal 8 bodů: ověřit TER (hlavně
 - **Body nejdřív ověřila v kódu, ne naslepo.** Dva body neodpovídaly stavu stránky: pole „Firma" je neviditelná past na roboty (návštěvník ho nevidí) a částku formulář už posílá z kalkulačky. Místo slepého provedení se zeptala (4 otázky, D35).
 - **TER:** všech 12 fondů znovu na webech správců ve vestavěném prohlížeči, u UCITS navíc KID (PDF přečtené přes extrakci textu, u State Street šifrované PDF dešifrované prázdným heslem). Vše sedí, žádná změna dat.
 - **Souhlasy:** nejdřív migrace databáze (sloupec `phone_consent`), až potom kód, aby produkce ani na chvíli neposílala neznámý sloupec.
-- **Mobil:** změřila výšky všech sekcí na 390 px, pak cíleně zkrátila dvě největší (srovnání vedle sebe, zamčený seznam jako ukázka). 10 442 → 9 404 px. Kontrola snímkem celé stránky a testem hlídajícím výšku a přetečení.
+- **Mobil:** změřila výšky všech sekcí na 390 px, pak cíleně zkrátila dvě největší (srovnání vedle sebe, zamčený seznam jako ukázka). 10 442 → 9 538 px (po zkrácení 9 376 px, pak +162 px za dotykové plochy 44 px a vysvětlení u telefonu). Kontrola snímkem celé stránky a testem hlídajícím výšku a přetečení.
 - **44 px:** nejdřív audit všech ovládacích prvků (26 pod limitem), pak oprava a trvalý test, který „klepne" 21 px od středu každého odkazu.
 - **Obě reklamy:** nový test 2 × 2 × mobil/desktop, proti produkci, a snímky první obrazovky vedle obrázku reklamy.
 
@@ -256,3 +256,4 @@ Miky si stránku prošel v prohlížeči a poslal 8 bodů: ověřit TER (hlavně
 4. **Chyby v nových testech, ne na stránce:** test nepočkal 0,8 s na `tool_used` a na produkci na `thank_you_view`, test vyžadoval atribut `data-ad` i u výchozí varianty B. Opraveno v testech, stránka se neměnila.
 5. **Nesrovnalost v dokumentaci:** MEASUREMENT.md uvádí `anonymize_ips: true`, ale v kódu to není. Do README AI tuto větu nedala, dokud se neověří. Otevřené.
 6. **Záznamy relací jsou v nastavení PostHog projektu pořád povolené** (kód je blokuje). README to říká otevřeně. Vypnutí v nastavení je na Mikym.
+7. **Výška stránky v DECISIONS byla napsaná před změřením** (9 404 px). Kontrolní měření na produkci dalo 9 538 px, protože dotykové plochy 44 px a vysvětlení u telefonu stránku zase prodloužily. Opraveno samostatným `fix:` commitem, čísla teď pochází z měření.

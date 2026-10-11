@@ -267,7 +267,7 @@ Miky si stránku prošel v prohlížeči a poslal 8 bodů. Claude je nejdřív o
 - **Počet formulářů:** základní verze má 2 (u kalkulačky a na konci). Varianty: odebrat (a) ten pod srovnáním *(doporučeno)* · (b) ten na konci. **Zvoleno (a).**
 - **Varianta se 3 formuláři:** (a) přepínač `?forms=3` a hypotéza do README *(doporučeno)* · (b) druhý živý test 50/50. **Zvoleno (a):** ostře dál běží jediný test (H2, D28).
 - **Otázka na částku ve formuláři:** (a) nepřidávat, jen vysvětlit, proč chceme telefon *(doporučeno)* · (b) nepovinný výběr rozmezí. **Zvoleno (a):** částku už posílá kalkulačka, další pole by konverzi spíš snížilo.
-- **Mobil:** srovnání má originál a evropskou verzi vedle sebe, zamčený seznam 12 fondů je na mobilu jen ukázka. Stránka na 390 px: 10 442 → 9 404 px, formulář u kalkulačky začíná o 290 px výš. Dotykové plochy mají min. 44 px.
+- **Mobil:** srovnání má originál a evropskou verzi vedle sebe, zamčený seznam 12 fondů je na mobilu jen ukázka. Stránka na 390 px: 10 442 → 9 538 px (změřeno na produkci, varianta control; hero_input 9 569 px), formulář u kalkulačky 2 539 → 2 262 px. Dotykové plochy mají min. 44 px.
 - **Dashboard:** nový insight „Cena za lead podle reklamy (A vs. B)" (Miky souhlasil s vytvořením). Útrata je prázdná, dokud kampaň neběží.
 
 #### Test obou verzí reklamy (11. 10. 2026)
