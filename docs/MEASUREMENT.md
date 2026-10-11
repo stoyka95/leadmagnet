@@ -41,6 +41,29 @@ Podklad pro README §8. Rozhodnutí: D11 (PostHog EU + Vercel Analytics), D24 (b
 2. **Návštěvníci a leady po dnech (A vs. B)**: liniový graf.
 3. **Odeslané formuláře podle místa**: `calculator` / `compare` / `footer` (odpovídá na D22).
 
+## A/B test na stránce: H2, kalkulačka na 1. obrazovce (D28)
+- **Hypotéza:** když návštěvník z reklamy zadá částku hned na první obrazovce, dostane se k výsledku rychleji a víc lidí odešle formulář.
+- **Varianty:** `control` (tlačítko „Spočítat moje poplatky") vs. `hero_input` (pole „Kolik chcete investovat měsíčně?" + „Spočítat"). Rozdělení 50/50 náhodně, jen v rámci záložky. Vlastnost `exp_hero_calc` je u všech událostí.
+- **Primární metrika:** podíl návštěvníků, kteří odeslali formulář (`form_submit` / unikátní návštěvníci s `$pageview`).
+- **Sekundární:** `tool_used` (použil kalkulačku), `form_start`.
+- **Kontrolní metrika:** podíl `hero_calc_submit` ve variantě `hero_input` (používá se pole vůbec?).
+- **Insight:** [A/B test H2](https://eu.posthog.com/project/301598/insights/HSttab8L) na dashboardu, trychtýř rozdělený podle `exp_hero_calc`.
+- **Kolik návštěv je potřeba** (dvoustranný test, α = 0,05, síla 80 %):
+
+| Výchozí konverze | Chceme poznat zlepšení o | Návštěv na variantu | Celkem |
+|---|---|---|---|
+| 4 % | 20 % (4,0 → 4,8 %) | 10 317 | ~20 600 |
+| 6 % | 20 % (6,0 → 7,2 %) | 6 719 | ~13 400 |
+| 6 % | 30 % (6,0 → 7,8 %) | 3 112 | ~6 200 |
+
+  Při rozpočtu na pár tisíc návštěv test spolehlivě ukáže jen velký rozdíl (≥ 30 %). Proto ho necháme běžet do dosažení počtu a nevyhodnocujeme průběžně.
+- **Současně běží test reklamy** (A/B podle `utm_content`). Rozdělení na stránce je na reklamě nezávislé, takže vzniknou 4 kombinace a oba testy jdou vyhodnotit zvlášť.
+
+## Čistá data
+- **Všechny insighty filtrují** `$host = fingramo.vercel.app` a vynechávají `utm_source` = `test` / `lighthouse`.
+- **Lokální vývoj a testy do PostHogu nic neposílají:** při `astro dev` se PostHog nespustí a události jdou jen do konzole. Dřív se posílaly, viz AI-WORK-NOTES.
+- E2E testy navíc požadavky na analytiku blokují.
+
 ## Ověření (11. 10. 2026)
 - Lokálně i na produkci: průchod s `utm_content=a` a `b`. V PostHogu dorazilo všech 8 kroků se stejným `distinct_id`. Lead v Supabase má správné `utm_*`. E-mail má v Resendu stav `delivered`.
 - **Testovací data** (`utm_source=test`, jména „Test …") se před spuštěním reklamy smažou z `leads`. V PostHogu se dashboard filtruje od data spuštění.
