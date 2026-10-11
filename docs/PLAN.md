@@ -81,10 +81,10 @@ Každý krok: změna, testy (unit/E2E) upravené nebo nové, kontrola na mobilu 
 1. [x] **Soukromí (D33):** v PostHogu vypnout záznamy relací, heatmapy nechat; upravit `/zasady`.
 2. [x] **Karta v hero podle reklamy (D29):** A = páry originál → evropská verze (z `etf.json`), B = SPY vs. VOO.
 3. [x] **Živý A/B test H2 (D28):** přiřazení 50/50 v `<head>` (sessionStorage), `exp_hero_calc` = `control | hero_input` u všech událostí; varianta B = pole „Kolik chcete investovat měsíčně" a tlačítko „Spočítat" v hero → kalkulačka; událost `hero_calc_submit`; přepnutí přes URL (`?exp=control|hero_input`) pro kontrolu a testy.
-4. [ ] **PostHog:** insight trychtýře rozdělený podle `exp_hero_calc` na dashboardu; definice úspěchu (primárně `form_submit` / návštěvník, sekundárně `tool_used`) a minimální počet návštěv do `docs/MEASUREMENT.md`.
-5. [ ] **Tlačítko v liště (D30):** dokud není `tool_used` → „Spočítat poplatky" ke kalkulačce; potom „Získat srovnání" k formuláři.
-6. [ ] **Zhuštění (D31):** zkrátit sekci KID a Daně, detaily do FAQ; blok „Kdo za tím stojí" (2–3 věty, odkazy na zdroje).
-7. [ ] **Děkovací stránka (D32):** otázka „Už investujete?" (Ano / Začínám / Zatím ne, událost `lead_segment`, nic osobního) a sdílení (Web Share API na mobilu, jinak WhatsApp a kopírovat odkaz; odkaz s `utm_source=share`).
+4. [x] **PostHog:** insight trychtýře rozdělený podle `exp_hero_calc` na dashboardu; definice úspěchu (primárně `form_submit` / návštěvník, sekundárně `tool_used`) a minimální počet návštěv do `docs/MEASUREMENT.md`.
+5. [x] **Tlačítko v liště (D30):** dokud není `tool_used` → „Spočítat poplatky" ke kalkulačce; potom „Získat srovnání" k formuláři.
+6. [x] **Zhuštění (D31):** zkrátit sekci KID a Daně, detaily do FAQ; blok „Kdo za tím stojí" (2–3 věty, odkazy na zdroje).
+7. [x] **Děkovací stránka (D32):** otázka „Už investujete?" (Ano / Začínám / Zatím ne, událost `lead_segment`, nic osobního) a sdílení (Web Share API na mobilu, jinak WhatsApp a kopírovat odkaz; odkaz s `utm_source=share`).
 8. [ ] **Hypotézy H1 a H3** připravit textem pro README (hypotéza, změna, metrika, odhad dopadu).
 9. [ ] **Testy:** celá sada lokálně i proti produkci, Lighthouse znovu.
 10. [ ] **Potom (s Mikym):** SVG ikony a ilustrace, OG obrázek.

@@ -215,3 +215,21 @@ Miky: projít projekt a položit co nejvíc otázek s výběrem. Pak plán, pak 
 2. **Důkaz, který nic nedokazoval.** AI chtěla vypnutí záznamů prokázat porovnáním síťových požadavků před a po. Nahrávací skript se ale nenačetl ani předtím, takže porovnání nic neukázalo. AI to přiznala a ověřila stav z konfigurace projektu.
 3. **Varianta B v hero byla na mobilu širší než obrazovka** (415 px). E2E test na to přišel, protože tlačítko „Spočítat" nešlo stisknout. Opraveno před commitem. Test vodorovného scrollu teď běží i pro tuto variantu.
 4. **Zásady tvrdily „bez ukládání do prohlížeče"**, ale kalkulačka si už dřív pamatovala čísla v záložce a teď i variantu testu. Text je opravený a přesně popisuje paměť v záložce.
+
+---
+
+## Session 1, pokračování – 11. 10. 2026: Fáze 5b, kroky 4–7 (D28, D30–D32)
+
+### Co AI udělala a jak ověřovala
+- **Krok 4:** na produkci vytvořila testovací návštěvu (`utm_source=test`) a dotazem v PostHogu ověřila, že `exp_hero_calc` dorazí u všech událostí. Pak přes API v Mikyho přihlášeném Chrome (s jeho souhlasem) vytvořila insight trychtýře podle varianty a k němu výpočet potřebného počtu návštěv.
+- **Krok 5:** tlačítko v liště podle stavu, 3 E2E testy.
+- **Krok 6:** zhuštění. Výška stránky změřená před a po: mobil 10 783 → 10 683 px, desktop 6 795 → 6 463 px.
+- **Krok 7:** otázka a sdílení na děkovací stránce, 3 E2E testy.
+- Po každém kroku celá E2E sada. Nakonec proti produkci (88 prošlo, 2 jen pro lokální server přeskočeny) a Lighthouse pro obě varianty testu.
+
+### Kde se AI spletla nebo co našla
+1. **Lokální vývoj posílal události do produkčního PostHogu** (samostatný `fix:`). Screenshoty a ruční testy AI z localhostu se míchaly s daty z reklamy. Nalezeno při ověřování A/B testu. Opraveno: na localhostu se PostHog nespustí a všechny insighty navíc filtrují produkční doménu a vynechávají testovací provoz.
+2. **E-mail návštěvníka se zbytečně držel v paměti záložky** (samostatný `fix:`). Děkovací stránka ho nikdy nepotřebovala. Nalezeno při psaní kroku 7.
+3. **První pokus o zhuštění stránku prodloužil** (+296 px). Nový blok měl plné odsazení sekce. AI to zjistila měřením a strukturu změnila: dvě sekce sloučila do jedné a blok důvěry vložila do FAQ.
+4. **Chybějící mezera „zdroje dat(staženo"** kvůli zalomení řádku v šabloně. Viděno na screenshotu, opraveno, test hlídá přesný text.
+5. **Falešný poplach v Lighthouse:** varianta s polem jednou vyšla 98 (LCP 2,4 s). Opakované běhy daly obě varianty 100, takže šlo o rozptyl měření, ne o zpomalení.

@@ -1,6 +1,6 @@
 # Testy (Fáze 5)
 
-Stav k 11. 10. 2026: **74 unit testů a 58 E2E testů prochází**, lokálně i proti produkci. Lighthouse na mobilu (produkce): **100 / 100 / 100 / 100**.
+Stav k 11. 10. 2026 (po Fázi 5b): **74 unit testů a 90 E2E testů prochází**, lokálně i proti produkci (2 testy jen pro lokální server se proti produkci přeskočí). Lighthouse na mobilu (produkce): **100 / 100 / 100 / 100** v obou variantách A/B testu.
 
 ## Jak spustit
 
@@ -44,6 +44,12 @@ E2E testy používají Chrome nainstalovaný v počítači. Odeslání formulá�
 | `aria-label` na prostém `span` u loga | axe-core | `fix:` 76d1313, role=img |
 | Formulář šel zneužít k opakovanému posílání e-mailů na cizí adresu | revize kódu API | `fix:` a9f7752, limit 3 žádosti na adresu za 24 h v databázi (HTTP 429), ověřeno na produkci |
 | Chybějící bezpečnostní hlavičky | revize | `chore:` `vercel.json` |
+
+## Přibylo ve Fázi 5b
+- `experiment.spec.ts`: živý A/B test (obě varianty, paměť v záložce, předání částky do kalkulačky, Enter, náhodné rozdělení v čistém prohlížeči, bez vodorovného scrollu)
+- karta v hero podle reklamy A/B; tlačítko v liště (ke kalkulačce → po výpočtu k formuláři); pořadí sekcí; blok „Kdo za srovnáním stojí"; FAQ s dividendami; „Co vám pošleme" odpovídá e-mailu
+- `thank-you.spec.ts`: dobrovolná otázka (jedna odpověď s `lead_ref`), sdílení (označený odkaz, kopírování), obojí mimo tisk
+- vazba lead ↔ analytika (`analytics_id` = `lead_ref` v `form_submit`), v záložce se nedrží e-mail, z lokálního serveru nic neodchází do PostHogu
 
 ## Lighthouse (mobil, produkce, 11. 10. 2026)
 Výkon 100 · Přístupnost 100 · Best practices 100 · SEO 100. FCP 1,0 s, LCP 1,0 s, TBT 40 ms, CLS 0. Rezerva: ~60 kB nevyužitého JavaScriptu (PostHog), načítá se asynchronně a vykreslení nezdržuje.
