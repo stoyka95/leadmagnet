@@ -4,6 +4,8 @@
 Tón: česky, vykání, věcně (D7). Čísla pouze z `data/SOURCES.md`. Žádné sliby výnosů.
 Značka: **Fingramo** (fiktivní, ukázkový projekt, D14).
 
+> **Pozor, historický návrh.** Sekce 1, 2 a 4 odpovídají dnešní stránce. Texty v sekci 3 jsou původní návrh z Fáze 2 a stránka se od nich v několika bodech liší. Například souhlas je teď rozdělený na dva samostatné (e-mail a telefon, D35), formuláře jsou dva (D35), daně a KID jsou v jedné sekci „Dobré vědět" (D31) a FAQ má 6 otázek a blok „Kdo za srovnáním stojí". Platí stav na stránce a v [DECISIONS.md](DECISIONS.md).
+
 ---
 
 ## 1. Komu stránka mluví (persona z D1)

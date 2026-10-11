@@ -118,3 +118,15 @@ Na Mikyho žádost jsme TER všech 12 fondů ověřili znovu přímo u správců
 - [ARES](https://ares.gov.cz/) (11. 10. 2026): „Fingramo" bez výsledku. Existuje podobná **FINGRAM CS s.r.o.** (IČO 05876761, Náchod, jiný obor).
 - Web: přesná shoda nenalezena. Podobná španělská Fingrama S.L. (nemovitosti).
 - Závěr: kolize nehrozí. Fingramo zůstává jako fiktivní značka ukázky.
+
+## 9. Srovnávací konverze landing pages (pro odhad v README)
+
+Staženo 11. 10. 2026, přečteno přímo na stránkách Unbounce ve vestavěném prohlížeči. Jde o mediány landing pages postavených v Unbounce, ne o průzkum celého trhu.
+
+| Údaj | Hodnota | Zdroj |
+|---|---|---|
+| Medián konverze, podkategorie **investování** | 3,9 % (nejlepší stránky až 20,6 %) | [Unbounce – Finance & Insurance benchmarks](https://unbounce.com/conversion-benchmark-report/finance-insurance-conversion-rate/) |
+| Medián konverze, finanční služby celkem | 8,3 % | tamtéž |
+| Medián konverze, pojištění | 18,2 % | tamtéž |
+| Finanční služby z placených sociálních sítí | 9,3 % (Facebook 10,1 %, Instagram 15,5 %) | tamtéž |
+| Období dat a rozsah | 23. 7. 2023 – 23. 7. 2024; 41 tisíc landing pages, 464 mil. unikátních návštěvníků, 57 mil. konverzí | [Unbounce – Methodology (2024 Conversion Benchmark Report)](https://unbounce.com/conversion-benchmark-report/methodology/) |
