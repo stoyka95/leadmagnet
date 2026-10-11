@@ -213,6 +213,10 @@ const pctSigned = (v: number) => `${v > 0 ? '+' : ''}${formatPct(v)}`;
   }
   .gate.is-locked .gate-cta-sm { padding: 0; background: none; box-shadow: none; }
   .gate-cta .fine { color: var(--c-ink-muted); }
+  /* D35: on phones the locked list is only a preview (about 3 funds), so the form below comes ~300 px sooner */
+  @media (max-width: 959px) {
+    .gate.is-locked .rows { max-height: 15rem; overflow: hidden; }
+  }
 </style>
 
 <script>

@@ -107,6 +107,23 @@ const minEuTer = Math.min(...ucitsEtfs.map((u) => u.terPct));
   .cta .btn { width: 100%; }
   @media (min-width: 600px) { .cta .btn { width: auto; } }
   :global(:root:not([data-forms='3'])) .forms3-only, :global(:root[data-forms='3']) .forms2-only { display: none; }
+  /* D35: on phones the original and its European version sit side by side – the comparison is read across,
+     and the section is ~40 % shorter. Labels go above the values, so nothing is squeezed. */
+  @media (max-width: 767px) {
+    .pair { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--sp-2); }
+    .pair :global(.card) { padding: var(--sp-3); }
+    .group { gap: var(--sp-4); }
+    .tag { font-size: 0.6875rem; letter-spacing: 0.02em; }
+    .fund h3 { font-size: var(--fs-xs); font-weight: var(--fw-medium); line-height: var(--lh-snug); }
+    .tk { font-size: var(--fs-lg); }
+    dl { margin-top: var(--sp-3); }
+    dl > div { display: grid; gap: 0; justify-content: stretch; }
+    dd { text-align: left; overflow-wrap: anywhere; }
+    dt, dd { font-size: var(--fs-xs); }
+    .strong { font-size: var(--fs-md); }
+    .note { font-size: 0.6875rem; }
+    .badges { gap: var(--sp-1); }
+  }
   .form-wrap { margin-top: var(--sp-4); scroll-margin-top: var(--sp-6); }
 </style>
 

@@ -369,3 +369,20 @@ test.describe('other pages', () => {
     }
   });
 });
+
+test.describe('phone length (D35)', () => {
+  test('at 390 px the page stays under 9 600 px, the calculator form starts in the first 2 400 px and nothing overflows', async ({ page }, info) => {
+    test.skip(info.project.name !== 'mobil', 'phone layout only');
+    await page.setViewportSize({ width: 390, height: 844 });
+    for (const exp of ['control', 'hero_input']) {
+      await page.goto(`/?exp=${exp}`);
+      await noHorizontalScroll(page);
+      const { height, formTop } = await page.evaluate(() => ({
+        height: document.documentElement.scrollHeight,
+        formTop: document.querySelector('#lf-calculator-h')!.getBoundingClientRect().top + scrollY,
+      }));
+      expect(height).toBeLessThan(9600);
+      expect(formTop).toBeLessThan(2400);
+    }
+  });
+});
