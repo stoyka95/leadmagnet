@@ -284,3 +284,18 @@ Miky si stránku prošel v prohlížeči a poslal 8 bodů: ověřit TER (hlavně
 - **Hypotézy H1–H3 do README:** odhad dopadu AI napsala slovně s důvodem, bez vymyšlených procent (stránka zatím nemá provoz z reklamy). Citlivost testu převzala z už spočítané tabulky velikosti vzorku.
 - **Anonymizace IP:** v AI-WORK-NOTES bylo otevřené, jestli tvrzení v MEASUREMENT.md platí, když v kódu chybí. Ověřeno jen čtením: nastavení je na úrovni projektu a v datech nemá žádná ze 163 událostí IP ani polohu. Tvrzení tedy platilo, jen bylo nepřesně popsané, kde se nastavuje.
 - **IBKR:** položka v PLAN zůstala neodškrtnutá, přestože SOURCES.md měl ověření z prohlížeče už z rána. AI stránku otevřela znovu a obě tvrzení na webu sedí.
+
+---
+
+## Session 1, pokračování – 11. 10. 2026: Fáze 6 (README)
+
+### Co AI udělala a jak ověřovala
+- README se všemi 13 sekcemi ze sekce 5 CLAUDE.md a sekcí „Soukromí a právní stránka" (D33). Text je poskládaný z rozhodnutí, CONTENT.md, MEASUREMENT.md a těchto poznámek, ne napsaný nanovo z paměti.
+- **Očekávaná konverze:** AI nejdřív hledala srovnávací data. Souhrnu z vyhledávání nevěřila a čísla přečetla přímo na stránkách Unbounce (report 2024, období dat z metodiky). Benchmark je zapsaný v SOURCES.md §9. Odhad 4–6 % je v README výslovně označený jako odhad, s důvody nahoru i dolů a s nejistotou.
+- Tvrzení v README porovnala s kódem (například text „Váš předpoklad, ne náš slib" a „Nejde o předpověď" na stránce). Všechny relativní odkazy v README vedou na existující soubory.
+- Závěrečná kontrola: repozitář je veřejný, v kódu nejsou klíče, v databázi je 5 testovacích kontaktů (`utm_source=test`, čtení bez mazání).
+
+### Kde se AI spletla
+1. **První pokus o zápis README selhal**, protože shell nezvládl dlouhý text v jednom příkazu. Nic se nezapsalo (ověřeno `git diff`) a README vzniklo po částech.
+2. **CONTENT.md byl zastaralý** (jeden společný souhlas, tři body v „Proč VOO…"), přitom README na něj odkazuje jako na texty stránky. Doplněna poznámka, že sekce 3 je historický návrh a platí stránka a DECISIONS.
+3. Text o ukázce scénářů v README nejdřív citoval „není to předpověď", na stránce ale stojí „Nejde o předpověď". Opraveno před commitem.

@@ -103,10 +103,19 @@ Každý krok: změna, testy (unit/E2E) upravené nebo nové, kontrola na mobilu 
 - [ ] Záznamy relací vypnout i v nastavení PostHog projektu – Miky
 
 ## Fáze 6 – README a odevzdání (čt 15. 10. večer)
-- [ ] README se všemi 13 sekcemi (sekce 5 CLAUDE.md), včetně očekávané konverze a 3 A/B hypotéz
-- [ ] Doplnit `docs/AI-WORK-NOTES.md` (pokyny, kontrola výstupu, chyby AI)
-- [ ] `/export` všech session → `ai-log/` → commit + push
-- [ ] Závěrečný kontrolní seznam (sekce 2 CLAUDE.md)
+- [x] README se všemi 13 sekcemi (sekce 5 CLAUDE.md), včetně očekávané konverze a 3 A/B hypotéz (11. 10., dříve než plán) + sekce Soukromí a právní stránka
+- [x] Doplnit `docs/AI-WORK-NOTES.md` (pokyny, kontrola výstupu, chyby AI)
+- [ ] `/export` všech session → `ai-log/` → commit + push – **Miky** (příkaz `/export` v Claude Code)
+- [~] Závěrečný kontrolní seznam (sekce 2 CLAUDE.md) – 11. 10.:
+  - [x] veřejný repozitář `stoyka95/leadmagnet` (PUBLIC), 116+ commitů
+  - [x] URL https://fingramo.vercel.app funguje na mobilu (E2E 375/390 px, Lighthouse mobil 100)
+  - [x] obě verze reklamy v `ads/` (4:5 a 9:16) a jejich texty
+  - [x] README se všemi sekcemi, odkazy v README ověřené
+  - [x] žádné klíče v repozitáři (jen `.env.example`)
+  - [ ] `ai-log/` s exporty – Miky
+  - [ ] smazat 5 testovacích kontaktů v Supabase (`utm_source=test`) – na Mikyho „ano"
+  - [ ] ruční kontrola na skutečném telefonu – Miky
+  - [ ] záznamy relací vypnout i v nastavení PostHogu – Miky
 - [ ] Pá 16. 10.: Miky odešle odpověď Matejovi Lörincovi s odkazy
 
 ---
