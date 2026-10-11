@@ -165,6 +165,12 @@ Drobnosti s rozumnou výchozí volbou rozhoduje Claude sám – jsou na konci v 
   - všechna data v `data/`, zdroje v SOURCES.md §6–7.
 - **Vztah k D16:** výsledek poplatků zůstává bez růstu („minimálně"). Výnosy jsou samostatný blok se zdrojem.
 
+### D22 – Počet formulářů
+- **Podnět (Miky):** nevadí, že jsou na stránce 3 formuláře?
+- **Varianty:** (a) nechat 3 a změřit *(doporučeno)* · (b) 2 formuláře (kalkulačka + závěr) · (c) jeden formulář u kalkulačky
+- **Zvoleno:** (a). Formulář u kalkulačky a u FAQ je vidět vždy. Formulář u srovnání se rozbalí až po kliknutí, takže návštěvník vidí najednou 2.
+- **Proč:** zadání chce, aby každý interaktivní prvek vedl ke kontaktu. Závěrečný formulář zachytí lidi, kteří nástroje přeskočili. Riziko „vtíravosti" se změří: `form_submit` má parametr `form_location`. **Hypotéza pro A/B test** (README): jeden formulář vs. více.
+
 ---
 
 ## Rozhodnuto Claudem (drobnosti)
