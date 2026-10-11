@@ -166,6 +166,9 @@ const id = `lf-${location}`;
 
       const data = new FormData(form);
       const calc = readCalc();
+      // Random id of this submission: stored with the lead and sent with form_submit, so a lead can be matched
+      // with its path in PostHog. In cookieless mode the browser has no PostHog id of its own (the server computes it).
+      const leadRef = crypto.randomUUID();
       const payload = {
         full_name: String(data.get('full_name') ?? '').trim() || null,
         email: String(data.get('email')).trim(),
@@ -176,7 +179,7 @@ const id = `lf-${location}`;
         company: String(data.get('company') ?? ''),
         calc: { onceCzk: calc.onceCzk, monthlyCzk: calc.monthlyCzk, years: calc.years },
         utm: readUtm(),
-        analytics_id: (window as unknown as { posthog?: { get_distinct_id?: () => string } }).posthog?.get_distinct_id?.() ?? null,
+        analytics_id: leadRef,
       };
 
       button.disabled = true;
@@ -202,6 +205,7 @@ const id = `lf-${location}`;
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         track('form_submit', {
           form_location: location,
+          lead_ref: leadRef,
           marketing_consent: payload.marketing_consent,
           has_name: Boolean(payload.full_name),
           has_phone: Boolean(payload.phone),

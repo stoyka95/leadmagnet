@@ -157,6 +157,11 @@ test.describe('lead form (D5, D13, D25)', () => {
       utm: { utm_source: 'meta', utm_medium: 'paid_social', utm_content: 'b' },
     });
 
+    // the lead and its form_submit event share one random reference (analytics_id = lead_ref)
+    const ref = leadApi.payloads[0].analytics_id as string;
+    expect(ref).toMatch(/^[0-9a-f-]{36}$/);
+    expect(await events(page)).toContainEqual(['form_submit', expect.objectContaining({ lead_ref: ref })]);
+
     await expect(page.locator('[data-hello]')).toHaveText(/Děkujeme, Jana/);
     await expect(page.locator('[data-report] tr')).toHaveCount(12);
     await expect(page.locator('[data-bars] li')).toHaveCount(5);

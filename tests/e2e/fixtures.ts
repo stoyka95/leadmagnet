@@ -36,12 +36,15 @@ export const test = base.extend<Fixtures>({
   page: async ({ page }, use) => {
     await page.route(/posthog\.com|vercel-scripts\.com|\/_vercel\/insights/, (route) => route.abort());
     await page.addInitScript(() => {
+      // kept in sessionStorage so events survive the redirect to /dekujeme (test-only, the page itself stores nothing)
+      const KEY = '__e2e_events';
       const w = window as unknown as { __events: unknown[]; __fgCapture?: unknown };
-      w.__events = [];
+      w.__events = JSON.parse(sessionStorage.getItem(KEY) ?? '[]');
+      const record = (e: string, p: unknown) => { w.__events.push([e, p]); sessionStorage.setItem(KEY, JSON.stringify(w.__events)); };
       let real: ((e: string, p: unknown) => void) | undefined;
       Object.defineProperty(window, '__fgCapture', {
         configurable: true,
-        get: () => (real ? (e: string, p: unknown) => { w.__events.push([e, p]); real!(e, p); } : undefined),
+        get: () => (real ? (e: string, p: unknown) => { record(e, p); real!(e, p); } : undefined),
         set: (v) => { real = v; },
       });
     });
