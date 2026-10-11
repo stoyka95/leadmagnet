@@ -1,6 +1,7 @@
 ---
 // Sources page – the public face of data/SOURCES.md. Fund rows are generated from data/etf.json.
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Logo from '../components/Logo.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import GlassCard from '../components/GlassCard.astro';
 import { usEtfs, ucitsFor, formatPct, formatDate, dataRetrieved } from '../lib/etf';
@@ -10,7 +11,7 @@ const asOf = (d?: string) => (d ? formatDate(d) : `stav ke dni stažení`);
 ---
 <BaseLayout title="Zdroje dat | Fingramo" description="Odkud pocházejí čísla na stránce Fingramo a kdy byla stažena.">
   <main class="container doc">
-    <a class="brand" href="/">← Fingramo</a>
+    <div class="brand"><Logo href="/" size={32} /></div>
     <h1>Zdroje dat</h1>
     <p class="lead">Každé číslo na stránce pochází ze stránek správce fondu nebo z oficiálního zdroje. Staženo {formatDate(dataRetrieved)}.</p>
 
@@ -56,7 +57,6 @@ const asOf = (d?: string) => (d ? formatDate(d) : `stav ke dni stažení`);
 
 <style>
   .doc { padding-block: var(--sp-6) var(--sp-16); display: grid; gap: var(--sp-4); }
-  .brand { font-weight: var(--fw-bold); color: var(--c-navy-900); text-decoration: none; }
   h1 { font-size: var(--fs-2xl); }
   h2 { font-size: var(--fs-lg); margin-top: var(--sp-6); }
   .scroll { overflow-x: auto; }

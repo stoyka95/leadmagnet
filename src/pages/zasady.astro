@@ -1,11 +1,12 @@
 ---
 // Privacy notice (D13, D14). Demo project: the real person responsible for the data is named.
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Logo from '../components/Logo.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 ---
 <BaseLayout title="Zásady ochrany osobních údajů | Fingramo" description="Jak Fingramo zpracovává osobní údaje z formuláře.">
   <main class="container doc">
-    <a class="brand" href="/">← Fingramo</a>
+    <div class="brand"><Logo href="/" size={32} /></div>
     <h1>Zásady ochrany osobních údajů</h1>
     <p class="fine">Platné od 11. 10. 2026 · verze formuláře v2-2026-10-11</p>
 
@@ -40,7 +41,7 @@ import SiteFooter from '../components/SiteFooter.astro';
 
 <style>
   .doc { max-width: calc(var(--w-text) + 2 * var(--gutter)); padding-block: var(--sp-6) var(--sp-16); display: grid; gap: var(--sp-3); }
-  .brand { font-weight: var(--fw-bold); color: var(--c-navy-900); text-decoration: none; margin-bottom: var(--sp-4); }
+  .brand { margin-bottom: var(--sp-4); }
   h1 { font-size: var(--fs-2xl); }
   h2 { font-size: var(--fs-lg); margin-top: var(--sp-6); }
   ul { padding-left: var(--sp-5); display: grid; gap: var(--sp-2); margin: 0; }

@@ -1,6 +1,7 @@
 ---
 // After submit (CONTENT.md §4): the full comparison immediately, Save as PDF, next steps.
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Logo from '../components/Logo.astro';
 import GlassCard from '../components/GlassCard.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import { brokerQuestions } from '../lib/report';
@@ -8,7 +9,7 @@ import { formatDate, dataRetrieved } from '../lib/etf';
 ---
 <BaseLayout title="Hotovo – vaše srovnání ETF | Fingramo" description="Vaše srovnání ETF s poplatky v korunách." noindex>
   <main class="container wrap">
-    <a class="brand" href="/">Fingramo</a>
+    <div class="brand"><Logo href="/" size={32} /></div>
 
     <header class="head">
       <p class="eyebrow">Hotovo</p>
@@ -47,7 +48,6 @@ import { formatDate, dataRetrieved } from '../lib/etf';
 
 <style>
   .wrap { padding-block: var(--sp-6) var(--sp-16); display: grid; gap: var(--sp-8); }
-  .brand { font-weight: var(--fw-bold); color: var(--c-navy-900); text-decoration: none; font-size: var(--fs-lg); }
   .head { display: grid; gap: var(--sp-3); max-width: var(--w-text); }
   h1 { font-size: var(--fs-2xl); }
   .actions { display: flex; flex-wrap: wrap; gap: var(--sp-3); margin-top: var(--sp-2); }

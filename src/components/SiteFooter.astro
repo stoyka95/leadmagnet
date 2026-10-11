@@ -1,9 +1,11 @@
 ---
 // CONTENT.md §3.8 – risk warning, data date, privacy, demo note (D14).
 import { formatDate, dataRetrieved } from '../lib/etf';
+import Logo from './Logo.astro';
 ---
 <footer class="footer">
   <div class="container inner">
+    <Logo tone="dark" size={30} />
     <p class="risk">
       <strong>Upozornění na riziko:</strong> Investování do ETF je spojeno s rizikem. Hodnota investice může klesat i stoupat a není zaručena návratnost vložených prostředků. Minulá výkonnost není zárukou budoucích výnosů. Obsah stránky je informativní a nepředstavuje investiční doporučení ani daňové poradenství.
     </p>
@@ -16,9 +18,10 @@ import { formatDate, dataRetrieved } from '../lib/etf';
 
 <style>
   .footer { background: var(--c-navy-900); color: var(--c-on-dark); padding-block: var(--sp-10) var(--sp-16); font-size: var(--fs-xs); line-height: var(--lh-body); }
-  .inner { display: grid; gap: var(--sp-3); max-width: calc(var(--w-text) + 2 * var(--gutter)); margin-inline: 0; }
+  .inner { display: grid; gap: var(--sp-3); justify-items: start; max-width: calc(var(--w-text) + 2 * var(--gutter)); margin-inline: 0; }
   @media (min-width: 900px) { .inner { margin-inline: auto; max-width: calc(var(--w-content) + 2 * var(--gutter)); } }
   .footer a { color: var(--c-white); }
   .risk strong { color: var(--c-white); }
   .demo { color: var(--c-on-dark-muted); }
+  .inner > :global(.logo) { margin-bottom: var(--sp-3); }
 </style>
