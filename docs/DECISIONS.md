@@ -285,6 +285,12 @@ Ověřeno na produkci https://fingramo.vercel.app a lokálně, nový test `tests
 
 **Výsledek:** obě verze reklamy fungují, první obrazovka navazuje na slib své reklamy a lead jde přiřadit k reklamě (UTM v databázi i `ad_variant` v PostHogu). Celá E2E sada proti produkci: 105 prošlo, 9 přeskočeno (testy jen pro lokální server nebo jen pro mobil). Jak si reklamy vedou u lidí, ukáže až běžící kampaň na dashboardu (trychtýř a cena za lead podle varianty).
 
+### D36 – Grafika a náhledový obrázek (11. 10. 2026, Fáze 5b krok 10)
+- **Rozsah:** (a) ikony + 1 ilustrace na děkovací stránce *(doporučeno)* · (b) jen ikony · (c) ikony + ilustrace v hero. **Zvoleno (a).** Hlavní stránka se skoro neprodlouží (mobil jsme právě zkrátili).
+- **Styl ikon:** (a) linkové, tmavě modrá kontura + jeden zelený detail jako šipka v logu *(doporučeno)* · (b) plné v kolečku. **Zvoleno (a).**
+- **OG obrázek (1200 × 630):** (a) logo + nadpis „Stejný index, jiný poplatek." + karta SPY vs. VOO se skutečnými čísly *(doporučeno)* · (b) páry US → evropská verze · (c) jen logo a slogan. **Zvoleno (a).** Navazuje na reklamu B a výchozí variantu stránky.
+- **Komponenta:** (a) jedna sdílená `src/components/Icon.astro` s inline SVG, bez knihovny *(doporučeno)* · (b) SVG přímo v sekcích. **Zvoleno (a).**
+
 ---
 
 ## Rozhodnuto Claudem (drobnosti)
