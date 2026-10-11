@@ -223,7 +223,8 @@ const pctSigned = (v: number) => `${v > 0 ? '+' : ''}${formatPct(v)}`;
   import { usEtfs, ucitsFor } from '../lib/etf';
   import { feesForTer, formatCzk } from '../lib/fees';
   import { readCalc, writeCalc, type CalcState } from '../lib/calc-state';
-  import { kidScenarios, KID_YEARS, valuePath, paidInPath, historyFor } from '../lib/growth';
+  import { kidScenarios, KID_YEARS, historyFor } from '../lib/growth';
+  import { drawGrowthChart } from '../lib/growth-chart';
   import { track } from '../lib/track';
 
   const form = document.querySelector<HTMLFormElement>('[data-calc]')!;
@@ -238,44 +239,9 @@ const pctSigned = (v: number) => `${v > 0 ? '+' : ''}${formatPct(v)}`;
 
   // Colours come from tokens.css via the legend's --scn custom property
   const colourOf = (id: string) => getComputedStyle(document.querySelector(`[data-scn="${id}"]`)!).getPropertyValue('--scn').trim();
-  const SVGNS = 'http://www.w3.org/2000/svg';
-  const el = (tag: string, attrs: Record<string, string | number>) => {
-    const n = document.createElementNS(SVGNS, tag);
-    for (const [k, v] of Object.entries(attrs)) n.setAttribute(k, String(v));
-    return n;
-  };
 
   const drawChart = (s: CalcState) => {
-    // Draw in real pixels so axis labels stay readable on phones
-    const W = Math.max(300, Math.round(svg.getBoundingClientRect().width) || 600);
-    const H = W < 480 ? 220 : 260, L = 52, R = 28, T = 12, B = 28;
-    svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
-    const series = kidScenarios.map((k) => ({ id: k.id, pts: valuePath(s.onceCzk, s.monthlyCzk, k.avgAnnualPct) }));
-    const paid = paidInPath(s.onceCzk, s.monthlyCzk);
-    const max = Math.max(...series.flatMap((x) => x.pts), ...paid, 1);
-    const x = (i: number) => L + (i / KID_YEARS) * (W - L - R);
-    const y = (v: number) => T + (1 - v / max) * (H - T - B);
-    const line = (pts: number[]) => pts.map((v, i) => `${i ? 'L' : 'M'}${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(' ');
-
-    svg.querySelectorAll('g').forEach((g) => g.remove());
-    const g = el('g', {});
-    for (let i = 0; i <= 4; i++) {
-      const v = (max / 4) * i;
-      g.appendChild(el('line', { x1: L, x2: W - R, y1: y(v), y2: y(v), stroke: 'currentColor', 'stroke-opacity': 0.12 }));
-      const t = el('text', { x: L - 8, y: y(v) + 4, 'text-anchor': 'end', 'font-size': 12, fill: 'currentColor', 'fill-opacity': 0.6 });
-      t.textContent = v >= 1e6 ? `${pf.format(v / 1e6)} mil.` : `${nf.format(Math.round(v / 1000))} tis.`;
-      g.appendChild(t);
-    }
-    for (let i = 0; i <= KID_YEARS; i++) {
-      const t = el('text', { x: x(i), y: H - 8, 'text-anchor': 'middle', 'font-size': 12, fill: 'currentColor', 'fill-opacity': 0.6 });
-      t.textContent = i === 0 ? 'dnes' : W < 480 ? `${i}.` : `${i}. rok`;
-      g.appendChild(t);
-    }
-    g.appendChild(el('path', { d: line(paid), fill: 'none', stroke: 'currentColor', 'stroke-opacity': 0.55, 'stroke-width': 2, 'stroke-dasharray': '6 5' }));
-    for (const sr of series) {
-      g.appendChild(el('path', { d: line(sr.pts), fill: 'none', stroke: colourOf(sr.id), 'stroke-width': sr.id === 'moderate' ? 3 : 2.25, 'stroke-linecap': 'round' }));
-    }
-    svg.appendChild(g);
+    const { paid, series } = drawGrowthChart(svg, s.onceCzk, s.monthlyCzk, colourOf);
 
     // Legend values + accessible description
     const desc: string[] = [`Vloženo celkem ${formatCzk(paid[KID_YEARS])}.`];

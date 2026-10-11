@@ -37,3 +37,16 @@ test('question and sharing are left out of the printed PDF', async ({ page }) =>
   await expect(page.locator('[data-ask]')).toBeHidden();
   await expect(page.locator('.share')).toBeHidden();
 });
+
+test('the 5-year scenario chart from the page is shown again after the form, with the same amounts', async ({ page }) => {
+  // the calculator state of this tab: 100 000 Kč + 3 000 Kč a month
+  await page.goto('/dekujeme');
+  const chart = page.locator('[data-ty-chart]');
+  await expect(chart).toBeVisible();
+  await expect(chart.locator('path')).toHaveCount(5); // deposits + 4 KID scenarios
+  const desc = (await page.locator('[data-ty-chart-desc]').textContent())!.replace(/\s/g, ' '); // Czech numbers use a non-breaking space
+  expect(desc).toContain('Vloženo celkem 280 000 Kč.');
+  // every amount in the description is also in the legend bars below
+  const bars = await page.locator('[data-bars]').innerText();
+  for (const amount of desc.match(/[\d\s]+ Kč/g)!) expect(bars.replace(/\s/g, '')).toContain(amount.replace(/\s/g, ''));
+});

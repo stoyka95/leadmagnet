@@ -63,6 +63,11 @@ import { formatDate, dataRetrieved } from '../lib/etf';
     <GlassCard solid class="growth">
       <h2 id="growth-h">Jak by mohla investice vypadat za <span data-kid-years></span> let</h2>
       <p class="muted">Čtyři scénáře z dokumentu KID fondu <span data-kid-ticker></span> (S&amp;P 500, evropská verze) pro vaši částku.</p>
+      <!-- the same line chart as on the page (shared drawGrowthChart); the bars below are its legend with the amounts -->
+      <svg class="chart" viewBox="0 0 600 260" role="img" aria-labelledby="ty-chart-t ty-chart-d" data-ty-chart>
+        <title id="ty-chart-t">Vývoj hodnoty investice ve 4 scénářích z KID</title>
+        <desc id="ty-chart-d" data-ty-chart-desc></desc>
+      </svg>
       <ul class="bars" data-bars aria-labelledby="growth-h"></ul>
       <p class="fine" data-kid-note></p>
 
@@ -110,6 +115,7 @@ import { formatDate, dataRetrieved } from '../lib/etf';
   :global(.report tr.us td) { border-top: 2px solid var(--c-line); font-weight: var(--fw-medium); }
   :global(.report .sub) { display: block; font-size: var(--fs-xs); color: var(--c-ink-faint); font-weight: var(--fw-regular); }
   :global(.growth) h2 { font-size: var(--fs-xl); margin-bottom: var(--sp-2); }
+  .chart { width: 100%; height: auto; display: block; margin-block: var(--sp-3) var(--sp-2); color: var(--c-ink); }
   .bars { list-style: none; margin: var(--sp-4) 0; padding: 0; display: grid; gap: var(--sp-3); }
   :global(.bars li) { display: grid; grid-template-columns: 1fr auto; gap: var(--sp-1) var(--sp-3); font-size: var(--fs-sm); }
   :global(.bars .v) { font-weight: var(--fw-bold); color: var(--c-navy-900); white-space: nowrap; }
@@ -152,6 +158,8 @@ import { formatDate, dataRetrieved } from '../lib/etf';
   import { formatPct } from '../lib/etf';
   import { readCalc } from '../lib/calc-state';
   import { track } from '../lib/track';
+  import { drawGrowthChart } from '../lib/growth-chart';
+  import { KID_YEARS, kidScenarios } from '../lib/growth';
 
   const calc = readCalc();
   let lead: { firstName?: string; leadRef?: string } = {};
@@ -239,4 +247,17 @@ import { formatDate, dataRetrieved } from '../lib/etf';
       window.prompt('Zkopírujte odkaz:', shareUrl);
     }
   });
+
+  // D21 chart, same as on the page, redrawn on resize (it is drawn in real pixels)
+  const tyChart = document.querySelector<SVGSVGElement>('[data-ty-chart]')!;
+  const drawTyChart = () => {
+    const { paid, series } = drawGrowthChart(tyChart, calc.onceCzk, calc.monthlyCzk, (id) => SCENARIO_COLOURS[id] ?? '#0f1d45');
+    document.querySelector('[data-ty-chart-desc]')!.textContent = [
+      `Vloženo celkem ${formatCzk(paid[KID_YEARS])}.`,
+      ...series.map((sr) => `${kidScenarios.find((k) => k.id === sr.id)!.label}: ${formatCzk(sr.pts[KID_YEARS])}.`),
+    ].join(' ');
+  };
+  drawTyChart();
+  let tyResize: number | undefined;
+  window.addEventListener('resize', () => { window.clearTimeout(tyResize); tyResize = window.setTimeout(drawTyChart, 150); });
 </script>
