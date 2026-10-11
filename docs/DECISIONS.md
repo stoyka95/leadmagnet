@@ -171,6 +171,19 @@ Drobnosti s rozumnou výchozí volbou rozhoduje Claude sám – jsou na konci v 
 - **Zvoleno:** (a). Formulář u kalkulačky a u FAQ je vidět vždy. Formulář u srovnání se rozbalí až po kliknutí, takže návštěvník vidí najednou 2.
 - **Proč:** zadání chce, aby každý interaktivní prvek vedl ke kontaktu. Závěrečný formulář zachytí lidi, kteří nástroje přeskočili. Riziko „vtíravosti" se změří: `form_submit` má parametr `form_location`. **Hypotéza pro A/B test** (README): jeden formulář vs. více.
 
+### D23 – Designová doporučení z Antigravity (Google)
+- **Podnět (Miky):** projít doporučení jiného AI nástroje (Antigravity) a navrhnout opravy.
+- **Postup:** Claude prošel všech 12 bodů proti zadání, datům a rozhodnutím a ke každému dal verdikt. Miky zvolil **upravenou verzi**.
+- **Převzato:** silnější CTA se stínem, vyšší krytí karet, štítek u fondu s nejnižším poplatkem, štítek rozdílu poplatku SPY vs. VOO, řádek správců v hero, na mobilu poplatky a formulář hned pod vstupy, mikro-garance pod tlačítkem, pole 52 px, `npm run check`.
+- **Upraveno nebo odmítnuto a proč:**
+  - gradient `#10b981 → #059669` se září: výchozí Tailwind barvy, šablonovitý vzhled, kontrast bílého textu ~2,5:1 → **plná smaragdová `#0a7a55` (~5,4:1)**
+  - krytí 92 %: zničilo by sklo z D8 → **78 %**
+  - „nejvýhodnější“ / „doporučená volba SPYL/VUAA pro ČR“: **VUAA není nejlevnější** (0,07 % vs. SPYL 0,03 %) a „doporučená“ by bylo investiční doporučení → **věcný štítek „Nejnižší poplatek“** podle dat, plus „Registrováno pro ČR“ tam, kde je zdroj
+  - „PDF tahák pro nákup u brokerů (XTB, Portu, Fio)“: takový obsah neexistuje a nabídky brokerů nejsou ověřené → **„do e-mailu a hned i k uložení jako PDF“** (pravda)
+  - tlačítko „Získat srovnání a PDF report zdarma“ → kratší **„Získat srovnání zdarma“**
+  - graf do rozbalovacího bloku: graf si Miky výslovně přál (D21) → **viditelný, na mobilu za formulářem**
+  - „🔒 100% zdarma“ → ikona SVG, bez „100%“
+
 ---
 
 ## Rozhodnuto Claudem (drobnosti)

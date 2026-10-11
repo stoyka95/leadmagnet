@@ -69,7 +69,8 @@ Na stránku přichází z reklamy na mobilu a má **pár sekund**. Musí hned vi
   - Nadpis: **Pošleme vám celé srovnání pro vaši částku**
   - Podtext: Všech 6 fondů, jejich evropské verze, poplatky v Kč na 10 a 20 let a odkazy na zdroje. Do e-mailu, zdarma.
   - Pole: Jméno a příjmení · E-mail · Telefon *(nepovinné)*
-  - Tlačítko: **Poslat mi srovnání**
+  - Tlačítko: **Získat srovnání zdarma** *(změna D23, původně „Poslat mi srovnání“)*
+  - Pod tlačítkem: 🔒 *Zdarma · Bez spamu · Hned v e-mailu* (ikona SVG)
   - Pod tlačítkem: *Odesláním žádáte o zaslání srovnání. Údaje zpracujeme podle [Zásad ochrany osobních údajů].*
   - Políčko (nezaškrtnuté): ☐ *Chci dostávat další tipy k investování do ETF e-mailem a souhlasím, že mě můžete kontaktovat telefonicky (pokud jsem ho vyplnil/a).*
 
@@ -132,3 +133,4 @@ Závěrečný formulář: stejný jako u kalkulačky; pokud návštěvník kalku
 - Výchozí hero bez UTM = varianta B (obecnější, funguje i bez kontextu reklamy).
 - Lepivé CTA na mobilu.
 - **Úprava při stavbě (11. 10.):** z poznámky u kalkulačky vypuštěn „kurz ČNB" – poplatek je procento z hodnoty investice, kurz výsledek neovlivňuje (AI-WORK-NOTES).
+- **Úpravy D23 (11. 10.):** text nabídky „do e-mailu a hned i k uložení jako PDF“, štítky „Nejnižší poplatek“ (věcné, ne „doporučeno“), „Poplatek VOO ~3× nižší“ (počítáno z dat), řádek zdrojů v hero.
