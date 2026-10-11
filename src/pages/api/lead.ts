@@ -1,6 +1,7 @@
 // POST /api/lead – validates, stores the lead in Supabase (insert only, D10) and sends the comparison e-mail.
 import type { APIRoute } from 'astro';
 import { buildEmail } from '../../lib/email';
+import { buildPdf } from '../../lib/pdf';
 
 export const prerender = false;
 
@@ -49,6 +50,7 @@ export const POST: APIRoute = async ({ request, url }) => {
   const utm = (body.utm ?? {}) as Record<string, unknown>;
   const onceCzk = int(calc.onceCzk, 0, 100_000_000) ?? 100_000;
   const monthlyCzk = int(calc.monthlyCzk, 0, 10_000_000) ?? 3_000;
+  const years = int(calc.years, 1, 50);
 
   const row = {
     full_name: fullName,
@@ -59,7 +61,7 @@ export const POST: APIRoute = async ({ request, url }) => {
     form_location: location,
     amount_once_czk: onceCzk,
     amount_monthly_czk: monthlyCzk,
-    years: int(calc.years, 1, 50),
+    years,
     utm_source: str(utm.utm_source, 100),
     utm_medium: str(utm.utm_medium, 100),
     utm_campaign: str(utm.utm_campaign, 100),
@@ -93,11 +95,22 @@ export const POST: APIRoute = async ({ request, url }) => {
   const resendKey = env('RESEND_API_KEY');
   let emailSent = false;
   if (resendKey) {
-    const { subject, html, text } = buildEmail(fullName?.split(/\s+/)[0] ?? '', { onceCzk, monthlyCzk }, url.origin);
+    const input = { onceCzk, monthlyCzk, years: years ?? 20 };
+    // D27: the comparison as a PDF attachment; if it cannot be built, the e-mail still goes out without it
+    let pdfBase64: string | null = null;
+    try {
+      pdfBase64 = Buffer.from(await buildPdf(input, url.origin)).toString('base64');
+    } catch (err) {
+      console.error('lead: PDF failed', err);
+    }
+    const { subject, html, text } = buildEmail(fullName?.split(/\s+/)[0] ?? '', input, url.origin, { hasPdf: Boolean(pdfBase64) });
     const send = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: { Authorization: `Bearer ${resendKey}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ from: env('EMAIL_FROM'), to: [email], subject, html, text }),
+      body: JSON.stringify({
+        from: env('EMAIL_FROM'), to: [email], subject, html, text,
+        ...(pdfBase64 && { attachments: [{ filename: 'fingramo-srovnani-etf.pdf', content: pdfBase64 }] }),
+      }),
     });
     emailSent = send.ok;
     if (!send.ok) console.error('lead: e-mail failed', send.status, await send.text());
