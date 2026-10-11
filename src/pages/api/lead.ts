@@ -31,7 +31,7 @@ export const POST: APIRoute = async ({ request, url }) => {
   }
 
   // Honeypot filled → pretend success, store nothing
-  if (str(body.company, 100)) return json(200, { ok: true });
+  if (str(body.website, 100)) return json(200, { ok: true });
 
   // D25: only the e-mail is required; a one-letter name is dropped rather than rejected
   const nameRaw = str(body.full_name, 120);
@@ -57,6 +57,8 @@ export const POST: APIRoute = async ({ request, url }) => {
     email,
     phone,
     marketing_consent: body.marketing_consent === true,
+    // D35: permission to call only makes sense with a number
+    phone_consent: body.phone_consent === true && phone !== null,
     consent_version: consentVersion,
     form_location: location,
     amount_once_czk: onceCzk,

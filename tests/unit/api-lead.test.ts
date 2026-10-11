@@ -45,9 +45,9 @@ const VALID = {
   full_name: 'Jana Nováková',
   phone: '',
   marketing_consent: false,
-  consent_version: 'v2-2026-10-11',
+  consent_version: 'v3-2026-10-11',
   form_location: 'calculator',
-  company: '',
+  website: '',
   calc: { onceCzk: 100_000, monthlyCzk: 3_000, years: 20 },
   utm: { utm_source: 'meta', utm_medium: 'paid_social', utm_campaign: 'x', utm_content: 'b' },
   analytics_id: 'ph-123',
@@ -85,7 +85,7 @@ describe('validation', () => {
   });
 
   it('accepts a bot-filled honeypot silently and stores nothing', async () => {
-    const res = await post({ ...VALID, company: 'Spam s.r.o.' });
+    const res = await post({ ...VALID, website: 'https://spam.example' });
     expect(res.status).toBe(200);
     expect(calls).toHaveLength(0);
   });
@@ -93,7 +93,7 @@ describe('validation', () => {
 
 describe('storing the lead', () => {
   it('stores only the e-mail when the rest is empty (D25) and normalises it', async () => {
-    const res = await post({ email: 'a@b.cz', form_location: 'footer', consent_version: 'v2-2026-10-11' });
+    const res = await post({ email: 'a@b.cz', form_location: 'footer', consent_version: 'v3-2026-10-11' });
     expect(res.status).toBe(200);
     const row = stored();
     expect(row).toMatchObject({ email: 'a@b.cz', full_name: null, phone: null, marketing_consent: false, amount_once_czk: 100_000, amount_monthly_czk: 3_000 });
@@ -122,6 +122,17 @@ describe('storing the lead', () => {
     calls = [];
     await post({ ...VALID, marketing_consent: 'yes' });
     expect(stored().marketing_consent).toBe(false); // only a real boolean true counts
+  });
+
+  it('stores the phone consent separately, and only together with a phone number (D35)', async () => {
+    await post({ ...VALID, phone: '+420 777 123 456', marketing_consent: false, phone_consent: true });
+    expect(stored()).toMatchObject({ marketing_consent: false, phone_consent: true });
+    calls = [];
+    await post({ ...VALID, phone: '', phone_consent: true });
+    expect(stored().phone_consent).toBe(false); // nothing to call
+    calls = [];
+    await post({ ...VALID, phone: '+420 777 123 456', marketing_consent: true });
+    expect(stored()).toMatchObject({ marketing_consent: true, phone_consent: false });
   });
 
   it('replaces out-of-range amounts with the defaults', async () => {

@@ -161,10 +161,15 @@ test.describe('lead form (D5, D13, D25)', () => {
     expect(leadApi.payloads).toHaveLength(0);
   });
 
-  test('the marketing consent is never pre-ticked and the honeypot is hidden', async ({ page }) => {
+  test('both consents are separate, never pre-ticked, and the honeypot is hidden', async ({ page }) => {
     await page.goto('/');
-    for (const box of await page.locator('input[name=marketing_consent]').all()) await expect(box).not.toBeChecked();
-    for (const hp of await page.locator('input[name=company]').all()) {
+    for (const form of await page.locator('[data-lead-form]').all()) {
+      await expect(form.locator('input[name=marketing_consent]')).toHaveCount(1);
+      await expect(form.locator('input[name=phone_consent]')).toHaveCount(1);
+    }
+    for (const box of await page.locator('input[name=marketing_consent], input[name=phone_consent]').all()) await expect(box).not.toBeChecked();
+    await expect(page.getByText('Firma', { exact: true })).toHaveCount(0);
+    for (const hp of await page.locator('input[name=website]').all()) {
       await expect(hp).toHaveAttribute('tabindex', '-1');
       expect(await hp.isVisible() && (await hp.boundingBox())!.x >= 0).toBe(false);
     }
@@ -185,9 +190,10 @@ test.describe('lead form (D5, D13, D25)', () => {
       full_name: 'Jana Nováková',
       phone: null,
       marketing_consent: false,
-      consent_version: 'v2-2026-10-11',
+      phone_consent: false,
+      consent_version: 'v3-2026-10-11',
       form_location: 'calculator',
-      company: '',
+      website: '',
       calc: { onceCzk: 200000, monthlyCzk: 3000, years: 20 },
       utm: { utm_source: 'meta', utm_medium: 'paid_social', utm_content: 'b' },
     });

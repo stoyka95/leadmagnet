@@ -24,7 +24,7 @@ Podklad pro README §8. Rozhodnutí: D11 (PostHog EU + Vercel Analytics), D24 (b
 | 3 | `cta_click` | klik na tlačítko s `data-track` (hero, horní lišta: `header_calc` ke kalkulačce / `header` k formuláři (D30), „Chci srovnání", otevření formuláře u srovnání, uložit PDF, tlačítka „Odemknout" na rozmazaném detailu: `gate_fees`, `gate_growth`, `gate_history`, D25) | `cta` |
 | 4 | `tool_used` | změna v kalkulačce (0,8 s po posledním vstupu) nebo přepnutí skupiny ve srovnání | `tool` = `calculator` / `compare`, zadané hodnoty |
 | 5 | `form_start` | první fokus do formuláře | `form_location` |
-| 6 | `form_submit` | **server potvrdil uložení** (HTTP 200 z `/api/lead`) | `form_location`, `lead_ref` (= `analytics_id` v tabulce `leads`), `marketing_consent`, `has_name`, `has_phone`, `used_calculator` |
+| 6 | `form_submit` | **server potvrdil uložení** (HTTP 200 z `/api/lead`) | `form_location`, `lead_ref` (= `analytics_id` v tabulce `leads`), `marketing_consent`, `phone_consent`, `has_name`, `has_phone`, `used_calculator` |
 | — | `form_error` | chyba validace, serveru nebo limitu (`rate_limited`) | `reason`, `fields` |
 | — | `lead_segment` | odpověď na dobrovolnou otázku „Už investujete?" na `/dekujeme` (D32) | `answer` = `yes` / `starting` / `not_yet`, `lead_ref` |
 | — | `share_click` | sdílení odkazu z `/dekujeme` (D32); sdílený odkaz nese `utm_source=share` | `method` = `native` / `whatsapp` / `copy` |

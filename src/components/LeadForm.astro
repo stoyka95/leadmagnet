@@ -1,6 +1,7 @@
 ---
 // The one lead form (D5, D13), used 3× – under the calculator, by the comparison, at the end.
-// Only the e-mail is required (D25), name and phone are optional; the button is the request, the marketing box is separate and unticked.
+// Only the e-mail is required (D25), name and phone are optional; the button is the request.
+// D35: two separate, unticked consents – e-mail tips and a phone call.
 import GlassCard from './GlassCard.astro';
 
 interface Props {
@@ -43,10 +44,10 @@ const id = `lf-${location}`;
     </div>
     </div>
 
-    <!-- honeypot: invisible to people, bots fill it -->
+    <!-- honeypot: invisible to people, bots fill it. D35: neutral label, so nothing reads it out as a "company" field -->
     <div class="hp" aria-hidden="true">
-      <label for={`${id}-company`}>Firma</label>
-      <input id={`${id}-company`} name="company" type="text" tabindex="-1" autocomplete="off" />
+      <label for={`${id}-website`}>Toto pole nechte prázdné</label>
+      <input id={`${id}-website`} name="website" type="text" tabindex="-1" autocomplete="off" />
     </div>
 
     <button class="btn btn-primary btn-block submit" type="submit">Získat srovnání zdarma</button>
@@ -58,10 +59,17 @@ const id = `lf-${location}`;
       Odesláním žádáte o zaslání srovnání. Údaje zpracujeme podle <a href="/zasady">Zásad ochrany osobních údajů</a>.
     </p>
 
-    <label class="check">
-      <input type="checkbox" name="marketing_consent" value="yes" />
-      <span>Chci dostávat další tipy k investování do ETF e-mailem a souhlasím, že mě můžete kontaktovat telefonicky (pokud jsem ho vyplnil/a).</span>
-    </label>
+    <fieldset class="consents">
+      <legend class="visually-hidden">Nepovinné souhlasy</legend>
+      <label class="check">
+        <input type="checkbox" name="marketing_consent" value="yes" />
+        <span>Chci dostávat další tipy k investování do ETF e-mailem.</span>
+      </label>
+      <label class="check">
+        <input type="checkbox" name="phone_consent" value="yes" />
+        <span>Souhlasím, že mi můžete zavolat (jen pokud jsem vyplnil/a telefon).</span>
+      </label>
+    </fieldset>
 
     <p class="form-status" role="status" aria-live="polite" data-status></p>
   </form>
@@ -101,6 +109,7 @@ const id = `lf-${location}`;
   .check input { width: 20px; height: 20px; margin: 0; accent-color: var(--c-green-800); }
   .form-status { font-size: var(--fs-sm); }
   .form-status[data-kind='error'] { color: var(--c-danger); }
+  .consents { border: 0; padding: 0; margin: 0; display: grid; gap: var(--sp-2); min-width: 0; }
   .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 </style>
 
@@ -108,7 +117,7 @@ const id = `lf-${location}`;
   import { track, readUtm } from '../lib/track';
   import { readCalc } from '../lib/calc-state';
 
-  const CONSENT_VERSION = 'v2-2026-10-11'; // v2: name optional (D25)
+  const CONSENT_VERSION = 'v3-2026-10-11'; // v2: name optional (D25); v3: separate e-mail and phone consent (D35)
   const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
   type FieldName = 'email' | 'phone';
@@ -174,9 +183,10 @@ const id = `lf-${location}`;
         email: String(data.get('email')).trim(),
         phone: String(data.get('phone') ?? '').trim() || null,
         marketing_consent: data.get('marketing_consent') === 'yes',
+        phone_consent: data.get('phone_consent') === 'yes',
         consent_version: CONSENT_VERSION,
         form_location: location,
-        company: String(data.get('company') ?? ''),
+        website: String(data.get('website') ?? ''),
         calc: { onceCzk: calc.onceCzk, monthlyCzk: calc.monthlyCzk, years: calc.years },
         utm: readUtm(),
         analytics_id: leadRef,
@@ -207,6 +217,7 @@ const id = `lf-${location}`;
           form_location: location,
           lead_ref: leadRef,
           marketing_consent: payload.marketing_consent,
+          phone_consent: payload.phone_consent && Boolean(payload.phone),
           has_name: Boolean(payload.full_name),
           has_phone: Boolean(payload.phone),
           used_calculator: calc.touched,

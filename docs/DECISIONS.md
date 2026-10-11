@@ -259,6 +259,15 @@ Kontext: Miky se zeptal, jak funguje A/B test. Claude vysvětlil, že dnes se te
 - **OG obrázek (náhled odkazu) později,** spolu s grafikou (Miky).
 - **Grafika:** jednoduché vlastní SVG ikony a ilustrace v barvách webu, bez fotek. Až po funkčních změnách.
 
+### D35 – Úpravy po Mikyho kontrole stránky (11. 10. 2026, Fáze 5c)
+Miky si stránku prošel v prohlížeči a poslal 8 bodů. Claude je nejdřív ověřil v kódu a u nejasných se zeptal.
+- **TER všech 12 fondů:** ověřeno podruhé u správců a v KID, vše sedí (data/SOURCES.md, „Druhá kontrola TER"). Data se nemění.
+- **Pole „Firma":** návštěvník ho nevidí, je to skrytá past na roboty. Varianty: (a) nechat past a přejmenovat *(doporučeno)* · (b) úplně odstranit. **Zvoleno (a):** pole se teď jmenuje `website` s popiskem „Toto pole nechte prázdné".
+- **Souhlasy:** e-mailové tipy a telefonický kontakt jsou dvě samostatná, nezaškrtnutá pole (verze souhlasu v3). V databázi přibyl sloupec `phone_consent`, který se uloží jen spolu s telefonem.
+- **Počet formulářů:** základní verze má 2 (u kalkulačky a na konci). Varianty: odebrat (a) ten pod srovnáním *(doporučeno)* · (b) ten na konci. **Zvoleno (a).**
+- **Varianta se 3 formuláři:** (a) přepínač `?forms=3` a hypotéza do README *(doporučeno)* · (b) druhý živý test 50/50. **Zvoleno (a):** ostře dál běží jediný test (H2, D28).
+- **Otázka na částku ve formuláři:** (a) nepřidávat, jen vysvětlit, proč chceme telefon *(doporučeno)* · (b) nepovinný výběr rozmezí. **Zvoleno (a):** částku už posílá kalkulačka, další pole by konverzi spíš snížilo.
+
 ---
 
 ## Rozhodnuto Claudem (drobnosti)
