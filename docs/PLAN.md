@@ -43,9 +43,9 @@ Legenda: `[ ]` zbývá · `[x]` hotovo · `[~]` rozpracováno
 - [x] `LeadForm` (UI, validace, stavy) – použit 3×
 - [x] Srovnání 6 ETF (EtfCompare)
 - [x] Sekce: proč VOO nenajdete, co pošleme, daně, FAQ, patička, lepivé CTA
-- [~] API `/api/lead` + `/dekujeme` – kód hotový a otestovaný bez klíčů; ostrý test po doplnění klíčů Mikym
+- [~] API `/api/lead` + `/dekujeme` – běží na produkci (validace a honeypot ověřeny); ostrý test s uložením a e-mailem po doplnění klíčů Mikym
 - [x] `/zasady`, `/zdroje`
-- [ ] Vizuály reklam A/B (PNG 4:5 a 9:16) ze stejných tokenů
+- [x] Vizuály reklam A/B (PNG 4:5 a 9:16) ze stejných tokenů
 
 **Kontrolní seznam každé sekce** (z D7, D8, D16, D17, CONTENT.md):
 1. Barvy, mezery, poloměry a stíny jen přes `tokens.css`, žádné literály v komponentách.
