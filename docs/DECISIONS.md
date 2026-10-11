@@ -190,6 +190,15 @@ Drobnosti s rozumnou výchozí volbou rozhoduje Claude sám – jsou na konci v 
 - **Varianty (záznamy relací a heatmapy):** (a) vypnout *(doporučeno: citlivý formulář, výkon na mobilu)* · (b) nechat zapnuté
 - **Zvoleno:** (b) **nechat zapnuté** (Miky). Zásady ochrany údajů to uvádějí. Obsah polí formuláře se nepřenáší (výchozí maskování vstupů v PostHogu).
 
+### D25 – Rozmazaný detail za e-mail a volitelné jméno (mění D3 a D5, 11. 10. 2026)
+- **Podnět (Miky):** „neuděláme něco skryté/rozmyté, aby člověk byl nucený zadat e-mail… jméno a příjmení tím pádem taky volitelné, ne vše toto mají rádi vyplňovat."
+- **Upozornění Clauda:** zadání chce, aby *„hodnota byla zrejmá ešte pred vyplnením formulára"*. Rozmazat celý výsledek by šlo proti zadání a lidé z reklamy by odešli bez výsledku.
+- **Varianty (brána):** (a) částečná brána: hlavní výsledek vidět, detail rozmazaný *(doporučeno)* · (b) rozmazat jen sekci Srovnání 6 ETF · (c) rozmazat celý výsledek · (d) nic nerozmazávat
+- **Zvoleno:** (a). Vidět zůstane, kolik vložíte, poplatky u nejlevnějšího a nejdražšího fondu a rozdíl SPY vs. VOO v Kč. Rozmazané jsou: řádky všech 12 fondů v Kč, graf scénářů z KID a historický rozsah. Upozornění na riziko a zdroje zůstávají vždy čitelné. Po odeslání formuláře je detail na `/dekujeme`, v e-mailu i odemčený na stránce.
+- **Varianty (pole):** (a) e-mail + volitelné jméno, telefon pryč *(doporučeno)* · (b) e-mail + volitelné jméno i telefon · (c) jen e-mail
+- **Zvoleno:** (b). Povinný je jen e-mail. Jméno slouží k oslovení v e-mailu, telefon zůstává pro případný hovor (jen se souhlasem).
+- **Dopad:** sloupec `full_name` je volitelný (nová migrace), verze souhlasu `v2-2026-10-11`, zásady upravené. Pozor: rozmazání je jen vizuální, čísla jsou v kódu stránky. Pro lead magnet stačí, nejde o tajná data.
+
 ---
 
 ## Rozhodnuto Claudem (drobnosti)
