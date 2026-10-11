@@ -3,6 +3,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Logo from '../components/Logo.astro';
 import GlassCard from '../components/GlassCard.astro';
+import Icon from '../components/Icon.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import { brokerQuestions } from '../lib/report';
 import { formatDate, dataRetrieved } from '../lib/etf';
@@ -12,6 +13,23 @@ import { formatDate, dataRetrieved } from '../lib/etf';
     <div class="brand"><Logo href="/" size={32} /></div>
 
     <header class="head">
+      <!-- D36: the one illustration – the comparison on its way to the inbox, with the logo's arrow -->
+      <svg class="illus no-print" viewBox="0 0 240 140" width="220" height="128" aria-hidden="true" focusable="false">
+        <circle cx="120" cy="80" r="58" fill="var(--c-navy-100)" />
+        <path d="M168 58c14-6 22-16 26-28" fill="none" stroke="var(--c-green-500)" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="1 7" />
+        <g transform="translate(184 4) scale(1.05)">
+          <path d="M6 26V15L29.7 7.3 28.2 2.8 45.3 6.7 33.8 19.9 32.3 15.4 21 19Q16 20.6 16 24V26z" fill="var(--c-green-500)" />
+        </g>
+        <rect x="80" y="20" width="80" height="74" rx="6" fill="var(--c-white)" stroke="var(--c-navy-700)" stroke-width="2.5" />
+        <path d="M92 33h34" stroke="var(--c-navy-700)" stroke-width="2.5" stroke-linecap="round" />
+        <rect x="134" y="27" width="18" height="12" rx="3" fill="var(--c-green-100)" />
+        <text x="143" y="36" text-anchor="middle" font-size="7.5" font-weight="700" fill="var(--c-green-900)" font-family="inherit">PDF</text>
+        <rect x="93" y="50" width="12" height="16" rx="2" fill="var(--c-navy-500)" />
+        <rect x="111" y="44" width="12" height="22" rx="2" fill="var(--c-green-500)" />
+        <rect x="129" y="38" width="12" height="28" rx="2" fill="var(--c-green-700)" />
+        <rect x="62" y="64" width="116" height="62" rx="8" fill="var(--c-white)" stroke="var(--c-navy-700)" stroke-width="2.5" />
+        <path d="M62 69l58 34 58-34" fill="none" stroke="var(--c-navy-700)" stroke-width="2.5" stroke-linejoin="round" />
+      </svg>
       <p class="eyebrow">Hotovo</p>
       <h1 data-hello>Srovnání je na cestě do vašeho e-mailu.</h1>
       <p class="lead">Tady ho máte hned. <span data-amount></span></p>
@@ -56,11 +74,11 @@ import { formatDate, dataRetrieved } from '../lib/etf';
     <section class="next" aria-labelledby="next-h">
       <h2 id="next-h">Co dál?</h2>
       <ol>
-        <li><strong>Vyberte brokera</strong> a zeptejte se ho:
+        <li><Icon name="bank" size={28} /><div><strong>Vyberte brokera</strong> a zeptejte se ho:
           <ul>{brokerQuestions.map((q) => <li>{q}</li>)}</ul>
-        </li>
-        <li><strong>Ověřte, že nabízí zvolený fond</strong> – hledejte podle ISIN evropské verze.</li>
-        <li><strong>Přečtěte si KID</strong> fondu, než nakoupíte.</li>
+        </div></li>
+        <li><Icon name="search" size={28} /><div><strong>Ověřte, že nabízí zvolený fond</strong> – hledejte podle ISIN evropské verze.</div></li>
+        <li><Icon name="document" size={28} /><div><strong>Přečtěte si KID</strong> fondu, než nakoupíte.</div></li>
       </ol>
     </section>
 
@@ -82,6 +100,7 @@ import { formatDate, dataRetrieved } from '../lib/etf';
   .wrap { padding-block: var(--sp-6) var(--sp-16); display: grid; gap: var(--sp-8); }
   .head { display: grid; gap: var(--sp-3); max-width: var(--w-text); }
   h1 { font-size: var(--fs-2xl); }
+  .illus { width: min(220px, 60vw); height: auto; margin-bottom: var(--sp-1); }
   .actions { display: flex; flex-wrap: wrap; gap: var(--sp-3); margin-top: var(--sp-2); }
   table { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); font-variant-numeric: tabular-nums; margin-bottom: var(--sp-4); }
   th { text-align: left; font-size: var(--fs-xs); color: var(--c-ink-faint); font-weight: var(--fw-medium); padding-bottom: var(--sp-2); }
@@ -115,7 +134,10 @@ import { formatDate, dataRetrieved } from '../lib/etf';
   .share { display: grid; gap: var(--sp-3); max-width: var(--w-text); }
   .share h2 { font-size: var(--fs-xl); }
   .share-actions { display: flex; flex-wrap: wrap; gap: var(--sp-3); }
-  .next ol { padding-left: var(--sp-5); display: grid; gap: var(--sp-3); max-width: var(--w-text); }
+  .next ol { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--sp-4); max-width: var(--w-text); }
+  .next ol > li { display: grid; grid-template-columns: 28px 1fr; gap: var(--sp-3); align-items: start; color: var(--c-navy-700); } /* D36: an icon per step */
+  .next ol > li > div { color: var(--c-ink); }
+  .next ol ul { margin: var(--sp-2) 0 0; padding-left: var(--sp-5); }
   .next h2 { font-size: var(--fs-xl); margin-bottom: var(--sp-3); }
   @media print {
     :global(.page-bg), .no-print, :global(.footer) { display: none !important; }
