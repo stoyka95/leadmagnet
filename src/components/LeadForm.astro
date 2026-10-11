@@ -211,7 +211,8 @@ const id = `lf-${location}`;
           has_phone: Boolean(payload.phone),
           used_calculator: calc.touched,
         });
-        try { sessionStorage.setItem('fg:lead', JSON.stringify({ firstName: payload.full_name?.split(/\s+/)[0] ?? '', email: payload.email })); } catch { /* ignore */ }
+        // Only what /dekujeme needs: the first name for the greeting and the reference for lead_segment (no e-mail)
+        try { sessionStorage.setItem('fg:lead', JSON.stringify({ firstName: payload.full_name?.split(/\s+/)[0] ?? '', leadRef })); } catch { /* ignore */ }
         window.location.assign('/dekujeme');
       } catch (err) {
         track('form_error', { form_location: location, reason: 'server', detail: String(err) });

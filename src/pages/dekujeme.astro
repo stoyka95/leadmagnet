@@ -97,7 +97,7 @@ import { formatDate, dataRetrieved } from '../lib/etf';
   import { track } from '../lib/track';
 
   const calc = readCalc();
-  let lead: { firstName?: string; email?: string } = {};
+  let lead: { firstName?: string; leadRef?: string } = {};
   try { lead = JSON.parse(sessionStorage.getItem('fg:lead') ?? '{}'); } catch { /* ignore */ }
 
   if (lead.firstName) document.querySelector('[data-hello]')!.textContent = `Děkujeme, ${lead.firstName}. Srovnání je na cestě do e-mailu.`;
