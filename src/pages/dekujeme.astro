@@ -21,6 +21,16 @@ import { formatDate, dataRetrieved } from '../lib/etf';
       </div>
     </header>
 
+    <section class="ask no-print" aria-labelledby="ask-h" data-ask>
+      <h2 id="ask-h">Jedna otázka, dobrovolně: už investujete?</h2>
+      <div class="ask-options" role="group" aria-labelledby="ask-h">
+        <button type="button" class="chip-btn" data-answer="yes">Ano</button>
+        <button type="button" class="chip-btn" data-answer="starting">Začínám</button>
+        <button type="button" class="chip-btn" data-answer="not_yet">Zatím ne</button>
+      </div>
+      <p class="fine" data-ask-done role="status" hidden>Děkujeme, pomůže nám to zlepšit další tipy.</p>
+    </section>
+
     <GlassCard solid class="report">
       <table>
         <caption class="visually-hidden">Poplatky fondů v korunách za 10 a 20 let</caption>
@@ -53,6 +63,17 @@ import { formatDate, dataRetrieved } from '../lib/etf';
         <li><strong>Přečtěte si KID</strong> fondu, než nakoupíte.</li>
       </ol>
     </section>
+
+    <section class="share no-print" aria-labelledby="share-h">
+      <h2 id="share-h">Hodí se srovnání i někomu dalšímu?</h2>
+      <p class="muted">Pošlete odkaz na kalkulačku. Nic za to nedostáváme, jen pomůžete.</p>
+      <div class="share-actions">
+        <button type="button" class="btn btn-primary" data-share-native hidden>Sdílet odkaz</button>
+        <a class="btn btn-ghost" data-share-whatsapp target="_blank" rel="noopener">Poslat přes WhatsApp</a>
+        <button type="button" class="btn btn-ghost" data-share-copy>Kopírovat odkaz</button>
+      </div>
+      <p class="fine" data-share-done role="status" hidden>Odkaz je zkopírovaný.</p>
+    </section>
   </main>
   <SiteFooter />
 </BaseLayout>
@@ -80,6 +101,20 @@ import { formatDate, dataRetrieved } from '../lib/etf';
   .hist { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-3); padding: var(--sp-4); border-radius: var(--r-md); background: var(--c-navy-100); margin-bottom: var(--sp-3); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   :global(.hist div) { display: grid; gap: 2px; font-size: var(--fs-xs); color: var(--c-ink-muted); }
   :global(.hist strong) { font-size: var(--fs-lg); color: var(--c-navy-900); white-space: nowrap; }
+  .ask { display: grid; gap: var(--sp-3); padding: var(--sp-5); border-radius: var(--r-lg); background: var(--c-navy-100); max-width: var(--w-text); }
+  .ask h2 { font-size: var(--fs-lg); }
+  .ask-options { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+  .chip-btn {
+    min-height: var(--tap); padding: var(--sp-2) var(--sp-5); border-radius: var(--r-pill);
+    border: 1.5px solid var(--c-navy-700); background: var(--c-white); color: var(--c-navy-900);
+    font: inherit; font-weight: var(--fw-medium); cursor: pointer;
+  }
+  .chip-btn:hover { background: var(--c-navy-100); }
+  .chip-btn[aria-pressed='true'] { background: var(--c-navy-700); color: var(--c-white); }
+  .chip-btn:disabled { cursor: default; }
+  .share { display: grid; gap: var(--sp-3); max-width: var(--w-text); }
+  .share h2 { font-size: var(--fs-xl); }
+  .share-actions { display: flex; flex-wrap: wrap; gap: var(--sp-3); }
   .next ol { padding-left: var(--sp-5); display: grid; gap: var(--sp-3); max-width: var(--w-text); }
   .next h2 { font-size: var(--fs-xl); margin-bottom: var(--sp-3); }
   @media print {
@@ -140,4 +175,46 @@ import { formatDate, dataRetrieved } from '../lib/etf';
   });
 
   track('thank_you_view', { used_calculator: calc.touched });
+
+  // D32: one voluntary question – the answer goes to PostHog with the lead reference, nothing personal
+  const ask = document.querySelector<HTMLElement>('[data-ask]')!;
+  const answers = ask.querySelectorAll<HTMLButtonElement>('[data-answer]');
+  const showAnswered = (answer: string) => {
+    answers.forEach((b) => { b.setAttribute('aria-pressed', String(b.dataset.answer === answer)); b.disabled = true; });
+    ask.querySelector<HTMLElement>('[data-ask-done]')!.hidden = false;
+  };
+  let given: string | null = null;
+  try { given = sessionStorage.getItem('fg:segment'); } catch { /* ignore */ }
+  if (given) showAnswered(given);
+  answers.forEach((b) => b.addEventListener('click', () => {
+    const answer = b.dataset.answer!;
+    track('lead_segment', { answer, lead_ref: lead.leadRef ?? null });
+    try { sessionStorage.setItem('fg:segment', answer); } catch { /* ignore */ }
+    showAnswered(answer);
+  }));
+
+  // D32: share the calculator; the link is tagged so shared visits are told apart from the ads
+  const shareUrl = `${location.origin}/?utm_source=share&utm_medium=referral&utm_campaign=thank_you`;
+  const shareText = 'Srovnání ETF z newyorské burzy a poplatky v korunách pro vaši částku – zdarma:';
+  const native = document.querySelector<HTMLButtonElement>('[data-share-native]')!;
+  const whatsapp = document.querySelector<HTMLAnchorElement>('[data-share-whatsapp]')!;
+  const copy = document.querySelector<HTMLButtonElement>('[data-share-copy]')!;
+  whatsapp.href = `https://wa.me/?text=${encodeURIComponent(`${shareText} ${shareUrl}`)}`;
+  whatsapp.addEventListener('click', () => track('share_click', { method: 'whatsapp' }));
+  if (typeof navigator.share === 'function') {
+    native.hidden = false;
+    native.addEventListener('click', async () => {
+      track('share_click', { method: 'native' });
+      try { await navigator.share({ title: 'Fingramo – srovnání ETF', text: shareText, url: shareUrl }); } catch { /* cancelled */ }
+    });
+  }
+  copy.addEventListener('click', async () => {
+    track('share_click', { method: 'copy' });
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      document.querySelector<HTMLElement>('[data-share-done]')!.hidden = false;
+    } catch {
+      window.prompt('Zkopírujte odkaz:', shareUrl);
+    }
+  });
 </script>

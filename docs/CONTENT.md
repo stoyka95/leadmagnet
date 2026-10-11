@@ -122,8 +122,10 @@ Závěrečný formulář: stejný jako u kalkulačky; pokud návštěvník kalku
 ## 4. Po odeslání formuláře
 
 1. **Děkovací stránka** (`/dekujeme`), okamžitě: „Hotovo, srovnání je na cestě do e-mailu. Tady ho máte hned:" + **plné srovnání pro zadanou částku** + tlačítko **Uložit jako PDF** (tisk prohlížeče).
-2. **E-mail** (Resend, `srovnani@mail.stoyka.eu`): stejný obsah, odkazy na zdroje, odkaz zpět do kalkulačky.
+2. **E-mail** (Resend, `srovnani@mail.stoyka.eu`): stejný obsah včetně 4 scénářů a historie S&P 500 (D27), odkazy na zdroje, odkaz zpět do kalkulačky, **PDF v příloze**.
 3. Na děkovací stránce: „Co dál?" – 3 kroky (vybrat brokera → ověřit, že nabízí zvolený fond → zkontrolovat KID).
+4. **Dobrovolná otázka** „Už investujete?" (Ano / Začínám / Zatím ne) jedním klikem hned pod úvodem (D32). Segmentace pro další komunikaci; nesnižuje konverzi, protože kontakt už je odeslaný.
+5. **Sdílení** na konci: nativní sdílení na mobilu, WhatsApp, kopírování odkazu. Odkaz nese `utm_source=share` (D32).
 
 ---
 

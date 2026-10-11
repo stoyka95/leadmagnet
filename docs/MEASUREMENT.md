@@ -26,6 +26,8 @@ Podklad pro README §8. Rozhodnutí: D11 (PostHog EU + Vercel Analytics), D24 (b
 | 5 | `form_start` | první fokus do formuláře | `form_location` |
 | 6 | `form_submit` | **server potvrdil uložení** (HTTP 200 z `/api/lead`) | `form_location`, `lead_ref` (= `analytics_id` v tabulce `leads`), `marketing_consent`, `has_name`, `has_phone`, `used_calculator` |
 | — | `form_error` | chyba validace, serveru nebo limitu (`rate_limited`) | `reason`, `fields` |
+| — | `lead_segment` | odpověď na dobrovolnou otázku „Už investujete?" na `/dekujeme` (D32) | `answer` = `yes` / `starting` / `not_yet`, `lead_ref` |
+| — | `share_click` | sdílení odkazu z `/dekujeme` (D32); sdílený odkaz nese `utm_source=share` | `method` = `native` / `whatsapp` / `copy` |
 | — | `hero_calc_submit` | varianta testu `hero_input`: odeslání částky z 1. obrazovky (D28) | `monthly_czk` |
 | 7 | `thank_you_view` | zobrazení `/dekujeme` | `used_calculator` |
 
