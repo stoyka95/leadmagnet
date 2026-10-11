@@ -13,7 +13,7 @@ const {
   location,
   wide = false,
   heading = 'Pošleme vám celé srovnání pro vaši částku',
-  sub = 'Všech 6 fondů, jejich evropské verze, poplatky v Kč na 10 a 20 let a odkazy na zdroje. Do e-mailu, zdarma.',
+  sub = 'Všech 6 fondů a jejich evropské verze, poplatky v Kč na 10 a 20 let a odkazy na zdroje. Do e-mailu a hned i k uložení jako PDF.',
 } = Astro.props;
 const id = `lf-${location}`;
 ---
@@ -51,7 +51,11 @@ const id = `lf-${location}`;
       <input id={`${id}-company`} name="company" type="text" tabindex="-1" autocomplete="off" />
     </div>
 
-    <button class="btn btn-primary btn-block submit" type="submit">Poslat mi srovnání</button>
+    <button class="btn btn-primary btn-block submit" type="submit">Získat srovnání zdarma</button>
+    <p class="assure">
+      <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M6 11V8a6 6 0 0 1 12 0v3M5 11h14v10H5z"/></svg>
+      Zdarma · Bez spamu · Hned v e-mailu
+    </p>
     <p class="fine legal">
       Odesláním žádáte o zaslání srovnání. Údaje zpracujeme podle <a href="/zasady">Zásad ochrany osobních údajů</a>.
     </p>
@@ -78,7 +82,7 @@ const id = `lf-${location}`;
   .opt { font-weight: var(--fw-regular); color: var(--c-ink-faint); }
   input[type='text'], input[type='email'], input[type='tel'] {
     width: 100%;
-    min-height: var(--tap);
+    min-height: var(--field-h);
     padding: var(--sp-3) var(--sp-4);
     font: inherit;
     font-size: var(--fs-md); /* ≥16px: iOS does not zoom */
@@ -92,6 +96,8 @@ const id = `lf-${location}`;
   input[aria-invalid='true'] { border-color: var(--c-danger); }
   .err { font-size: var(--fs-xs); color: var(--c-danger); }
   .submit { font-size: var(--fs-lg); min-height: 56px; margin-top: var(--sp-1); }
+  .assure { display: flex; align-items: center; justify-content: center; gap: var(--sp-2); margin-top: calc(-1 * var(--sp-2)); font-size: var(--fs-xs); font-weight: var(--fw-medium); color: var(--c-green-900); }
+  @media (min-width: 900px) { :global(.is-wide) .assure { justify-content: flex-start; } }
   .legal { margin-top: calc(-1 * var(--sp-2)); }
   .check { display: grid; grid-template-columns: auto 1fr; gap: var(--sp-3); align-items: start; font-weight: var(--fw-regular); font-size: var(--fs-xs); color: var(--c-ink-muted); line-height: var(--lh-snug); cursor: pointer; }
   .check input { width: 20px; height: 20px; margin: 0; accent-color: var(--c-green-800); }
@@ -201,7 +207,7 @@ const id = `lf-${location}`;
         status.dataset.kind = 'error';
         status.textContent = 'Odeslání se nepovedlo. Zkuste to prosím za chvíli znovu.';
         button.disabled = false;
-        button.textContent = 'Poslat mi srovnání';
+        button.textContent = 'Získat srovnání zdarma';
       }
     });
   }
