@@ -76,7 +76,7 @@ export const buildGrowth = (input: ReportInput & { years: number }): GrowthRepor
 
 // Colours of the four scenarios – the same tokens as the chart legend on the page (Calculator.astro)
 export const SCENARIO_COLOURS: Record<string, string> = {
-  stress: '#69728a', unfavourable: '#3b5bb5', moderate: '#12a16b', favourable: '#064e36',
+  stress: '#5f6880', unfavourable: '#3b5bb5', moderate: '#12a16b', favourable: '#064e36',
 };
 // "Paid in" bar – lighter than the stress scenario, so the two are never confused
 export const PAID_COLOUR = '#c3cad8';
