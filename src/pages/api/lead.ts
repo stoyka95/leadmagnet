@@ -109,7 +109,7 @@ export const POST: APIRoute = async ({ request, url }) => {
       headers: { Authorization: `Bearer ${resendKey}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({
         from: env('EMAIL_FROM'), to: [email], subject, html, text,
-        ...(pdfBase64 && { attachments: [{ filename: 'fingramo-srovnani-etf.pdf', content: pdfBase64 }] }),
+        ...(pdfBase64 && { attachments: [{ filename: 'fingramo-srovnani-etf.pdf', content: pdfBase64, content_type: 'application/pdf' }] }),
       }),
     });
     emailSent = send.ok;
