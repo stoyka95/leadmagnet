@@ -34,6 +34,25 @@ describe('data/etf.json', () => {
   });
 });
 
+// The fees used on the page must be the ones written in the source tables of SOURCES.md (§1 and §2)
+describe('etf.json agrees with the SOURCES.md tables', () => {
+  const rowOf = (needle: string) => sources.split(/\r?\n/).find((l) => l.startsWith('|') && l.includes(needle))!;
+  const pct = (cell: string) => Number(cell.match(/(\d+,\d+)\s*%/)![1].replace(',', '.'));
+  const cells = (line: string) => line.split('|').map((c) => c.trim());
+
+  it.each(etf.us)('$ticker fee and source URL match §1', (e) => {
+    const row = cells(sources.split(/\r?\n/).find((l) => l.startsWith(`| ${e.ticker} |`))!);
+    expect(pct(row[2])).toBe(e.expenseRatioPct);
+    expect(row.at(-2)).toContain(e.source);
+  });
+
+  it.each(etf.ucits)('$ticker ($isin) fee and source URL match §2', (u) => {
+    const row = cells(rowOf(`| ${u.isin} |`));
+    expect(pct(row[4])).toBe(u.terPct);
+    expect(row.at(-2)).toContain(u.source);
+  });
+});
+
 describe('data/kid_scenarios.json', () => {
   it('names the KID it comes from', () => {
     expect(kid._meta.source).toMatch(/^https:\/\//);
