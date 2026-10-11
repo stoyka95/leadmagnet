@@ -2,6 +2,13 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
 import Calculator from '../components/Calculator.astro';
+import EtfCompare from '../components/EtfCompare.astro';
+import KidExplainer from '../components/KidExplainer.astro';
+import WhatYouGet from '../components/WhatYouGet.astro';
+import TaxFacts from '../components/TaxFacts.astro';
+import Faq from '../components/Faq.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import StickyCta from '../components/StickyCta.astro';
 ---
 <BaseLayout
   title="Srovnání ETF z NYSE a poplatky v Kč | Fingramo"
@@ -17,5 +24,12 @@ import Calculator from '../components/Calculator.astro';
   <Hero />
   <main id="obsah">
     <Calculator />
+    <EtfCompare />
+    <KidExplainer />
+    <WhatYouGet />
+    <TaxFacts />
+    <Faq />
   </main>
+  <SiteFooter />
+  <StickyCta />
 </BaseLayout>
