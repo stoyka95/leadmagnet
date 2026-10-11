@@ -11,7 +11,7 @@ const esc = (s: string) => s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&
 const C = {
   navy: '#0f1d45', navyLink: '#1e3a8a', navySoft: '#e8effb',
   green: '#0a7a55', greenDark: '#064e36', greenSoft: '#e1f4ea',
-  ink: '#0f1b33', muted: '#46506a', faint: '#69728a',
+  ink: '#0f1b33', muted: '#46506a', faint: '#5f6880',
   line: '#e3e7ef', bg: '#f4f6fa', white: '#ffffff', track: '#eaeff6',
 };
 const FONT = `-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif`;

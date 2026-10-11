@@ -12,7 +12,7 @@ import { formatPct, formatDate, dataRetrieved } from './etf';
 const hex = (h: string): RGB => rgb(parseInt(h.slice(1, 3), 16) / 255, parseInt(h.slice(3, 5), 16) / 255, parseInt(h.slice(5, 7), 16) / 255);
 const C = {
   navy: hex('#0f1d45'), navySoft: hex('#e8effb'), green: hex('#12a16b'), greenDark: hex('#064e36'), greenSoft: hex('#e1f4ea'),
-  ink: hex('#0f1b33'), muted: hex('#46506a'), faint: hex('#69728a'), line: hex('#e3e7ef'), track: hex('#eaeff6'), white: rgb(1, 1, 1),
+  ink: hex('#0f1b33'), muted: hex('#46506a'), faint: hex('#5f6880'), line: hex('#e3e7ef'), track: hex('#eaeff6'), white: rgb(1, 1, 1),
 };
 // The logo (D26), same paths as src/components/Logo.astro
 const LOGO_STEM = 'M6 26h10v8h12v8H16v12H6z';

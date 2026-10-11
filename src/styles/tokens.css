@@ -17,7 +17,7 @@
   --c-blue-700: var(--c-navy-700);
   --c-ink: #0f1b33;
   --c-ink-muted: #46506a;
-  --c-ink-faint: #69728a;
+  --c-ink-faint: #5f6880;  /* ≥ 4.8:1 on every page background (WCAG AA); was #69728a = 4.15:1 on navy-100 */
   --c-line: rgba(15, 29, 69, 0.1);
   --c-bg: #f4f6fa;
   --c-bg-2: #eaeff6;
