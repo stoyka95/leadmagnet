@@ -1,0 +1,97 @@
+---
+// After submit (CONTENT.md §4): the full comparison immediately, Save as PDF, next steps.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import GlassCard from '../components/GlassCard.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import { brokerQuestions } from '../lib/report';
+import { formatDate, dataRetrieved } from '../lib/etf';
+---
+<BaseLayout title="Hotovo – vaše srovnání ETF | Fingramo" description="Vaše srovnání ETF s poplatky v korunách." noindex>
+  <main class="container wrap">
+    <a class="brand" href="/">Fingramo</a>
+
+    <header class="head">
+      <p class="eyebrow">Hotovo</p>
+      <h1 data-hello>Srovnání je na cestě do vašeho e-mailu.</h1>
+      <p class="lead">Tady ho máte hned. <span data-amount></span></p>
+      <div class="actions no-print">
+        <button type="button" class="btn btn-primary" data-print>Uložit jako PDF</button>
+        <a class="btn btn-ghost" href="/#kalkulacka">Upravit výpočet</a>
+      </div>
+    </header>
+
+    <GlassCard solid class="report">
+      <table>
+        <caption class="visually-hidden">Poplatky fondů v korunách za 10 a 20 let</caption>
+        <thead>
+          <tr><th scope="col">Fond</th><th scope="col" class="r">Poplatek</th><th scope="col" class="r">10 let</th><th scope="col" class="r">20 let</th></tr>
+        </thead>
+        <tbody data-report></tbody>
+      </table>
+      <p class="fine">Počítáno z ročního poplatku fondu (TER) bez růstu investice. Nezahrnuje poplatky brokera, převod měny ani daně. Data ze stránek správců, staženo {formatDate(dataRetrieved)} – <a href="/zdroje">zdroje</a>. Nejde o investiční doporučení.</p>
+    </GlassCard>
+
+    <section class="next" aria-labelledby="next-h">
+      <h2 id="next-h">Co dál?</h2>
+      <ol>
+        <li><strong>Vyberte brokera</strong> a zeptejte se ho:
+          <ul>{brokerQuestions.map((q) => <li>{q}</li>)}</ul>
+        </li>
+        <li><strong>Ověřte, že nabízí zvolený fond</strong> – hledejte podle ISIN evropské verze.</li>
+        <li><strong>Přečtěte si KID</strong> fondu, než nakoupíte.</li>
+      </ol>
+    </section>
+  </main>
+  <SiteFooter />
+</BaseLayout>
+
+<style>
+  .wrap { padding-block: var(--sp-6) var(--sp-16); display: grid; gap: var(--sp-8); }
+  .brand { font-weight: var(--fw-bold); color: var(--c-green-800); text-decoration: none; font-size: var(--fs-lg); }
+  .head { display: grid; gap: var(--sp-3); max-width: var(--w-text); }
+  h1 { font-size: var(--fs-2xl); }
+  .actions { display: flex; flex-wrap: wrap; gap: var(--sp-3); margin-top: var(--sp-2); }
+  table { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); font-variant-numeric: tabular-nums; margin-bottom: var(--sp-4); }
+  th { text-align: left; font-size: var(--fs-xs); color: var(--c-ink-faint); font-weight: var(--fw-medium); padding-bottom: var(--sp-2); }
+  .r { text-align: right; }
+  :global(.report td) { padding: var(--sp-2) 0; border-top: 1px solid var(--c-line); vertical-align: top; }
+  :global(.report td.r) { text-align: right; padding-left: var(--sp-2); white-space: nowrap; }
+  :global(.report tr.us td) { border-top: 2px solid var(--c-line); font-weight: var(--fw-medium); }
+  :global(.report .sub) { display: block; font-size: var(--fs-xs); color: var(--c-ink-faint); font-weight: var(--fw-regular); }
+  .next ol { padding-left: var(--sp-5); display: grid; gap: var(--sp-3); max-width: var(--w-text); }
+  .next h2 { font-size: var(--fs-xl); margin-bottom: var(--sp-3); }
+  @media print {
+    :global(.page-bg), .no-print, :global(.footer) { display: none !important; }
+    :global(body) { background: #fff; }
+  }
+</style>
+
+<script>
+  import { buildReport } from '../lib/report';
+  import { formatCzk } from '../lib/fees';
+  import { formatPct } from '../lib/etf';
+  import { readCalc } from '../lib/calc-state';
+  import { track } from '../lib/track';
+
+  const calc = readCalc();
+  let lead: { firstName?: string; email?: string } = {};
+  try { lead = JSON.parse(sessionStorage.getItem('fg:lead') ?? '{}'); } catch { /* ignore */ }
+
+  if (lead.firstName) document.querySelector('[data-hello]')!.textContent = `Děkujeme, ${lead.firstName}. Srovnání je na cestě do e-mailu.`;
+  document.querySelector('[data-amount]')!.textContent =
+    `Pro ${formatCzk(calc.onceCzk)} jednorázově + ${formatCzk(calc.monthlyCzk)} měsíčně.`;
+
+  const esc = (s: string) => s.replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
+  document.querySelector('[data-report]')!.innerHTML = buildReport(calc)
+    .map((r) => `
+      <tr class="us"><td>${esc(r.ticker)}<span class="sub">${esc(r.index)}</span></td><td class="r">${formatPct(r.ter)}</td><td class="r">${formatCzk(r.fees10)}</td><td class="r">${formatCzk(r.fees20)}</td></tr>
+      <tr><td>→ ${esc(r.euTicker)}<span class="sub">${esc(r.euIsin)} · ${esc(r.euMatch)}</span></td><td class="r">${formatPct(r.euTer)}</td><td class="r">${formatCzk(r.euFees10)}</td><td class="r">${formatCzk(r.euFees20)}</td></tr>`)
+    .join('');
+
+  document.querySelector('[data-print]')!.addEventListener('click', () => {
+    track('cta_click', { cta: 'save_pdf' });
+    window.print();
+  });
+
+  track('thank_you_view', { used_calculator: calc.touched });
+</script>
