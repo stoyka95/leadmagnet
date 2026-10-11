@@ -175,3 +175,24 @@ Miky: horní řádek jako menu (logo vidět při scrollování, vpravo tlačítk
 4. **Čísla stránek** se kreslila obě na poslední stránku a **sloupec „Vloženo"** měl stejnou barvu jako stresový scénář. Opraveno před commitem.
 5. **Typ přílohy** byl `application/octet-stream`, takže některé schránky by PDF nenabídly k náhledu. Nalezeno kontrolou v Resendu, opraveno na `application/pdf`.
 6. **První návrh `panel()` v PDF vykresloval text dvakrát** (pod obdélník a nad něj), takže kopírování nebo čtečka by text zdvojily. Přepsáno na měření výšky předem.
+
+---
+
+## Session 1, pokračování – 11. 10. 2026: Fáze 5, testy
+
+### Pokyn
+Miky: hloubkové testy v kódu i v prohlížeči, případně unit a E2E testy.
+
+### Co AI udělala a jak ověřovala
+- Vitest (74 unit testů) a Playwright Test s lokálním Chrome (58 E2E testů na mobilu i desktopu), axe-core pro přístupnost, Lighthouse proti produkci. Přehled je v `docs/TESTING.md`.
+- E2E testy nikdy neposílají skutečný lead (API je odchycené) a blokují analytiku, aby nekazily data v PostHogu. Události trychtýře přitom kontrolují v prohlížeči.
+- Data se testují proti zdrojům: poplatky a URL v `etf.json` musí odpovídat tabulkám v `SOURCES.md` a historie S&P 500 se přepočítá ze surových ročních výnosů.
+- Bezpečnostní limit ověřen nejdřív v databázi v transakci s rollbackem (nezůstal žádný řádek), potom na produkci (HTTP 429).
+- Stejná E2E sada prošla i proti produkci.
+
+### Kde se AI spletla (nalezeno testy a revizí, opraveno samostatnými `fix:` commity)
+1. **Stránka /zdroje na mobilu přetékala do šířky** (618 px). Široká tabulka roztáhla sloupec stránky. Při vizuální kontrole AI zdroje na mobilu neprošla.
+2. **Šedý text měl kontrast 4,15:1** na světle modrém pozadí (pod WCAG AA). Barvu AI vybrala při změně palety a kontrast ověřila jen na bílé.
+3. **`aria-label` na prostém `span`** v logu (nepovolená ARIA).
+4. **Formulář šel zneužít k obtěžování cizích adres** opakovaným odesíláním. AI na to při stavbě API nemyslela. Opraveno limitem 3 žádostí na adresu za 24 h v databázi.
+5. **Planý poplach v testu:** chybějící datum poplatku u IVV a SCHD nebyla chyba. Weby iShares a Schwab datum neuvádějí a stránka to přiznává („stav ke dni stažení"). Test AI upravila a důvod zapsala do kódu.

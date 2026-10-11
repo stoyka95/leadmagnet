@@ -66,12 +66,14 @@ Legenda: `[ ]` zbývá · `[x]` hotovo · `[~]` rozpracováno
 - [x] Ověřeno end-to-end na produkci (8 kroků, jeden návštěvník, lead s UTM, e-mail delivered) – `docs/MEASUREMENT.md`
 - [ ] Před spuštěním smazat testovací leady (`utm_source=test`)
 
-## Fáze 5 – Testy a ladění (čt 15. 10.)
-- [ ] Mobil (reálný telefon + emulace 375 px), rychlost (Lighthouse), přístupnost
-- [ ] Formulář: validace, chyby, duplicity, ochrana proti spamu
-- [ ] Kontrola každého čísla na stránce proti `data/SOURCES.md`
-- [ ] Kontrola, že stránka nepůsobí jako „základní výstup od Claude"
-- [ ] Opravy jako samostatné `fix:` commity
+## Fáze 5 – Testy a ladění (11. 10., dříve než plán) – detail v `docs/TESTING.md`
+- [x] Emulace 375 px a desktop (E2E), Lighthouse mobil 100/100/100/100, přístupnost (axe-core WCAG 2.1 AA + klávesnice)
+- [ ] Reálný telefon (iPhone Safari, Android Chrome) – Miky ručně
+- [x] Formulář: validace, chyby, dvojklik, ochrana proti spamu (honeypot + limit 3 žádosti na adresu za 24 h)
+- [x] Každé číslo proti `data/SOURCES.md` – automatický test (poplatky, URL, historie přepočtená ze surových dat)
+- [x] 74 unit + 58 E2E testů, lokálně i proti produkci
+- [ ] Kontrola, že stránka nepůsobí jako „základní výstup od Claude" – Miky
+- [x] Opravy jako samostatné `fix:` commity (4 nálezy testů a revize)
 
 ## Fáze 6 – README a odevzdání (čt 15. 10. večer)
 - [ ] README se všemi 13 sekcemi (sekce 5 CLAUDE.md), včetně očekávané konverze a 3 A/B hypotéz
