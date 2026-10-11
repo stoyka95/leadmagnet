@@ -8,7 +8,8 @@
       "rateDate": "2026-10-09",
       "USD_CZK": 21.745,
       "EUR_CZK": 24.365
-    }
+    },
+    "ucitsNote": "Hodnoty UCITS z webů správců (ověřeno 11. 10. 2026); justETF jen jako křížová kontrola."
   },
   "us": [
     {
@@ -118,11 +119,15 @@
       "index": "S&P 500",
       "match": "stejný index",
       "terPct": 0.03,
-      "aumEur": 17596000000,
       "domicile": "Irsko",
       "distribution": "akumulační",
       "inception": "2023-10-31",
-      "source": "https://www.justetf.com/en/etf-profile.html?isin=IE000XZSV718"
+      "source": "https://www.ssga.com/ie/en_gb/institutional/etfs/state-street-spdr-sp-500-ucits-etf-acc-spyl-gy",
+      "aumUsd": 19756880000,
+      "aumNote": "Share Class Assets; celý fond $45,080.82 M",
+      "aumAsOf": "2026-10-09",
+      "registeredCZ": true,
+      "secondarySource": "https://www.justetf.com/en/etf-profile.html?isin=IE000XZSV718"
     },
     {
       "isin": "IE00B5BMR087",
@@ -132,11 +137,14 @@
       "index": "S&P 500",
       "match": "stejný index",
       "terPct": 0.07,
-      "aumEur": 141385000000,
       "domicile": "Irsko",
       "distribution": "akumulační",
-      "inception": "2010-05-19",
-      "source": "https://www.justetf.com/en/etf-profile.html?isin=IE00B5BMR087"
+      "inception": "2010-05-18",
+      "source": "https://www.ishares.com/uk/individual/en/products/253743/ishares-sp-500-b-ucits-etf-acc-fund",
+      "aumUsd": 161512817847,
+      "aumNote": "Net Assets of Fund",
+      "aumAsOf": "2026-10-09",
+      "secondarySource": "https://www.justetf.com/en/etf-profile.html?isin=IE00B5BMR087"
     },
     {
       "isin": "IE00BFMXXD54",
@@ -146,11 +154,13 @@
       "index": "S&P 500",
       "match": "stejný index",
       "terPct": 0.07,
-      "aumEur": 33371000000,
       "domicile": "Irsko",
       "distribution": "akumulační",
       "inception": "2019-05-14",
-      "source": "https://www.justetf.com/en/etf-profile.html?isin=IE00BFMXXD54"
+      "source": "https://www.vanguard.co.uk/professional/product/etf/equity/9694/sp-500-ucits-etf-usd-accumulating",
+      "aumUsd": 36340000000,
+      "aumNote": "Share Class Assets US$36.34 B (datum na stránce neuvedeno); celý fond US$88.97 B",
+      "secondarySource": "https://www.justetf.com/en/etf-profile.html?isin=IE00BFMXXD54"
     },
     {
       "isin": "IE00BJ0KDR00",
@@ -160,11 +170,14 @@
       "index": "MSCI USA",
       "match": "nejbližší alternativa – jiný index (velké a střední firmy, ne celý trh)",
       "terPct": 0.03,
-      "aumEur": 12329000000,
       "domicile": "Irsko",
       "distribution": "akumulační",
       "inception": "2014-05-09",
-      "source": "https://www.justetf.com/en/etf-profile.html?isin=IE00BJ0KDR00"
+      "source": "https://etf.dws.com/en-gb/IE00BJ0KDR00-msci-usa-ucits-etf-1c/",
+      "aumGbp": 11510000000,
+      "aumNote": "Total AUM of fund 11.51 B GBP",
+      "aumAsOf": "2026-10-08",
+      "secondarySource": "https://www.justetf.com/en/etf-profile.html?isin=IE00BJ0KDR00"
     },
     {
       "isin": "IE00BK5BQT80",
@@ -174,11 +187,13 @@
       "index": "FTSE All-World",
       "match": "nejbližší alternativa – příbuzný, ale jiný index",
       "terPct": 0.14,
-      "aumEur": 55102000000,
       "domicile": "Irsko",
       "distribution": "akumulační",
       "inception": "2019-07-23",
-      "source": "https://www.justetf.com/en/etf-profile.html?isin=IE00BK5BQT80"
+      "source": "https://www.vanguard.co.uk/professional/product/etf/equity/9679/ftse-all-world-ucits-etf-usd-accumulating",
+      "aumUsd": 60190000000,
+      "aumNote": "Share Class Assets US$60.19 B (datum na stránce neuvedeno); celý fond US$87.29 B",
+      "secondarySource": "https://www.justetf.com/en/etf-profile.html?isin=IE00BK5BQT80"
     },
     {
       "isin": "IE00B6YX5D40",
@@ -188,11 +203,15 @@
       "index": "S&P High Yield Dividend Aristocrats",
       "match": "nejbližší alternativa – jiný dividendový index",
       "terPct": 0.35,
-      "aumEur": 3261000000,
       "domicile": "Irsko",
       "distribution": "distribuční (čtvrtletně)",
       "inception": "2011-10-14",
-      "source": "https://www.justetf.com/en/etf-profile.html?isin=IE00B6YX5D40"
+      "source": "https://www.ssga.com/ie/en_gb/institutional/etfs/state-street-spdr-sp-us-dividend-aristocrats-ucits-etf-dist-spyd-gy",
+      "aumUsd": 3682980000,
+      "aumNote": "Share Class Assets; celý fond $3,730.53 M",
+      "aumAsOf": "2026-10-09",
+      "registeredCZ": true,
+      "secondarySource": "https://www.justetf.com/en/etf-profile.html?isin=IE00B6YX5D40"
     }
   ]
 }
