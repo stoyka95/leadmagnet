@@ -155,3 +155,23 @@ Miky poslal předlohu loga a požádal o SVG verzi v barvách webu, nasazení v�
 1. **E-mail měl od změny palety (D19) staré zelené barvy.** Při změně palety AI aktualizovala web, ale e-mail ne (barvy jsou v e-mailu zapsané přímo, ne přes tokeny). Nalezeno až teď. Opraveno, v kódu je poznámka, že barvy kopírují `tokens.css`.
 2. **Zavádějící zelená v e-mailu.** V prvním návrhu AI obarvila částky evropských verzí zeleně, jako by byly výhodnější. U SPYD je ale evropská verze výrazně dražší. Nalezeno při kontrole náhledu, opraveno před commitem: částky jsou neutrální a text vysvětluje, že poplatek může být nižší i vyšší.
 3. **Zalomená procenta na mobilu** („(0,03" / „%)") v e-mailu. Opraveno zákazem zalomení.
+
+---
+
+## Session 1, pokračování – 11. 10. 2026: lepivá lišta, graf a PDF v e-mailu (D27)
+
+### Pokyn
+Miky: horní řádek jako menu (logo vidět při scrollování, vpravo tlačítko k formuláři dole). V e-mailu nevidí graf ani PDF, e-mail lépe přizpůsobit mobilu.
+
+### Co AI udělala a jak ověřovala
+- Před stavbou se zeptala na dvě rozhodnutí (PDF jako příloha vs. odkaz; co se spodním lepivým tlačítkem). Miky zvolil přílohu a odebrání spodního tlačítka.
+- Scénáře a historii počítá jedna funkce `buildGrowth()` ze stejných dat jako kalkulačka. Stránka, e-mail i PDF tak ukazují stejná čísla.
+- Ověřeno: lišta na mobilu i desktopu, tlačítko vede do pole e-mail (Playwright). E-mail vykreslený na 390 px a 760 px. PDF zkontrolované stránku po stránce (text i vykreslení). Na produkci: testovací lead → Resend „delivered" s přílohou PDF; příloha stažená a zkontrolovaná (horizont 15 let se propsal do historie).
+
+### Kde se AI spletla
+1. **Brána slibovala scénáře, které nikdo nedostal.** V D25 AI rozmazala graf s tlačítkem „Odemknout 4 scénáře", ale po odeslání formuláře scénáře nebyly v e-mailu ani na děkovací stránce. Našel to Miky („v emailu nevidím graf"). Opraveno samostatným `fix:` commitem.
+2. **Formulář sliboval PDF v e-mailu**, které neexistovalo (PDF šlo uložit jen na děkovací stránce). Teď je PDF v příloze a text odpovídá.
+3. **PDF bez písmen.** První verze PDF měla správný text, ale většina písmen se nevykreslila (chyba ořezávání písma v pdf-lib). Nalezeno kontrolou vykreslené stránky, ne jen textu. Opraveno předem zúženým písmem (fontTools).
+4. **Čísla stránek** se kreslila obě na poslední stránku a **sloupec „Vloženo"** měl stejnou barvu jako stresový scénář. Opraveno před commitem.
+5. **Typ přílohy** byl `application/octet-stream`, takže některé schránky by PDF nenabídly k náhledu. Nalezeno kontrolou v Resendu, opraveno na `application/pdf`.
+6. **První návrh `panel()` v PDF vykresloval text dvakrát** (pod obdélník a nad něj), takže kopírování nebo čtečka by text zdvojily. Přepsáno na měření výšky předem.
