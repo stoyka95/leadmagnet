@@ -78,9 +78,9 @@ Legenda: `[ ]` zbývá · `[x]` hotovo · `[~]` rozpracováno
 ## Fáze 5b – Doladění před README (D28–D34)
 Každý krok: změna, testy (unit/E2E) upravené nebo nové, kontrola na mobilu i desktopu, commit, a po bloku push.
 
-1. [ ] **Soukromí (D33):** v PostHogu vypnout záznamy relací, heatmapy nechat; upravit `/zasady`.
-2. [ ] **Karta v hero podle reklamy (D29):** A = páry originál → evropská verze (z `etf.json`), B = SPY vs. VOO.
-3. [ ] **Živý A/B test H2 (D28):** přiřazení 50/50 v `<head>` (sessionStorage), `exp_hero_calc` = `control | hero_input` u všech událostí; varianta B = pole „Kolik chcete investovat měsíčně" a tlačítko „Spočítat" v hero → kalkulačka; událost `hero_calc_submit`; přepnutí přes URL (`?exp=control|hero_input`) pro kontrolu a testy.
+1. [x] **Soukromí (D33):** v PostHogu vypnout záznamy relací, heatmapy nechat; upravit `/zasady`.
+2. [x] **Karta v hero podle reklamy (D29):** A = páry originál → evropská verze (z `etf.json`), B = SPY vs. VOO.
+3. [x] **Živý A/B test H2 (D28):** přiřazení 50/50 v `<head>` (sessionStorage), `exp_hero_calc` = `control | hero_input` u všech událostí; varianta B = pole „Kolik chcete investovat měsíčně" a tlačítko „Spočítat" v hero → kalkulačka; událost `hero_calc_submit`; přepnutí přes URL (`?exp=control|hero_input`) pro kontrolu a testy.
 4. [ ] **PostHog:** insight trychtýře rozdělený podle `exp_hero_calc` na dashboardu; definice úspěchu (primárně `form_submit` / návštěvník, sekundárně `tool_used`) a minimální počet návštěv do `docs/MEASUREMENT.md`.
 5. [ ] **Tlačítko v liště (D30):** dokud není `tool_used` → „Spočítat poplatky" ke kalkulačce; potom „Získat srovnání" k formuláři.
 6. [ ] **Zhuštění (D31):** zkrátit sekci KID a Daně, detaily do FAQ; blok „Kdo za tím stojí" (2–3 věty, odkazy na zdroje).

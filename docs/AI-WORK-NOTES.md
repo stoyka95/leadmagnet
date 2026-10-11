@@ -196,3 +196,22 @@ Miky: hloubkové testy v kódu i v prohlížeči, případně unit a E2E testy.
 3. **`aria-label` na prostém `span`** v logu (nepovolená ARIA).
 4. **Formulář šel zneužít k obtěžování cizích adres** opakovaným odesíláním. AI na to při stavbě API nemyslela. Opraveno limitem 3 žádostí na adresu za 24 h v databázi.
 5. **Planý poplach v testu:** chybějící datum poplatku u IVV a SCHD nebyla chyba. Weby iShares a Schwab datum neuvádějí a stránka to přiznává („stav ke dni stažení"). Test AI upravila a důvod zapsala do kódu.
+
+---
+
+## Session 1, pokračování – 11. 10. 2026: Fáze 5b, kroky 1–3 (D28, D29, D33)
+
+### Pokyn
+Miky: projít projekt a položit co nejvíc otázek s výběrem. Pak plán, pak kroky 1–3 postupně a s testem.
+
+### Co AI udělala a jak ověřovala
+- Nejdřív vysvětlila, jak A/B test funguje doopravdy: testoval se jen úhel reklamy, na stránce se měnil jen nadpis. Pak položila 15 otázek ve 4 skupinách (D28–D34).
+- **Krok 1:** záznamy relací vypnuté v kódu. Ověřeno ze síťových požadavků a z konfigurace projektu. Ta ukázala, že nahrávání bylo v projektu zapnuté, i když se v testech nespustilo.
+- **Krok 2:** karta podle reklamy A s páry z dat. Screenshoty na mobilu a desktopu, E2E test obou variant.
+- **Krok 3:** živý A/B test s přiřazením v `<head>`. Šest E2E testů včetně toho, že se v čistém prohlížeči objeví obě varianty. Stejná sada prošla i proti produkci.
+
+### Kde se AI spletla
+1. **Vazba lead ↔ analytika nikdy nefungovala** (nalezeno při kroku 1, samostatný `fix:`). Formulář četl `window.posthog`, který neexistoval, a v režimu bez cookies klient PostHog id stejně nezná. 5 z 5 leadů v databázi nemělo `analytics_id`. Teď ho nahrazuje náhodné `lead_ref`.
+2. **Důkaz, který nic nedokazoval.** AI chtěla vypnutí záznamů prokázat porovnáním síťových požadavků před a po. Nahrávací skript se ale nenačetl ani předtím, takže porovnání nic neukázalo. AI to přiznala a ověřila stav z konfigurace projektu.
+3. **Varianta B v hero byla na mobilu širší než obrazovka** (415 px). E2E test na to přišel, protože tlačítko „Spočítat" nešlo stisknout. Opraveno před commitem. Test vodorovného scrollu teď běží i pro tuto variantu.
+4. **Zásady tvrdily „bez ukládání do prohlížeče"**, ale kalkulačka si už dřív pamatovala čísla v záložce a teď i variantu testu. Text je opravený a přesně popisuje paměť v záložce.
