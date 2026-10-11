@@ -9,7 +9,7 @@ Drobnosti s rozumnou výchozí volbou rozhoduje Claude sám – jsou na konci v 
 
 ### D1 – Cílová skupina
 - **Varianty:** (a) viděl VOO/SPY na sociálních sítích a neví, jak začít *(doporučeno)* · (b) úplný začátečník · (c) už investuje a hledá nižší náklady
-- **Zvoleno:** (a). Je to člověk ve věku 25–40 let, který má úspory na spořicím účtu a chce začít s ETF. O amerických ETF (VOO, SPY, QQQ) ví ze sociálních sítí. Neví, který fond vybrat, kolik stojí poplatky ani že si americké ETF u většiny brokerů v EU nekoupí.
+- **Zvoleno:** (a). Je to člověk ve věku 25–40 let, který má úspory na spořicím účtu a chce začít s ETF. O amerických ETF (VOO, SPY, QQQ) ví ze sociálních sítí. Neví, který fond vybrat, kolik stojí poplatky ani že americké ETF u řady brokerů v EU kvůli chybějícímu KID nekoupí (u některých, např. Fio, ano – viz `data/SOURCES.md` §4). *(Opraveno 11. 10. po ověření dat. Původně tu stálo „u většiny brokerů nekoupí“, což bylo neověřené tvrzení AI.)*
 - **Proč:** Jde o ostrý a skutečný problém, který se dá použít v reklamě. Stránka díky tomu zůstane u zadání (ETF z NYSE) a zároveň může poctivě říct, co si český drobný investor reálně koupí (UCITS ekvivalenty). *Tvrzení o dostupnosti se před publikací ověří u konkrétních brokerů.*
 
 ### D2 – Lead magnet (co návštěvník dostane za e-mail)
