@@ -1,0 +1,126 @@
+---
+// Second tool (D4): pick what you want → US original vs. European (UCITS) version. Leads to the same form.
+import GlassCard from './GlassCard.astro';
+import LeadForm from './LeadForm.astro';
+import { groups, etfByTicker, ucitsFor, formatPct, formatUsdBig, formatDate, dataRetrieved } from '../lib/etf';
+---
+<section id="srovnani" class="section container" aria-labelledby="cmp-h">
+  <div class="section-head">
+    <p class="eyebrow">Srovnání 6 ETF</p>
+    <h2 id="cmp-h">Americký originál, nebo evropská verze?</h2>
+    <p class="lead">Vyberte, co chcete mít v portfoliu. Ukážeme fond z newyorské burzy a jeho evropskou verzi, kterou drobní investoři v EU běžně koupí.</p>
+  </div>
+
+  <div class="switch" role="group" aria-label="Co chcete">
+    {groups.map((g, i) => (
+      <button type="button" class="chip" aria-pressed={i === 0 ? 'true' : 'false'} data-group={g.id}>{g.label}</button>
+    ))}
+  </div>
+
+  {groups.map((g, i) => (
+    <div class="group" data-panel={g.id} hidden={i !== 0}>
+      {g.tickers.map((t) => {
+        const us = etfByTicker(t);
+        const eu = ucitsFor(us);
+        const sameIndex = eu.match === 'stejný index';
+        return (
+          <div class="pair">
+            <GlassCard as="article" class="fund">
+              <p class="tag">Originál · {us.exchange}</p>
+              <h3><span class="tk">{us.ticker}</span> {us.name}</h3>
+              <dl>
+                <div><dt>Roční poplatek</dt><dd class="num strong">{formatPct(us.expenseRatioPct)}</dd></div>
+                <div><dt>Velikost</dt><dd class="num">{formatUsdBig(us.aumUsd)}</dd></div>
+                <div><dt>Index</dt><dd>{us.index}</dd></div>
+              </dl>
+              <p class="note">Bez dokumentu KID, u řady brokerů v EU nedostupné.</p>
+            </GlassCard>
+            <GlassCard as="article" class="fund fund-eu">
+              <p class="tag">Evropská verze · UCITS</p>
+              <h3><span class="tk">{eu.ticker.split(' ')[0]}</span> {eu.name}</h3>
+              <dl>
+                <div><dt>Roční poplatek</dt><dd class="num strong">{formatPct(eu.terPct)}</dd></div>
+                <div><dt>ISIN</dt><dd class="num">{eu.isin}</dd></div>
+                <div><dt>Index</dt><dd>{eu.index}</dd></div>
+              </dl>
+              <p class="badges">
+                <span class:list={['badge', sameIndex ? 'badge-ok' : 'badge-warn']}>{sameIndex ? 'Stejný index' : 'Podobný, jiný index'}</span>
+                {eu.registeredCZ && <span class="badge badge-ok">Registrováno pro ČR</span>}
+              </p>
+            </GlassCard>
+          </div>
+        );
+      })}
+    </div>
+  ))}
+
+  <p class="fine src">
+    Zdroj: weby správců (State Street, iShares, Vanguard, Schwab, DWS), staženo {formatDate(dataRetrieved)}. Velikost = ETF třída fondu. Registrace pro ČR podle State Street. <a href="/zdroje">Všechny zdroje</a>
+  </p>
+
+  <div class="cta">
+    <button type="button" class="btn btn-ghost" data-open-compare-form aria-expanded="false" aria-controls="compare-form">Poslat srovnání e-mailem</button>
+  </div>
+  <div id="compare-form" class="form-wrap" hidden>
+    <LeadForm location="compare" heading="Pošleme vám všech 6 párů v jednom e-mailu" />
+  </div>
+</section>
+
+<style>
+  .switch { display: flex; flex-wrap: wrap; gap: var(--sp-2); margin-bottom: var(--sp-6); }
+  .chip {
+    min-height: 44px; padding: var(--sp-2) var(--sp-4);
+    border-radius: var(--r-pill); border: 1.5px solid var(--c-line);
+    background: var(--solid-bg); color: var(--c-ink);
+    font: inherit; font-size: var(--fs-sm); font-weight: var(--fw-medium); cursor: pointer;
+    transition: background-color var(--dur) var(--ease), color var(--dur) var(--ease);
+  }
+  .chip[aria-pressed='true'] { background: var(--c-green-800); border-color: var(--c-green-800); color: var(--c-white); }
+  .group { display: grid; gap: var(--sp-6); }
+  .pair { display: grid; gap: var(--sp-3); }
+  @media (min-width: 768px) { .pair { grid-template-columns: 1fr 1fr; gap: var(--sp-4); } }
+  .fund h3 { font-size: var(--fs-md); margin-top: var(--sp-1); }
+  .tk { display: block; font-size: var(--fs-xl); font-weight: var(--fw-bold); }
+  .tag { font-size: var(--fs-xs); color: var(--c-ink-faint); font-weight: var(--fw-medium); letter-spacing: 0.04em; text-transform: uppercase; }
+  .fund-eu .tag { color: var(--c-green-700); }
+  dl { margin: var(--sp-4) 0 0; display: grid; gap: var(--sp-2); }
+  dl > div { display: flex; justify-content: space-between; gap: var(--sp-4); border-top: 1px solid var(--c-line); padding-top: var(--sp-2); }
+  dt { color: var(--c-ink-muted); font-size: var(--fs-sm); }
+  dd { margin: 0; text-align: right; font-size: var(--fs-sm); }
+  .strong { font-weight: var(--fw-bold); font-size: var(--fs-md); }
+  .note { margin-top: var(--sp-3); font-size: var(--fs-xs); color: var(--c-ink-muted); }
+  .badges { display: flex; flex-wrap: wrap; gap: var(--sp-2); margin-top: var(--sp-3); }
+  .badge { font-size: var(--fs-xs); font-weight: var(--fw-medium); padding: 2px var(--sp-3); border-radius: var(--r-pill); }
+  .badge-ok { background: var(--c-green-100); color: var(--c-green-900); }
+  .badge-warn { background: var(--c-bg-2); color: var(--c-ink-muted); }
+  .src { margin-top: var(--sp-6); max-width: var(--w-text); }
+  .cta { margin-top: var(--sp-6); }
+  .cta .btn { width: 100%; }
+  @media (min-width: 600px) { .cta .btn { width: auto; } }
+  .form-wrap { margin-top: var(--sp-4); max-width: 560px; }
+</style>
+
+<script>
+  import { track } from '../lib/track';
+
+  const buttons = document.querySelectorAll<HTMLButtonElement>('[data-group]');
+  const panels = document.querySelectorAll<HTMLElement>('[data-panel]');
+  for (const btn of buttons) {
+    btn.addEventListener('click', () => {
+      const id = btn.dataset.group!;
+      buttons.forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+      panels.forEach((p) => (p.hidden = p.dataset.panel !== id));
+      track('tool_used', { tool: 'compare', group: id });
+    });
+  }
+
+  const opener = document.querySelector<HTMLButtonElement>('[data-open-compare-form]')!;
+  const wrap = document.getElementById('compare-form')!;
+  opener.addEventListener('click', () => {
+    wrap.hidden = false;
+    opener.setAttribute('aria-expanded', 'true');
+    opener.hidden = true;
+    track('cta_click', { cta: 'compare_send' });
+    wrap.querySelector<HTMLInputElement>('input')?.focus();
+  });
+</script>
