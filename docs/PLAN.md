@@ -113,7 +113,7 @@ Každý krok: změna, testy (unit/E2E) upravené nebo nové, kontrola na mobilu 
   - [x] README se všemi sekcemi, odkazy v README ověřené
   - [x] žádné klíče v repozitáři (jen `.env.example`)
   - [ ] `ai-log/` s exporty – Miky
-  - [ ] smazat 5 testovacích kontaktů v Supabase (`utm_source=test`) – na Mikyho „ano"
+  - [ ] smazat 5 testovacích kontaktů v Supabase (`utm_source=test`) – **Miky 11. 10.: až těsně před odesláním** (Claude smaže na pokyn, pak ověří 0 řádků)
   - [ ] ruční kontrola na skutečném telefonu – Miky
   - [ ] záznamy relací vypnout i v nastavení PostHogu – Miky
 - [ ] Pá 16. 10.: Miky odešle odpověď Matejovi Lörincovi s odkazy
