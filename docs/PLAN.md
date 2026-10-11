@@ -88,7 +88,7 @@ Každý krok: změna, testy (unit/E2E) upravené nebo nové, kontrola na mobilu 
 7. [x] **Děkovací stránka (D32):** otázka „Už investujete?" (Ano / Začínám / Zatím ne, událost `lead_segment`, nic osobního) a sdílení (Web Share API na mobilu, jinak WhatsApp a kopírovat odkaz; odkaz s `utm_source=share`).
 8. [ ] **Hypotézy H1 a H3** připravit textem pro README (hypotéza, změna, metrika, odhad dopadu).
 9. [ ] **Testy:** celá sada lokálně i proti produkci, Lighthouse znovu.
-10. [ ] **Potom (s Mikym):** SVG ikony a ilustrace, OG obrázek.
+10. [x] **S Mikym (D36):** vlastní linkové ikony (`Icon.astro`), ilustrace na děkovací stránce, OG obrázek 1200×630.
 
 ## Fáze 5c – Mikyho kontrola stránky (11. 10.) ✅ – D35
 - [x] TER všech 12 fondů znovu u správců a v KID (vše sedí)

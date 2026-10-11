@@ -1,6 +1,6 @@
 # Testy (Fáze 5)
 
-Stav k 11. 10. 2026 (po Fázi 5c, D35): **75 unit testů a 107 E2E testů prochází** lokálně (7 testů běží jen na mobilu, proto se v projektu desktop přeskočí). Proti produkci 105 prošlo a 9 se přeskočilo (navíc 2 testy jen pro lokální server). Předtím (po Fázi 5b) 74 unit a 90 E2E. Lighthouse na mobilu (produkce): **100 / 100 / 100 / 100** v obou variantách A/B testu.
+Stav k 11. 10. 2026 (po grafice, D36): **75 unit testů a 109 E2E testů prochází** lokálně (7 testů běží jen na mobilu, proto se v projektu desktop přeskočí). Proti produkci 107 prošlo a 9 se přeskočilo (navíc 2 testy jen pro lokální server). Po Fázi 5c to bylo 107 E2E. Předtím (po Fázi 5b) 74 unit a 90 E2E. Lighthouse na mobilu (produkce): **100 / 100 / 100 / 100** v obou variantách A/B testu.
 
 ## Jak spustit
 
@@ -57,6 +57,9 @@ E2E testy používají Chrome nainstalovaný v počítači. Odeslání formulá�
 - vazba lead ↔ analytika (`analytics_id` = `lead_ref` v `form_submit`), v záložce se nedrží e-mail, z lokálního serveru nic neodchází do PostHogu
 
 ## Lighthouse (mobil, produkce, 11. 10. 2026)
+**Po Fázi 5c a grafice (D35, D36), Lighthouse 12:** `control` 100 / 100 / 100 / 100 (LCP 1,5 s, TBT 30 ms, CLS 0), `hero_input` 100 / 100 / 100 / 100 (LCP 1,5 s, TBT 20 ms, CLS 0).
+
+Předchozí měření (po Fázi 5b):
 Výkon 100 · Přístupnost 100 · Best practices 100 · SEO 100. FCP 1,0 s, LCP 1,0 s, TBT 40 ms, CLS 0. Rezerva: ~60 kB nevyužitého JavaScriptu (PostHog), načítá se asynchronně a vykreslení nezdržuje.
 
 ## Co automatické testy nepokryjí

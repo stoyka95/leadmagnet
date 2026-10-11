@@ -257,3 +257,22 @@ Miky si stránku prošel v prohlížeči a poslal 8 bodů: ověřit TER (hlavně
 5. **Nesrovnalost v dokumentaci:** MEASUREMENT.md uvádí `anonymize_ips: true`, ale v kódu to není. Do README AI tuto větu nedala, dokud se neověří. Otevřené.
 6. **Záznamy relací jsou v nastavení PostHog projektu pořád povolené** (kód je blokuje). README to říká otevřeně. Vypnutí v nastavení je na Mikym.
 7. **Výška stránky v DECISIONS byla napsaná před změřením** (9 404 px). Kontrolní měření na produkci dalo 9 538 px, protože dotykové plochy 44 px a vysvětlení u telefonu stránku zase prodloužily. Opraveno samostatným `fix:` commitem, čísla teď pochází z měření.
+
+---
+
+## Session 1, pokračování – 11. 10. 2026: grafika a náhledový obrázek (D36)
+
+### Pokyn
+„Krok 10" – SVG ikony a ilustrace, potom OG obrázek. AI se zeptala na 4 věci (rozsah, styl, obsah OG, nová komponenta) a Miky zvolil doporučené varianty.
+
+### Co AI udělala a jak ověřovala
+- 11 vlastních linkových ikon v jedné komponentě `Icon.astro` (inline SVG, žádná knihovna). Nejdřív zkušební list ve zvětšení i ve skutečné velikosti, teprve pak nasazení na stránku.
+- Ikony v „Co vám pošleme", „Dobré vědět", u dat v hero, u formuláře a v krocích na děkovací stránce. Výška mobilní stránky změřená před a po: beze změny (9 538 px).
+- Ilustrace na děkovací stránce, kontrola snímkem na mobilu i počítači, netiskne se do PDF.
+- OG obrázek stejným postupem jako reklamy (HTML + čísla z `etf.json` → PNG). Test hlídá meta značky, velikost 1200 × 630 a datovou velikost pod 300 kB. Na produkci ověřeno: `og.png` vrací 200 a `image/png`.
+- Celá sada: 109 E2E lokálně, 107 proti produkci. Lighthouse mobil 100/100/100/100 v obou variantách testu.
+
+### Kde se AI spletla
+1. **Dvě ikony na zkušebním listu kolidovaly** (zelená mince přes sloupec mincí, šipka přes obálku). Viděno na zvětšeném náhledu a opraveno před nasazením.
+2. **Čísla na OG obrázku přetékala z karty** (0,03 % uříznuté). Viděno na prvním renderu. Opraveno menším písmem a širší kartou, render má teď kontrolu, že nic nepřesahuje kartu.
+3. **Příliš široký úklid:** lokální server pro render AI zastavila příkazem `taskkill /IM python.exe`, který ukončí všechny procesy Pythonu v počítači, nejen ten jeden. Pokud Mikymu běžel jiný Python program, mohl být ukončen. Správně mělo jít o zastavení jen konkrétního procesu (podle portu nebo PID). AI to Mikymu hned řekla.
