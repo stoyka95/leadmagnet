@@ -52,15 +52,6 @@ const id = `lf-${location}`;
       <input id={`${id}-website`} name="website" type="text" tabindex="-1" autocomplete="off" />
     </div>
 
-    <button class="btn btn-primary btn-block submit" type="submit">Získat srovnání zdarma</button>
-    <p class="assure">
-      <Icon name="lock" size={16} />
-      Zdarma · Bez spamu · Hned v e-mailu
-    </p>
-    <p class="fine legal">
-      Odesláním žádáte o zaslání srovnání. Údaje zpracujeme podle <a href="/zasady">Zásad ochrany osobních údajů</a>.
-    </p>
-
     <fieldset class="consents">
       <legend class="visually-hidden">Nepovinné souhlasy</legend>
       <label class="check">
@@ -72,6 +63,16 @@ const id = `lf-${location}`;
         <span>Souhlasím, že mi můžete zavolat (jen pokud jsem vyplnil/a telefon).</span>
       </label>
     </fieldset>
+
+    <button class="btn btn-primary btn-block submit" type="submit">Získat srovnání zdarma</button>
+    <p class="assure">
+      <Icon name="lock" size={16} />
+      Zdarma · Bez spamu · Hned v e-mailu
+    </p>
+    <p class="fine legal">
+      Odesláním žádáte o zaslání srovnání. Údaje zpracujeme podle <a href="/zasady">Zásad ochrany osobních údajů</a>.
+    </p>
+
 
     <p class="form-status" role="status" aria-live="polite" data-status></p>
   </form>
