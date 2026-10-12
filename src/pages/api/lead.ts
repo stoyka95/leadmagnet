@@ -52,13 +52,16 @@ export const POST: APIRoute = async ({ request, url }) => {
   const monthlyCzk = int(calc.monthlyCzk, 0, 10_000_000) ?? 3_000;
   const years = int(calc.years, 1, 50);
 
+  const afterForm = body.consent_flow === 'after';
   const row = {
     full_name: fullName,
     email,
     phone,
-    marketing_consent: body.marketing_consent === true,
+    // D38: with consents offered after the form (ad A) the form itself never carries one
+    marketing_consent: !afterForm && body.marketing_consent === true,
     // D35: permission to call only makes sense with a number
-    phone_consent: body.phone_consent === true && phone !== null,
+    phone_consent: !afterForm && body.phone_consent === true && phone !== null,
+    consent_source: afterForm ? 'thank_you' : 'form',
     consent_version: consentVersion,
     form_location: location,
     amount_once_czk: onceCzk,

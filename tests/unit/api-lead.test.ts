@@ -135,6 +135,14 @@ describe('storing the lead', () => {
     expect(stored()).toMatchObject({ marketing_consent: true, phone_consent: false });
   });
 
+  it('D38: with consents offered after the form (ad A) the form never carries a consent', async () => {
+    await post({ ...VALID, phone: '+420 777 123 456', marketing_consent: true, phone_consent: true, consent_flow: 'after' });
+    expect(stored()).toMatchObject({ marketing_consent: false, phone_consent: false, consent_source: 'thank_you' });
+    calls = [];
+    await post({ ...VALID, marketing_consent: true });
+    expect(stored()).toMatchObject({ marketing_consent: true, consent_source: 'form' });
+  });
+
   it('replaces out-of-range amounts with the defaults', async () => {
     await post({ ...VALID, calc: { onceCzk: -5, monthlyCzk: 1e12, years: 900 } });
     expect(stored()).toMatchObject({ amount_once_czk: 100_000, amount_monthly_czk: 3_000, years: null });
