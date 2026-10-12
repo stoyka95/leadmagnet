@@ -311,7 +311,7 @@ Claude prošel produkci jako návštěvník (log: [QA-2026-10-12.md](QA-2026-10-
 Miky dal Claudovi zkontrolovat návrh úprav textů od ChatGPT. Claude každý bod porovnal s aktuální stránkou a se zdroji. Část návrhu pracovala se starým stavem (vysvětlení u telefonu, Xtrackers, vysvětlení TER už byly hotové).
 - **Věcné opravy (Miky vybral všechny 4 doporučené):**
   - FAQ o souhlasu platí pro obě varianty formuláře;
-  - bez superlativu „6 nejpopulárnějších" (neměl zdroj, VT a SCHD nejsou mezi 6 největšími ETF na NYSE);
+  - bez superlativu „6 nejpopulárnějších" (pořadí podle popularity nemáme doložené žádným zdrojem; fondy jsme vybrali podle D12, ne jako prvních 6 v žebříčku);
   - věta s výsledkem říká „za celou dobu" místo „ročních poplatcích";
   - „Evropská alternativa" u fondů s jiným indexem (VTI, VT, SCHD) na stránce, v e-mailu i v PDF.
 - **Styl (Miky vybral 1 ze 4):** kratší nadpis kalkulačky „Spočítejte si poplatky pro svou investici".

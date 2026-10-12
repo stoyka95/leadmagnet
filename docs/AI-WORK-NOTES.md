@@ -364,3 +364,4 @@ Miky: „Potřebuji, aby jedna z variant A nebo B místo zaškrtnutí polí měl
 - **Kde cizí výstup pracoval se starým stavem:** vysvětlení u telefonu pro reklamu A, Xtrackers v řádku důvěry a vysvětlení TER už byly hotové.
 - **Kde by cizí výstup stránku zhoršil:** vágnější daňová věta místo doložené sazby 15 % (smlouva ČR–USA, IRS).
 - Ověřeno: nový unit test hlídá „verze" vs. „alternativa" v reportu i v e-mailu, E2E 133 prošlo, snímky karty a nadpisu na mobilu.
+- **Chyba AI v téže kontrole:** při zdůvodnění AI napsala, že „VT a SCHD nejsou mezi 6 největšími ETF na NYSE". Bylo to z paměti a bez zdroje, tedy přesně druh tvrzení, který pravidla zakazují. V DECISIONS opraveno na pravdivé „pořadí podle popularity nemáme doložené" a Mikymu oznámeno.
