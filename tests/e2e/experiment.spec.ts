@@ -29,8 +29,13 @@ test('hero_input hands the amount to the calculator and shows the result', async
   await expect(field).toHaveValue(/5\s000/);
   await page.getByRole('button', { name: 'Spočítat', exact: true }).click();
   await expect(page.locator('#c-monthly')).toHaveValue(/5\s000/);
-  await expect(page.locator('[data-paid]')).toHaveText(/1\s300\s000\sKč/); // 100 000 + 5 000 × 240
-  await expect(page.locator('.area-fees')).toBeInViewport();
+  // QA 12. 10.: the hero asks only for a monthly amount – the lump sum is 0, not the hidden default 100 000
+  await expect(page.locator('#c-once')).toHaveValue('0');
+  await expect(page.locator('[data-paid]')).toHaveText(/1\s200\s000\sKč/); // 5 000 × 240
+  // the result is in view and says what it is computed from; on phones the fields are in view too
+  await expect(page.locator('[data-summary]')).toBeInViewport();
+  await expect(page.locator('[data-inputs-txt]')).toHaveText(/\(0\sKč jednorázově \+ 5\s000\sKč měsíčně\)/);
+  if ((page.viewportSize()?.width ?? 0) < 960) await expect(page.locator('#c-once')).toBeInViewport();
   expect(await events(page)).toContainEqual(['hero_calc_submit', { monthly_czk: 5000 }]);
   await expect.poll(() => eventNames(page)).toContain('tool_used');
 });

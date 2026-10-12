@@ -42,7 +42,7 @@ import Icon from './Icon.astro';
       <p class="fine trust">
         <Icon name="shield-check" size={22} />
         <span>
-          Data z webů správců: <span class="issuers">Vanguard · iShares · State Street · Schwab</span><br />
+          Data z webů správců: <span class="issuers">Vanguard · iShares · State Street · Schwab · Xtrackers</span><br />
           Staženo {formatDate(dataRetrieved)} · bez registrace
         </span>
       </p>
@@ -132,7 +132,7 @@ import Icon from './Icon.astro';
   :global(html[data-ad='a']) .variant-b { display: none; }
 
   .card-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--sp-2); }
-  .issuers { font-weight: var(--fw-medium); white-space: nowrap; }
+  .issuers { font-weight: var(--fw-medium); }
   .card-label { font-size: var(--fs-sm); font-weight: var(--fw-medium); color: var(--c-ink-muted); }
   .duel { display: grid; grid-template-columns: 1fr auto 1fr; align-items: end; gap: var(--sp-3); margin-block: var(--sp-4); }
   .duel > div { display: grid; gap: var(--sp-1); }
@@ -154,11 +154,9 @@ import Icon from './Icon.astro';
   .pair-eu strong { color: var(--c-green-800); }
   .pair-match { grid-column: 1 / -1; color: var(--c-ink-faint); }
   .nowrap { white-space: nowrap; }
-  .chips li {
-    font-size: var(--fs-xs); font-weight: var(--fw-medium);
-    padding: var(--sp-1) var(--sp-3); border-radius: var(--r-pill);
-    background: var(--c-navy-100); color: var(--c-navy-700);
-  }
+  /* QA 12. 10.: plain text, not pills – as pills they looked like buttons that did nothing */
+  .chips li { font-size: var(--fs-xs); font-weight: var(--fw-medium); color: var(--c-ink-muted); }
+  .chips li + li::before { content: '·'; margin-right: var(--sp-2); color: var(--c-ink-faint); }
 </style>
 
 <script>
@@ -166,7 +164,9 @@ import Icon from './Icon.astro';
   import { readCalc } from '../lib/calc-state';
 
   // D28 variant hero_input: hand the amount to the calculator (its own input handler recalculates,
-  // remembers it and reports tool_used), then show the result
+  // remembers it and reports tool_used), then show the calculator fields together with the result.
+  // QA 12. 10.: the hero asks only for a monthly amount, so the lump sum is set to 0 – otherwise the result
+  // silently added the default 100 000 Kč the visitor never entered.
   const form = document.querySelector<HTMLFormElement>('[data-hero-calc]');
   const input = form?.querySelector<HTMLInputElement>('input');
   if (form && input) {
@@ -181,6 +181,8 @@ import Icon from './Icon.astro';
     form.addEventListener('submit', (e) => {
       e.preventDefault();
       const monthly = digits(input.value);
+      const once = document.querySelector<HTMLInputElement>('#c-once');
+      if (once) once.value = '0';
       const target = document.querySelector<HTMLInputElement>('#c-monthly');
       if (target) {
         target.value = nf.format(monthly);
@@ -188,7 +190,9 @@ import Icon from './Icon.astro';
       }
       track('hero_calc_submit', { monthly_czk: monthly });
       const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-      document.querySelector('.area-fees')?.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+      // phones: the fields with the result right under them; desktop (two columns): the result card itself
+      const wide = matchMedia('(min-width: 960px)').matches;
+      document.querySelector(wide ? '.area-fees' : '.area-inputs')?.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
     });
   }
 </script>

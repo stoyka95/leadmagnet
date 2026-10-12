@@ -32,11 +32,11 @@ const pctSigned = (v: number) => `${v > 0 ? '+' : ''}${formatPct(v)}`;
       <form class="calc-form" data-calc novalidate onsubmit="return false">
         <div class="field">
           <label for="c-once">Jednorázově</label>
-          <div class="money"><input id="c-once" name="onceCzk" type="text" inputmode="numeric" autocomplete="off" value={nf.format(DEFAULT_CALC.onceCzk)} /><span>Kč</span></div>
+          <div class="money"><input id="c-once" name="onceCzk" type="text" inputmode="numeric" autocomplete="off" placeholder="0" data-cap="100000000" value={nf.format(DEFAULT_CALC.onceCzk)} /><span>Kč</span></div>
         </div>
         <div class="field">
           <label for="c-monthly">Měsíčně</label>
-          <div class="money"><input id="c-monthly" name="monthlyCzk" type="text" inputmode="numeric" autocomplete="off" value={nf.format(DEFAULT_CALC.monthlyCzk)} /><span>Kč</span></div>
+          <div class="money"><input id="c-monthly" name="monthlyCzk" type="text" inputmode="numeric" autocomplete="off" placeholder="0" data-cap="10000000" value={nf.format(DEFAULT_CALC.monthlyCzk)} /><span>Kč</span></div>
         </div>
         <div class="field">
           <label for="c-years">Na kolik let: <output for="c-years" class="num" data-years-out>{DEFAULT_CALC.years}</output></label>
@@ -55,7 +55,7 @@ const pctSigned = (v: number) => `${v > 0 ? '+' : ''}${formatPct(v)}`;
 
     <GlassCard solid class="area-growth">
       <h3>Jak by mohla investice vypadat za {KID_YEARS} let</h3>
-      <p class="fine sub">Podle scénářů z dokumentu KID fondu {kidMeta.ticker} (S&amp;P 500, evropská verze). Vloženo: <strong class="num" data-paid5></strong></p>
+      <p class="fine sub">Podle scénářů z dokumentu KID fondu {kidMeta.ticker} (S&amp;P 500, evropská verze). KID je počítá vždy na {KID_YEARS} let, delší horizont ukazuje historie níže. Vloženo: <strong class="num" data-paid5></strong></p>
       <div class="gate is-locked" data-gate>
         <div class="gate-body" inert>
           <svg class="chart" viewBox="0 0 600 260" role="img" aria-labelledby="chart-t chart-d" data-chart>
@@ -96,9 +96,10 @@ const pctSigned = (v: number) => `${v > 0 ? '+' : ''}${formatPct(v)}`;
     <GlassCard solid class="area-fees" aria-live="polite">
       <h3>Kolik zaplatíte na poplatcích fondu</h3>
       <p class="muted summary" data-summary>
-        Za <strong class="num" data-years-txt>{DEFAULT_CALC.years} let</strong> vložíte <strong class="num" data-paid>{formatCzk(feesForTer(0, DEFAULT_CALC).paidInCzk)}</strong>. Na ročních poplatcích fondu zaplatíte od <strong class="num" data-min>{formatCzk(minFees)}</strong> (<span data-min-t>{tickersAt(minFees)}</span>) do <strong class="num" data-max>{formatCzk(maxFees)}</strong> (<span data-max-t>{tickersAt(maxFees)}</span>).
+        Za <strong class="num" data-years-txt>{DEFAULT_CALC.years} let</strong> vložíte <strong class="num" data-paid>{formatCzk(feesForTer(0, DEFAULT_CALC).paidInCzk)}</strong> <span data-inputs-txt>({formatCzk(DEFAULT_CALC.onceCzk)} jednorázově + {formatCzk(DEFAULT_CALC.monthlyCzk)} měsíčně)</span>. Na ročních poplatcích fondu zaplatíte od <strong class="num" data-min>{formatCzk(minFees)}</strong> (<span data-min-t>{tickersAt(minFees)}</span>) do <strong class="num" data-max>{formatCzk(maxFees)}</strong> (<span data-max-t>{tickersAt(maxFees)}</span>).
       </p>
       <p class="diff" data-diff></p>
+      <p class="summary-empty" data-summary-empty hidden>Zadejte částku – jednorázově, měsíčně, nebo obojí – a hned uvidíte, kolik zaplatíte na poplatcích.</p>
       <p class="list-head">Všech 6 fondů a jejich evropské verze v Kč:</p>
       <div class="gate is-locked" data-gate>
       <ol class="rows gate-body" data-rows inert>
@@ -198,6 +199,7 @@ const pctSigned = (v: number) => `${v > 0 ? '+' : ''}${formatPct(v)}`;
   .diff { margin-bottom: var(--sp-5); padding: var(--sp-4); border-radius: var(--r-md); background: var(--c-green-100); color: var(--c-green-900); font-weight: var(--fw-medium); }
   .diff:empty { display: none; }
   .note { margin-top: var(--sp-4); }
+  .summary-empty { margin-bottom: var(--sp-4); padding: var(--sp-4); border-radius: var(--r-md); background: var(--c-navy-100); color: var(--c-navy-900); font-weight: var(--fw-medium); }
   .list-head { font-size: var(--fs-sm); font-weight: var(--fw-medium); margin-bottom: var(--sp-3); }
 
   /* D25 gate: the detail stays in place, blurred and inert, until the e-mail is sent */
@@ -278,6 +280,8 @@ const pctSigned = (v: number) => `${v > 0 ? '+' : ''}${formatPct(v)}`;
     }
     $('[data-paid]').textContent = formatCzk(feesForTer(0, s).paidInCzk);
     $('[data-years-txt]').textContent = `${s.years} let`;
+    // QA 12. 10.: what the result is computed from, visible wherever the visitor lands
+    $('[data-inputs-txt]').textContent = `(${formatCzk(s.onceCzk)} jednorázově + ${formatCzk(s.monthlyCzk)} měsíčně)`;
     const minF = rows[0].fees, maxF = rows[rows.length - 1].fees;
     const at = (fee: number) => rows.filter((r) => r.fees === fee).map((r) => r.etf.ticker).join(', ');
     $('[data-min]').textContent = formatCzk(minF);
@@ -287,6 +291,11 @@ const pctSigned = (v: number) => `${v > 0 ? '+' : ''}${formatPct(v)}`;
     const spy = rows.find((r) => r.etf.ticker === 'SPY')!;
     const voo = rows.find((r) => r.etf.ticker === 'VOO')!;
     $('[data-diff]').textContent = `SPY a VOO sledují stejný index S&P 500. Rozdíl v poplatcích: ${formatCzk(spy.fees - voo.fees)} za ${s.years} let.`;
+    // QA 12. 10.: with no amount the sentence read "od 0 Kč (SPY, IVV, …) do 0 Kč (SPY, IVV, …)" – ask for an amount instead
+    const empty = feesForTer(0, s).paidInCzk === 0;
+    ($('[data-summary]') as HTMLElement).hidden = empty;
+    ($('[data-diff]') as HTMLElement).hidden = empty;
+    ($('[data-summary-empty]') as HTMLElement).hidden = !empty;
     (document.querySelector('[data-years-out]') as HTMLOutputElement).value = String(s.years);
     (document.querySelector('[data-return-out]') as HTMLOutputElement).value = `${nf.format(s.annualReturnPct)} %`;
   };
@@ -335,7 +344,8 @@ const pctSigned = (v: number) => `${v > 0 ? '+' : ''}${formatPct(v)}`;
   form.addEventListener('input', (e) => {
     const target = e.target as HTMLInputElement;
     if (target.inputMode === 'numeric') {
-      const n = digits(target.value);
+      // QA 12. 10.: the same maximum as /api/lead (100 mil. once, 10 mil. a month), so the e-mail has the page's numbers
+      const n = Math.min(digits(target.value), Number(target.dataset.cap ?? Infinity));
       target.value = n ? nf.format(n) : '';
     }
     const state = readForm();
