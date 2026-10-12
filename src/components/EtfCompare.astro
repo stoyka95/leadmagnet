@@ -2,14 +2,14 @@
 // Second tool (D4): pick what you want → US original vs. European (UCITS) version. Leads to the same form.
 import GlassCard from './GlassCard.astro';
 import LeadForm from './LeadForm.astro';
-import { groups, etfByTicker, ucitsFor, ucitsEtfs, formatPct, formatUsdBig, formatDate, dataRetrieved } from '../lib/etf';
+import { groups, etfByTicker, ucitsFor, ucitsEtfs, formatPct, formatUsdBig, formatDate, dataRetrieved, euLabel } from '../lib/etf';
 const minEuTer = Math.min(...ucitsEtfs.map((u) => u.terPct));
 ---
 <section id="srovnani" class="section container" aria-labelledby="cmp-h">
   <div class="section-head">
     <p class="eyebrow">Srovnání 6 ETF</p>
     <h2 id="cmp-h">Americký originál, nebo evropská verze?</h2>
-    <p class="lead">Vyberte, co chcete mít v portfoliu. Ukážeme fond z newyorské burzy a jeho evropskou verzi, kterou drobní investoři v EU běžně koupí.</p>
+    <p class="lead">Vyberte, co chcete mít v portfoliu. Ukážeme fond z newyorské burzy a evropský fond se stejným, nebo podobným indexem, který drobní investoři v EU běžně koupí.</p>
   </div>
 
   <div class="switch" role="group" aria-label="Co chcete">
@@ -37,7 +37,7 @@ const minEuTer = Math.min(...ucitsEtfs.map((u) => u.terPct));
               <p class="note">Bez dokumentu KID, u řady brokerů v EU nedostupné.</p>
             </GlassCard>
             <GlassCard as="article" class="fund fund-eu">
-              <p class="tag">Evropská verze · UCITS</p>
+              <p class="tag">{euLabel(eu.match)} · UCITS</p>
               <h3><span class="tk">{eu.ticker.split(' ')[0]}</span> {eu.name}</h3>
               <dl>
                 <div><dt>Roční poplatek</dt><dd class="num strong">{formatPct(eu.terPct)}</dd></div>

@@ -43,7 +43,7 @@ Na stránku přichází z reklamy na mobilu a má **pár sekund**. Musí hned vi
 
 **Varianta pro reklamu A** (`utm_content=a`, úhel „VOO nenajdete"):
 - Nadpis: **Chcete VOO nebo SPY? Ukážeme vám, co si z Česka opravdu koupíte.**
-- Podnadpis: Srovnání 6 nejpopulárnějších ETF z newyorské burzy a jejich evropských verzí. Poplatky v korunách pro vaši částku – zdarma.
+- Podnadpis: Srovnání 6 populárních ETF z newyorské burzy a jejich evropských verzí a alternativ. Poplatky v korunách pro vaši částku – zdarma. *(12. 10.: bez superlativu „nejpopulárnějších“, který neměl zdroj)*
 
 **Varianta pro reklamu B** (`utm_content=b`, úhel „čísla"):
 - Nadpis: **Stejný index, jiný poplatek. Kolik vás ETF stojí v korunách?**

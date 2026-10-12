@@ -58,7 +58,7 @@ export const buildEmail = (firstName: string, input: ReportInput & { years: numb
         <td style="${num}">${formatCzk(r.fees20)}</td>
       </tr>
       <tr>
-        <td style="padding:6px 0 4px;color:${C.greenDark}"><strong>Evropská verze ${esc(r.euTicker)}</strong><br><span style="font-size:13px;color:${C.faint};white-space:nowrap">poplatek ${formatPct(r.euTer)}</span></td>
+        <td style="padding:6px 0 4px;color:${C.greenDark}"><strong>${esc(r.euLabel)} ${esc(r.euTicker)}</strong><br><span style="font-size:13px;color:${C.faint};white-space:nowrap">poplatek ${formatPct(r.euTer)}</span></td>
         <td style="${num}">${formatCzk(r.euFees10)}</td>
         <td style="${num}">${formatCzk(r.euFees20)}</td>
       </tr>
@@ -91,7 +91,7 @@ export const buildEmail = (firstName: string, input: ReportInput & { years: numb
 
   const steps = [
     `<strong style="color:${C.navy}">Vyberte brokera</strong> a zeptejte se ho:<ul style="margin:6px 0 0;padding-left:18px">${brokerQuestions.map((q) => `<li style="margin:0 0 4px">${esc(q)}</li>`).join('')}</ul>`,
-    `<strong style="color:${C.navy}">Ověřte, že nabízí zvolený fond</strong>: hledejte podle ISIN evropské verze.`,
+    `<strong style="color:${C.navy}">Ověřte, že nabízí zvolený fond</strong>: hledejte podle ISIN evropského fondu.`,
     `<strong style="color:${C.navy}">Přečtěte si dokument KID</strong> fondu, než nakoupíte.`,
   ];
   const stepRows = steps
@@ -201,7 +201,7 @@ export const buildEmail = (firstName: string, input: ReportInput & { years: numb
     '',
     'Co dál:',
     `1. Vyberte brokera a zeptejte se ho: ${brokerQuestions.join(' ')}`,
-    '2. Ověřte, že nabízí zvolený fond: hledejte podle ISIN evropské verze.',
+    '2. Ověřte, že nabízí zvolený fond: hledejte podle ISIN evropského fondu.',
     '3. Přečtěte si dokument KID fondu, než nakoupíte.',
     '',
     `Upravit výpočet: ${siteUrl}/#kalkulacka`,

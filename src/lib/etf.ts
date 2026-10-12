@@ -31,6 +31,9 @@ export const groups = [
 const czNumber = new Intl.NumberFormat('cs-CZ', { maximumFractionDigits: 4 });
 const czDate = new Intl.DateTimeFormat('cs-CZ', { day: 'numeric', month: 'numeric', year: 'numeric' });
 
+// Text review 12. 10.: "verze" only where the European fund tracks the same index; otherwise it is an alternative
+export const euLabel = (match: string): string => (match === 'stejný index' ? 'Evropská verze' : 'Evropská alternativa');
+
 export const formatPct = (value: number): string => `${czNumber.format(value)} %`;
 export const formatDate = (iso: string): string => czDate.format(new Date(`${iso}T12:00:00`));
 

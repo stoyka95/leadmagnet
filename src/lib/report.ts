@@ -1,5 +1,5 @@
 // The full comparison the visitor gets (lead magnet, D2): same numbers on /dekujeme and in the e-mail.
-import { usEtfs, ucitsFor } from './etf';
+import { usEtfs, ucitsFor, euLabel } from './etf';
 import { feesForTer } from './fees';
 import { kidMeta, kidScenarios, KID_YEARS, valuePath, paidInPath, historyFor, historyMeta, type HistoryRange } from './growth';
 
@@ -20,6 +20,7 @@ export interface ReportRow {
   euIsin: string;
   euTer: number;
   euMatch: string;
+  euLabel: string;
   euFees10: number;
   euFees20: number;
   usSource: string;
@@ -42,6 +43,7 @@ export const buildReport = (input: ReportInput): ReportRow[] =>
       euIsin: eu.isin,
       euTer: eu.terPct,
       euMatch: eu.match,
+      euLabel: euLabel(eu.match),
       euFees10: at(eu.terPct, 10),
       euFees20: at(eu.terPct, 20),
       usSource: e.source,

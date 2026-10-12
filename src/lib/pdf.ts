@@ -134,7 +134,7 @@ export const buildPdf = async (input: ReportInput & { years: number }, siteUrl: 
     right(formatCzk(r.fees10), col10, y, reg, 9.5, C.ink);
     right(formatCzk(r.fees20), col20, y, reg, 9.5, C.ink);
     y -= 15;
-    page.drawText(`Evropská verze ${r.euTicker}`, { x: M, y, size: 9.5, font: bold, color: C.greenDark });
+    page.drawText(`${r.euLabel} ${r.euTicker}`, { x: M, y, size: 9.5, font: bold, color: C.greenDark });
     right(formatPct(r.euTer), colTer, y, reg, 9.5, C.muted);
     right(formatCzk(r.euFees10), col10, y, reg, 9.5, C.ink);
     right(formatCzk(r.euFees20), col20, y, reg, 9.5, C.ink);
@@ -215,7 +215,7 @@ export const buildPdf = async (input: ReportInput & { years: number }, siteUrl: 
   heading('Co dál', 22);
   para('1. Vyberte brokera a zeptejte se ho:', { font: bold, size: 10, color: C.navy });
   for (const q of brokerQuestions) para(`•  ${q}`, { size: 9.5, x: M + 14, width: W - 14 });
-  para('2. Ověřte, že nabízí zvolený fond: hledejte podle ISIN evropské verze.', { font: bold, size: 10, color: C.navy, gap: 2 });
+  para('2. Ověřte, že nabízí zvolený fond: hledejte podle ISIN evropského fondu.', { font: bold, size: 10, color: C.navy, gap: 2 });
   para('3. Přečtěte si dokument KID fondu, než nakoupíte.', { font: bold, size: 10, color: C.navy, gap: 14 });
 
   // Legal footer

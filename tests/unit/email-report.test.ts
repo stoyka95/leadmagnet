@@ -72,3 +72,15 @@ describe('buildEmail', () => {
     expect(text).toContain('Upravit výpočet: https://fingramo.vercel.app/#kalkulacka');
   });
 });
+
+describe('European fund label (text review 12. 10.)', () => {
+  it('says “verze” only for the same index and “alternativa” otherwise – in the report and the e-mail', () => {
+    const byTicker = Object.fromEntries(buildReport(INPUT).map((r) => [r.ticker, r]));
+    for (const t of ['SPY', 'IVV', 'VOO']) expect(byTicker[t].euLabel).toBe('Evropská verze');
+    for (const t of ['VTI', 'VT', 'SCHD']) expect(byTicker[t].euLabel).toBe('Evropská alternativa');
+    const { html } = buildEmail('Jana', { ...INPUT, years: 20 }, 'https://fingramo.test', { hasPdf: true });
+    expect(html).toContain('Evropská verze SPYL');
+    expect(html).toContain('Evropská alternativa XD9U');
+    expect(html).not.toContain('Evropská verze XD9U');
+  });
+});

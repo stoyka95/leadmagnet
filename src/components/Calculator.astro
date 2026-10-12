@@ -4,7 +4,7 @@
 import GlassCard from './GlassCard.astro';
 import LeadForm from './LeadForm.astro';
 import { DEFAULT_CALC } from '../lib/calc-state';
-import { usEtfs, ucitsEtfs, ucitsFor, formatPct, formatDate, dataRetrieved } from '../lib/etf';
+import { usEtfs, ucitsEtfs, ucitsFor, formatPct, formatDate, dataRetrieved, euLabel } from '../lib/etf';
 import { feesForTer, formatCzk } from '../lib/fees';
 import { kidMeta, kidScenarios, KID_YEARS, historyFor, historyMeta } from '../lib/growth';
 
@@ -24,7 +24,7 @@ const pctSigned = (v: number) => `${v > 0 ? '+' : ''}${formatPct(v)}`;
 <section id="kalkulacka" class="section container" aria-labelledby="calc-h">
   <div class="section-head">
     <p class="eyebrow">Kalkulačka</p>
-    <h2 id="calc-h">Kolik vložíte, jak by to mohlo vypadat a kolik zaplatíte na poplatcích</h2>
+    <h2 id="calc-h">Spočítejte si poplatky pro svou investici</h2>
   </div>
 
   <div class="calc-grid">
@@ -96,11 +96,11 @@ const pctSigned = (v: number) => `${v > 0 ? '+' : ''}${formatPct(v)}`;
     <GlassCard solid class="area-fees" aria-live="polite">
       <h3>Kolik zaplatíte na poplatcích fondu</h3>
       <p class="muted summary" data-summary>
-        Za <strong class="num" data-years-txt>{DEFAULT_CALC.years} let</strong> vložíte <strong class="num" data-paid>{formatCzk(feesForTer(0, DEFAULT_CALC).paidInCzk)}</strong> <span data-inputs-txt>({formatCzk(DEFAULT_CALC.onceCzk)} jednorázově + {formatCzk(DEFAULT_CALC.monthlyCzk)} měsíčně)</span>. Na ročních poplatcích fondu zaplatíte od <strong class="num" data-min>{formatCzk(minFees)}</strong> (<span data-min-t>{tickersAt(minFees)}</span>) do <strong class="num" data-max>{formatCzk(maxFees)}</strong> (<span data-max-t>{tickersAt(maxFees)}</span>).
+        Za <strong class="num" data-years-txt>{DEFAULT_CALC.years} let</strong> vložíte <strong class="num" data-paid>{formatCzk(feesForTer(0, DEFAULT_CALC).paidInCzk)}</strong> <span data-inputs-txt>({formatCzk(DEFAULT_CALC.onceCzk)} jednorázově + {formatCzk(DEFAULT_CALC.monthlyCzk)} měsíčně)</span>. Na poplatcích fondu za celou dobu zaplatíte od <strong class="num" data-min>{formatCzk(minFees)}</strong> (<span data-min-t>{tickersAt(minFees)}</span>) do <strong class="num" data-max>{formatCzk(maxFees)}</strong> (<span data-max-t>{tickersAt(maxFees)}</span>).
       </p>
       <p class="diff" data-diff></p>
       <p class="summary-empty" data-summary-empty hidden>Zadejte částku – jednorázově, měsíčně, nebo obojí – a hned uvidíte, kolik zaplatíte na poplatcích.</p>
-      <p class="list-head">Všech 6 fondů a jejich evropské verze v Kč:</p>
+      <p class="list-head">Všech 6 fondů a jejich evropské verze a alternativy v Kč:</p>
       <div class="gate is-locked" data-gate>
       <ol class="rows gate-body" data-rows inert>
         {rows.map((r) => (
@@ -112,7 +112,7 @@ const pctSigned = (v: number) => `${v > 0 ? '+' : ''}${formatPct(v)}`;
             </div>
             <div class="bar" aria-hidden="true"><span style={`width:${Math.max(2, (r.fees / maxFees) * 100)}%`} data-bar></span></div>
             <p class="eu fine">
-              Evropská verze {r.ucits.ticker.split(' ')[0]}: {formatPct(r.ucits.terPct)} → <span class="num" data-eu-kc>{formatCzk(feesForTer(r.ucits.terPct, DEFAULT_CALC).feesCzk)}</span>
+              {euLabel(r.ucits.match)} {r.ucits.ticker.split(' ')[0]}: {formatPct(r.ucits.terPct)} → <span class="num" data-eu-kc>{formatCzk(feesForTer(r.ucits.terPct, DEFAULT_CALC).feesCzk)}</span>
               {r.ucits.terPct === minEuTer && <span class="badge-mint">Nejnižší poplatek</span>}
               {r.ucits.registeredCZ && <span class="badge-mint badge-navy">Registrováno pro ČR</span>}
             </p>
