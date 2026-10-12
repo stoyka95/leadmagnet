@@ -299,6 +299,14 @@ Claude prošel produkci jako návštěvník (log: [QA-2026-10-12.md](QA-2026-10-
 - **Odhlášení z e-mailů:** (a) opravit texty na pravdu *(doporučeno)* · (b) postavit odhlašovací odkaz. **Zvoleno (a).**
 - Drobnosti (strop částek, výzva při nule, 404, štítky fondů, Xtrackers, nadpis FAQ, README) Claude opravil podle návrhů v logu. Dva body nechal záměrně (přímý přístup na `/dekujeme`, kurzor v kalkulačce), důvody jsou v logu.
 
+### D38 – Formulář bez zaškrtávacích polí pro reklamu A (12. 10. 2026)
+- **Podnět (Miky):** v jedné variantě místo zaškrtávacích polí jen text nad tlačítkem, že stisknutím souhlasíte s oběma souhlasy.
+- **Upozornění Clauda:** souhlas daný tlačítkem, kterým se zároveň žádá o srovnání, není podle GDPR (čl. 7 odst. 4) svobodný a nestačí ani pro obchodní sdělení (zákon 480/2004 Sb.). Totéž jsme zamítli v D13 (varianta c).
+- **Varianty:** (a) formulář bez polí, souhlas až na děkovací stránce *(doporučeno)* · (b) jedno pole místo dvou · (c) přesně podle podnětu (riziko). **Zvoleno (a).**
+- **Kde:** (a) přepínač `?consent=` a hypotéza *(doporučeno)* · (b) navázat na reklamu A nebo B · (c) druhý živý test 50/50. **Zvoleno (b), reklama A** (doporučeno z dvojice A/B: varianta se týká jen jasně ohraničené skupiny, přímé a sdílené návštěvy mají dál dvě pole).
+- **Důsledek, na který Claude upozornil a Miky ho přijal:** rozdíl mezi reklamou A a B v konverzi teď může způsobit reklama i formulář, nepůjde je od sebe oddělit. V README je to uvedené u testu reklam.
+- **Provedení:** formulář z reklamy A nemá zaškrtávací pole, místo nich věta „zeptáme se vás až po odeslání". Na děkovací stránce dvě tlačítka „Ano, posílejte mi další tipy e-mailem" a „Ano, můžete mi zavolat" (to druhé jen s vyplněným telefonem). Souhlas uloží `/api/consent` ke kontaktu podle náhodného `lead_ref`, jen do 24 h a jen u kontaktu z této varianty. V databázi jsou nové sloupce `consent_source` (form / thank_you) a `consent_updated_at`, verze textu `v3a-2026-10-12`. Zásady jsou upravené.
+
 ---
 
 ## Rozhodnuto Claudem (drobnosti)

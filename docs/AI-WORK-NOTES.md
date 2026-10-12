@@ -337,3 +337,20 @@ Miky: „Otevři stránku v prohlížeči, projdi všechny kroky, podívej se, z
 2. **První verze opravy hero** posouvala na pole kalkulačky i na desktopu, kde je výsledek ve vedlejším sloupci pod grafem a mimo obrazovku. Zachytil to desktopový test. Řešení: na desktopu posun na výsledek a věta s výsledkem nově uvádí, z čeho se počítá.
 3. Dva body z vlastního seznamu (kurzor v kalkulačce, přímý přístup na `/dekujeme`) se ukázaly jako záměr nebo jako oprava s horším rizikem. AI je nechala a v logu napsala proč.
 4. Skript na úpravu dokumentů spadl uprostřed, protože hledal v README řádek, který tam nebyl. Log a DECISIONS už byly zapsané, zbytek AI doplnila ručně a zkontrolovala `git status`.
+
+---
+
+## Session 2, pokračování – 12. 10. 2026: formulář bez zaškrtávacích polí (D38)
+
+### Pokyn
+Miky: „Potřebuji, aby jedna z variant A nebo B místo zaškrtnutí polí měla jen text nad tlačítkem, že stisknutím tlačítka souhlasíte s 1 a 2."
+
+### Co AI udělala
+- **Nejdřív upozornila na právní problém**, ne až po stavbě: souhlas vázaný na tlačítko žádosti o srovnání není svobodný (GDPR čl. 7 odst. 4), zadání hodnotí právní náležitosti a stejnou variantu jsme zamítli v D13. Nabídla legální cestu ke stejnému cíli (formulář bez polí, souhlas po odeslání) a variantu „přesně podle zadání" ponechala na výběr i s rizikem. Rozhodl Miky.
+- U volby „navázat na reklamu" upozornila, že se tím spojí dva testy a rozdíl mezi reklamami nepůjde přičíst jen reklamě. Zapsáno v README.
+- Souhlas daný po odeslání se musí uložit ke kontaktu, ale databáze byla jen na vkládání. Přibyl úzký endpoint `/api/consent`: jen náhodné `lead_ref` z vlastní záložky, jen kontakt z této varianty, jen do 24 h, telefon jen s číslem.
+- Ověřeno: 8 nových unit testů (validace, filtry dotazu, 404, 502), 4 E2E testy (formulář A bez polí, formulář B beze změny, uložení souhlasu, chyba při uložení), snímky formuláře a děkovací stránky na mobilu.
+
+### Kde se AI spletla
+1. Nový E2E test hledal ve větě špatný úsek textu (chyba testu, stránka byla v pořádku).
+2. První verze ukládala `consent_flow` do vlastnosti všech událostí podle `utm_content`. Na děkovací stránce už `utm_content` v adrese není, takže by tam hodnota byla špatně. AI to zachytila před spuštěním a `consent_flow` posílá jen u `form_submit` a `consent_given`.

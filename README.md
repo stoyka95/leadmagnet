@@ -41,7 +41,7 @@ Srovnání přijde e-mailem s **PDF v příloze** a hned se ukáže i na děkova
 2. **Na konci stránky** jako záchyt pro ty, kdo kalkulačku přeskočili.
 3. **Tlačítko v horní liště** vede nejdřív ke kalkulačce („Spočítat poplatky") a po prvním výpočtu k formuláři („Získat srovnání", D30).
 
-**Formulář:** povinný je jen e-mail. Jméno a telefon jsou nepovinné a u telefonu je vysvětleno, proč se ptáme. Souhlas s dalšími tipy e-mailem a souhlas s telefonátem jsou dvě samostatná, nezaškrtnutá pole.
+**Formulář:** povinný je jen e-mail. Jméno a telefon jsou nepovinné a u telefonu je vysvětleno, proč se ptáme. Souhlas s dalšími tipy e-mailem a souhlas s telefonátem jsou dvě samostatná, nezaškrtnutá pole. **Výjimka pro reklamu A (D38):** formulář nemá žádná zaškrtávací pole a oba souhlasy se nabídnou až po odeslání na děkovací stránce, jedním tlačítkem každý. Souhlas se tak nikdy neváže na žádost o srovnání.
 
 ## 4. Dvě verze reklamy a návaznost na první obrazovku
 Obě verze jsou pro Instagram a Facebook na mobilu (4:5 a 9:16). Nabízejí totéž a liší se úhlem (D6). Podrobné texty jsou v [ads/README.md](ads/README.md).
@@ -53,6 +53,8 @@ Obě verze jsou pro Instagram a Facebook na mobilu (4:5 a 9:16). Nabízejí tot�
 | Karta na 1. obrazovce | stejné páry jako v reklamě (D29) | stejné srovnání SPY vs. VOO |
 
 První obrazovka opakuje slib a čísla své reklamy, takže návštěvník hned pozná, že je na správném místě. Varianta se vybere podle `utm_content` ještě před vykreslením, takže stránka neproblikne. Bez UTM se ukáže verze B. Obě verze jsou otestované na produkci celou cestou až k odeslání formuláře (D35, test `tests/e2e/ad-variants.spec.ts`).
+
+**Pozor při vyhodnocení:** návštěvníci z reklamy A mají navíc formulář bez zaškrtávacích polí (souhlas až po odeslání, D38). Rozdíl v konverzi mezi A a B proto může způsobit reklama i formulář a od sebe je oddělit nepůjde. Vědomé rozhodnutí: kratší formulář dostane jasně ohraničená skupina.
 
 Čísla v reklamách se načítají z `data/etf.json`, nejsou opsaná ručně. Reklamy obsahují upozornění na riziko a žádné sliby výnosů.
 
@@ -197,11 +199,11 @@ Základní verze má 2 formuláře (u kalkulačky a na konci). Varianta se třet
 - Pak jsem zadával po fázích (data → obsah → stavba → měření → testy → README) a průběžně posílal připomínky ze screenshotů a z prohlížení stránky.
 
 #### Jak jsem výstup kontroloval
-- **Rozhodnutí dělám já.** V [docs/DECISIONS.md](docs/DECISIONS.md) je 37 zapsaných rozhodnutí. U řady z nich jsem zvolil jinou variantu, než AI doporučila: například dva interaktivní prvky, jméno a telefon ve formuláři, vykání, vizuální styl a fiktivní značku.
+- **Rozhodnutí dělám já.** V [docs/DECISIONS.md](docs/DECISIONS.md) je 38 zapsaných rozhodnutí. U řady z nich jsem zvolil jinou variantu, než AI doporučila: například dva interaktivní prvky, jméno a telefon ve formuláři, vykání, vizuální styl a fiktivní značku.
 - **Data proti zdroji, ne proti paměti AI.** Každé číslo je z webu správce nebo z dokumentu KID a poplatky jsou ověřené dvakrát. Když web blokoval stahování, AI ho otevřela v prohlížeči.
 - **Testy:**
-  - 75 unit testů hlídá výpočty, shodu dat se zdroji, API, e-mail a PDF.
-  - 111 E2E testů běží v prohlížeči na mobilu i desktopu, lokálně i proti produkci. Pokrývají celou cestu z obou reklam, přístupnost (axe), dotykové plochy 44 px, souhlasy a měření.
+  - 83 unit testů hlídá výpočty, shodu dat se zdroji, API, e-mail a PDF.
+  - 133 E2E testů běží v prohlížeči na mobilu i desktopu, lokálně i proti produkci. Pokrývají celou cestu z obou reklam, přístupnost (axe), dotykové plochy 44 px, souhlasy a měření.
   - Lighthouse na mobilu: 100 / 100 / 100 / 100.
   - Detail je v [docs/TESTING.md](docs/TESTING.md).
 - **Kontrola na produkci, ne jen lokálně:** testovací kontakt na produkci, kontrola řádku v databázi, doručení e-mailu s PDF v Resendu a událostí v PostHogu.
@@ -224,7 +226,7 @@ Výběr, všechno je v AI-WORK-NOTES:
 - nechat AI chyby zapisovat, ne schovávat.
 
 ## 12. Rozhodnutí a jejich důvody
-Všech 37 rozhodnutí s variantami, mou volbou a důvody je v [docs/DECISIONS.md](docs/DECISIONS.md). Plán a stav fází jsou v [docs/PLAN.md](docs/PLAN.md), texty stránky v [docs/CONTENT.md](docs/CONTENT.md).
+Všech 38 rozhodnutí s variantami, mou volbou a důvody je v [docs/DECISIONS.md](docs/DECISIONS.md). Plán a stav fází jsou v [docs/PLAN.md](docs/PLAN.md), texty stránky v [docs/CONTENT.md](docs/CONTENT.md).
 
 Kde zadání nebylo jednoznačné, rozhodl jsem takto:
 - **„ETF z NYSE" vs. co si Čech opravdu koupí:** stránka srovnává americké fondy z NYSE Arca, ale poctivě říká, že je drobný investor z EU u řady brokerů nekoupí, a ke každému ukazuje evropskou verzi (D1, D12).
@@ -238,7 +240,7 @@ Kde zadání nebylo jednoznačné, rozhodl jsem takto:
 
 **Formulář a texty:**
 - Povinný je jen e-mail. Zaslání srovnání je na žádost návštěvníka, ne na souhlas.
-- Další e-maily a telefonát mají dva samostatné, nezaškrtnuté souhlasy.
+- Další e-maily a telefonát mají dva samostatné, nezaškrtnuté souhlasy. U reklamy A se nabídnou až po odeslání na děkovací stránce (D38). Souhlas daný samotným tlačítkem „Získat srovnání" jsme vědomě nepoužili, protože by podle GDPR nebyl svobodný.
 - Odkaz na [zásady ochrany osobních údajů](https://fingramo.vercel.app/zasady).
 - Upozornění na riziko a „nejde o investiční doporučení" je u kalkulačky i v patičce.
 - Žádné sliby výnosů. Scénáře jsou z dokumentu KID a označené „Nejde o předpověď".
