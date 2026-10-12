@@ -291,6 +291,14 @@ Ověřeno na produkci https://fingramo.vercel.app a lokálně, nový test `tests
 - **OG obrázek (1200 × 630):** (a) logo + nadpis „Stejný index, jiný poplatek." + karta SPY vs. VOO se skutečnými čísly *(doporučeno)* · (b) páry US → evropská verze · (c) jen logo a slogan. **Zvoleno (a).** Navazuje na reklamu B a výchozí variantu stránky.
 - **Komponenta:** (a) jedna sdílená `src/components/Icon.astro` s inline SVG, bez knihovny *(doporučeno)* · (b) SVG přímo v sekcích. **Zvoleno (a).**
 
+### D37 – Opravy po ruční kontrole produkce (12. 10. 2026)
+Claude prošel produkci jako návštěvník (log: [QA-2026-10-12.md](QA-2026-10-12.md), 16 nálezů) a na 4 hlavní se zeptal.
+- **Částka z hero:** (a) jednorázově 0 a ukázat pole kalkulačky *(doporučeno)* · (b) nechat 100 000 a upozornit · (c) v hero obě pole. **Zvoleno (a).**
+- **Kam vedou „Získat srovnání" a „Chci srovnání":** (a) k nejbližšímu formuláři *(doporučeno)* · (b) vždy k formuláři u kalkulačky. **Zvoleno (a).**
+- **Souhlasy:** (a) nad tlačítko *(doporučeno)* · (b) nechat pod tlačítkem. **Zvoleno (a).**
+- **Odhlášení z e-mailů:** (a) opravit texty na pravdu *(doporučeno)* · (b) postavit odhlašovací odkaz. **Zvoleno (a).**
+- Drobnosti (strop částek, výzva při nule, 404, štítky fondů, Xtrackers, nadpis FAQ, README) Claude opravil podle návrhů v logu. Dva body nechal záměrně (přímý přístup na `/dekujeme`, kurzor v kalkulačce), důvody jsou v logu.
+
 ---
 
 ## Rozhodnuto Claudem (drobnosti)

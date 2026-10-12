@@ -72,7 +72,7 @@ Stránka je na mobilu záměrně kompaktní:
 - originál a evropská verze jsou vedle sebe,
 - zamčený seznam je jen ukázka (D35).
 
-Na šířce 390 px má stránka 9 538 px a formulář u kalkulačky začíná na 2 262 px.
+Na šířce 390 px má stránka 9 569 px a formulář u kalkulačky začíná na 2 243 px.
 
 ## 6. Interaktivní prvky a co přijde po odeslání
 - **Kalkulačka poplatků** (hlavní prvek, D16):
@@ -126,7 +126,7 @@ Všechny insighty počítají jen produkční doménu `fingramo.vercel.app` a vy
 
 #### Co je záměrně vypnuté
 - **Záznamy relací (session recordings) jsou záměrně vypnuté.** Zaznamenávají chování konkrétního člověka na stránce, a to by bez souhlasu (cookie lišty) nebylo v pořádku. Vypnuté jsou přímo v kódu (`disable_session_recording: true`), takže se nenahrávají, ani když je funkce v nastavení PostHog projektu povolená. Pro ostré nasazení: zapnout je jen po souhlasu návštěvníka.
-- **Autocapture** (automatické zachytávání všech kliknutí) je v kódu vypnutý. Posílají se jen pojmenované události trychtýře, takže data jsou čistší a na mobilu běží méně JavaScriptu.
+- **Autocapture** (automatické zachytávání všech kliknutí) je v kódu vypnutý. Posílají se jen pojmenované události trychtýře, takže data jsou čistší a na mobilu běží méně JavaScriptu. Nastavení projektu v PostHogu k tomu přidává dvě souhrnná měření: **kliknutí bez reakce** (dead clicks, ukazují místa, která vypadají klikatelně a nejsou) a **rychlost stránky** (web vitals). Ani jedno nepracuje s osobními údaji.
 
 #### Trychtýř (události)
 `$pageview` (s UTM) → `scroll_50` → `cta_click` → `tool_used` (kalkulačka / srovnání) → `form_start` → `form_submit` (jen když server kontakt opravdu uložil) → `thank_you_view`. Navíc se měří `form_error`, `hero_calc_submit`, `lead_segment` a `share_click`. Každý kontakt v databázi má náhodné `lead_ref`, stejné jako u jeho `form_submit`, takže jde dohledat jeho cestu.
@@ -197,7 +197,7 @@ Základní verze má 2 formuláře (u kalkulačky a na konci). Varianta se třet
 - Pak jsem zadával po fázích (data → obsah → stavba → měření → testy → README) a průběžně posílal připomínky ze screenshotů a z prohlížení stránky.
 
 #### Jak jsem výstup kontroloval
-- **Rozhodnutí dělám já.** V [docs/DECISIONS.md](docs/DECISIONS.md) je 36 zapsaných rozhodnutí. U řady z nich jsem zvolil jinou variantu, než AI doporučila: například dva interaktivní prvky, jméno a telefon ve formuláři, vykání, vizuální styl a fiktivní značku.
+- **Rozhodnutí dělám já.** V [docs/DECISIONS.md](docs/DECISIONS.md) je 37 zapsaných rozhodnutí. U řady z nich jsem zvolil jinou variantu, než AI doporučila: například dva interaktivní prvky, jméno a telefon ve formuláři, vykání, vizuální styl a fiktivní značku.
 - **Data proti zdroji, ne proti paměti AI.** Každé číslo je z webu správce nebo z dokumentu KID a poplatky jsou ověřené dvakrát. Když web blokoval stahování, AI ho otevřela v prohlížeči.
 - **Testy:**
   - 75 unit testů hlídá výpočty, shodu dat se zdroji, API, e-mail a PDF.
@@ -224,7 +224,7 @@ Výběr, všechno je v AI-WORK-NOTES:
 - nechat AI chyby zapisovat, ne schovávat.
 
 ## 12. Rozhodnutí a jejich důvody
-Všech 36 rozhodnutí s variantami, mou volbou a důvody je v [docs/DECISIONS.md](docs/DECISIONS.md). Plán a stav fází jsou v [docs/PLAN.md](docs/PLAN.md), texty stránky v [docs/CONTENT.md](docs/CONTENT.md).
+Všech 37 rozhodnutí s variantami, mou volbou a důvody je v [docs/DECISIONS.md](docs/DECISIONS.md). Plán a stav fází jsou v [docs/PLAN.md](docs/PLAN.md), texty stránky v [docs/CONTENT.md](docs/CONTENT.md).
 
 Kde zadání nebylo jednoznačné, rozhodl jsem takto:
 - **„ETF z NYSE" vs. co si Čech opravdu koupí:** stránka srovnává americké fondy z NYSE Arca, ale poctivě říká, že je drobný investor z EU u řady brokerů nekoupí, a ke každému ukazuje evropskou verzi (D1, D12).
@@ -261,3 +261,4 @@ Kde zadání nebylo jednoznačné, rozhodl jsem takto:
 - **Cena za kontakt** se dopočítá až po spuštění kampaně, kdy se do dashboardu doplní útrata.
 - **Ruční kontrola na skutečném iPhonu a Androidu** a test se čtečkou obrazovky. Automaticky to pokrývá jen axe.
 - **Právní a provozní náležitosti pro ostrý provoz** jsou v předchozí části.
+- **Děkovací stránka jde otevřít i přímo** (`/dekujeme`) bez odeslání formuláře. Přesměrování by mohlo poslat pryč skutečného návštěvníka, kterému prohlížeč blokuje paměť záložky. Data jsou veřejná a stránka se neindexuje.

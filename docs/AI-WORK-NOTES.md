@@ -318,3 +318,22 @@ Miky (screenshot zamčeného grafu): „tento graf se pak někde ukáže? v e-ma
 2. **Zacyklený Python:** AI omylem spustila prázdný interaktivní Python, který se zasekl a zapisoval chyby do logu. Zastavila jen tu jednu úlohu podle jejího ID (poučení z minula, ne všechny procesy).
 3. **Nalezená nesrovnalost:** barva stresového scénáře v e-mailu a PDF zůstala na staré hodnotě z doby před opravou kontrastu. Opraveno samostatným `fix:` commitem.
 4. Nový test nejdřív selhal na pevné mezeře v českém formátu čísel (`280 000 Kč`). Šlo o chybu testu, ne stránky.
+
+---
+
+## Session 2 – 12. 10. 2026: ruční kontrola produkce
+
+### Pokyn
+Miky: „Otevři stránku v prohlížeči, projdi všechny kroky, podívej se, zda vše funguje správně a je logicky umístěno (např. zadání částky v hero, ale pak automaticky jednorázově 100 000 Kč). Zkontroluj přes Browser i Console. Napiš log a pak se zeptej, co a jak opravit."
+
+### Co AI udělala a jak ověřovala
+- Prošla produkci ve vestavěném prohlížeči na mobilu a desktopu, obě reklamy a obě varianty první obrazovky. Kroky klikala a stav četla z DOM: hodnoty polí, pozice posunu, fokus, texty výsledku. Zkoušela okrajové hodnoty (prázdno, 0, písmena, 999 999 999), validaci formuláře s neplatnými údaji, všechna tlačítka „Odemknout", přepínač srovnání a FAQ.
+- Formulář na produkci **neodeslala**: vytvořil by kontakt a poslal e-mail. Děkovací stránku otevřela s daty, jaká by uložil formulář.
+- Konzoli a síť kontrolovala na všech stránkách. Když nástroj pro síť neukázal požadavky na PostHog, ověřila je přes `performance` API prohlížeče, a nehlásila tak chybu, která neexistuje.
+- 16 nálezů zapsala do [QA-2026-10-12.md](QA-2026-10-12.md) se závažností a návrhem, na 4 hlavní se zeptala (D37), pak opravovala po malých commitech s testem ke každé opravě.
+
+### Kde se AI spletla
+1. **Kolize atributu:** pro strop částek přidala polím atribut `data-max`, ale stejný selektor `[data-max]` už používala věta s výsledkem („do 13 188 Kč"). Skript by zapisoval částku do pole místo do věty. Zachytil to existující E2E test (strict mode, 3 prvky). Opraveno přejmenováním na `data-cap` před commitem.
+2. **První verze opravy hero** posouvala na pole kalkulačky i na desktopu, kde je výsledek ve vedlejším sloupci pod grafem a mimo obrazovku. Zachytil to desktopový test. Řešení: na desktopu posun na výsledek a věta s výsledkem nově uvádí, z čeho se počítá.
+3. Dva body z vlastního seznamu (kurzor v kalkulačce, přímý přístup na `/dekujeme`) se ukázaly jako záměr nebo jako oprava s horším rizikem. AI je nechala a v logu napsala proč.
+4. Skript na úpravu dokumentů spadl uprostřed, protože hledal v README řádek, který tam nebyl. Log a DECISIONS už byly zapsané, zbytek AI doplnila ručně a zkontrolovala `git status`.
