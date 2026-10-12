@@ -50,18 +50,18 @@ import Icon from './Icon.astro';
 
     <GlassCard class="hero-card" aria-label="Ukázka srovnání">
       <div class="variant-a">
-        <p class="card-label">Americký originál → evropská verze</p>
+        <p class="card-label">Americký originál → evropský fond</p>
         <ul class="pairs">
           {pairs.map((p) => (
             <li>
               <span class="pair-us"><strong>{p.us.ticker}</strong> <span class="num">{formatPct(p.us.expenseRatioPct)}</span></span>
-              <span class="pair-arrow" aria-label="evropská verze">→</span>
+              <span class="pair-arrow" aria-label="evropský fond">→</span>
               <span class="pair-eu"><strong>{p.euTicker}</strong> <span class="num">{formatPct(p.eu.terPct)}</span></span>
               <span class="pair-match fine">{p.eu.match} · <span class="nowrap">ISIN {p.eu.isin}</span></span>
             </li>
           ))}
         </ul>
-        <p class="fine">Evropské verze (UCITS) mají ISIN začínající IE. Zda fond nabízí váš broker, ověříte podle ISIN. Poplatky: weby správců, viz <a href="/zdroje">zdroje</a>.</p>
+        <p class="fine">Evropské fondy (UCITS) mají ISIN začínající IE. Zda fond nabízí váš broker, ověříte podle ISIN. Poplatky: weby správců, viz <a href="/zdroje">zdroje</a>.</p>
       </div>
       <div class="variant-b">
       <div class="card-top">
