@@ -365,3 +365,35 @@ Miky: „Potřebuji, aby jedna z variant A nebo B místo zaškrtnutí polí měl
 - **Kde by cizí výstup stránku zhoršil:** vágnější daňová věta místo doložené sazby 15 % (smlouva ČR–USA, IRS).
 - Ověřeno: nový unit test hlídá „verze" vs. „alternativa" v reportu i v e-mailu, E2E 133 prošlo, snímky karty a nadpisu na mobilu.
 - **Chyba AI v téže kontrole:** při zdůvodnění AI napsala, že „VT a SCHD nejsou mezi 6 největšími ETF na NYSE". Bylo to z paměti a bez zdroje, tedy přesně druh tvrzení, který pravidla zakazují. V DECISIONS opraveno na pravdivé „pořadí podle popularity nemáme doložené" a Mikymu oznámeno.
+
+---
+
+## Session 2, pokračování – 12. 10. 2026: kontrola webu, e-mailů a dokumentace
+
+### Pokyn
+Miky: „Zkontroluj teď web, všechny varianty, e-maily (text atd., kolik máme variant) a pak dokumentaci na GitHubu, zda vše sedí a není nic špatně popsáno nebo neaktuální."
+
+### Co AI udělala
+- **Web na produkci:** všechny kombinace (bez UTM, reklama A, reklama B, `?forms=3`, `control` / `hero_input`), děkovací stránka pro oba způsoby souhlasu, `/zasady`, `/zdroje`, 404. Kontrola konzole, vodorovného scrollu, viditelných formulářů a souhlasů. Výšky změřené na 390 px s prázdnou pamětí záložky.
+- **E-mail:** jedna šablona (HTML + textová verze), která se liší jen jménem v pozdravu a tím, jestli je v příloze PDF. Pro reklamu A i B a obě varianty testu je stejná.
+- **Dokumentace:** README, TESTING, MEASUREMENT, PLAN, DECISIONS, CONTENT a ads/README porovnané se živým stavem.
+- Lighthouse 8× na produkci, protože jeden běh souběžně s E2E testy dal zkreslený výsledek.
+
+### Co se našlo a opravilo
+1. **E-mail a PDF psaly „0 Kč jednorázově + 3 000 Kč měsíčně"**, ve variantě `hero_input` pokaždé. Děkovací stránka nulu už vynechávala. Teď používají všechny tři jednu sdílenou funkci `amountText`. Kalkulačka nulu ukazuje dál záměrně (D37: návštěvník vidí, že se výchozí částka vynulovala). AI ji nejdřív změnila taky a E2E test na to upozornil, proto změnu vrátila.
+2. **Textová verze e-mailu** psala „evropská verze" u všech 6 fondů, i tam, kde jde o jiný index (D39 opravilo jen HTML).
+3. **Karta v hero pro reklamu A** měla nadpis „Americký originál → evropská verze" i pro VT → VWCE. Teď „→ evropský fond".
+4. **Zásady** neuváděly, že si záložka po odeslání pamatuje křestní jméno a náhodné číslo odeslání. Doplněno.
+5. **Ukázka e-mailu a PDF v `docs/`** byla z doby před D39. Přegenerovaná z kódu.
+6. **Neaktuální údaje v dokumentaci:**
+   - výška stránky (9 569 → 9 623 / 9 654 px),
+   - počty testů (83/84 → 86 unit, produkce 107 → 130),
+   - Lighthouse,
+   - chybějící `consent_given` v README,
+   - MEASUREMENT tvrdil, že stránka ukládá jen `fg:calc`,
+   - otevřený bod „ověřit název značky" byl už dávno ověřený,
+   - plán neobsahoval práci z 12. 10.
+
+### Kde se AI spletla
+- **Dokumentace zaostávala za kódem.** Po každé změně (D37–D39) AI upravila čísla jen v části dokumentů. Poučení: po změně, která ovlivní výšku stránky, testy nebo texty, projít všechny dokumenty, ne jen ten, který se právě píše.
+- **Lighthouse:** první běh dal výkon 95–97, protože běžel souběžně s testy. Výsledek se neopsal, ale měřilo se znovu a zvlášť. Výkon 97–100 se zapsal i s vysvětlením.
