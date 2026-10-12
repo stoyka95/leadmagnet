@@ -41,7 +41,10 @@ const id = `lf-${location}`;
       <label for={`${id}-phone`}>Telefon <span class="opt">(nepovinné)</span></label>
       <input id={`${id}-phone`} name="phone" type="tel" inputmode="tel" autocomplete="tel" maxlength="30"
         aria-describedby={`${id}-phone-why ${id}-phone-err`} />
-      <p class="hint" id={`${id}-phone-why`}>Proč se ptáme: zavoláme jen, když níže zaškrtnete souhlas – třeba pokud budete mít ke srovnání otázku. Investiční rady nedáváme.</p>
+      <p class="hint" id={`${id}-phone-why`}>
+        <span class="for-form">Proč se ptáme: zavoláme jen, když níže zaškrtnete souhlas – třeba pokud budete mít ke srovnání otázku. Investiční rady nedáváme.</span>
+        <span class="for-after">Proč se ptáme: zavoláme jen, když nám to po odeslání dovolíte – třeba pokud budete mít ke srovnání otázku. Investiční rady nedáváme.</span>
+      </p>
       <p class="err" id={`${id}-phone-err`} data-err-for="phone" hidden>Telefon vypadá neúplně. Můžete ho i vynechat.</p>
     </div>
     </div>
@@ -52,6 +55,8 @@ const id = `lf-${location}`;
       <input id={`${id}-website`} name="website" type="text" tabindex="-1" autocomplete="off" />
     </div>
 
+    <!-- D38: visitors from ad A see no boxes here – the consents are offered on the thank-you page -->
+    <p class="fine consent-after">Na další tipy e-mailem a případný telefonát se vás zeptáme až po odeslání. Nic za vás nezaškrtáváme.</p>
     <fieldset class="consents">
       <legend class="visually-hidden">Nepovinné souhlasy</legend>
       <label class="check">
@@ -115,6 +120,10 @@ const id = `lf-${location}`;
   .check input { width: 24px; height: 24px; margin: 0; accent-color: var(--c-green-800); }
   .form-status { font-size: var(--fs-sm); }
   .form-status[data-kind='error'] { color: var(--c-danger); }
+  .consent-after, .for-after { display: none; }
+  :global(html[data-ad='a']) .consents, :global(html[data-ad='a']) .for-form { display: none; }
+  :global(html[data-ad='a']) .consent-after { display: block; }
+  :global(html[data-ad='a']) .for-after { display: inline; }
   .consents { border: 0; padding: 0; margin: 0; display: grid; gap: var(--sp-2); min-width: 0; }
   .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 </style>
@@ -124,6 +133,9 @@ const id = `lf-${location}`;
   import { readCalc } from '../lib/calc-state';
 
   const CONSENT_VERSION = 'v3-2026-10-11'; // v2: name optional (D25); v3: separate e-mail and phone consent (D35)
+  // D38: ad A – no boxes in the form, the consents are offered on the thank-you page (its own wording version)
+  const CONSENT_FLOW = document.documentElement.dataset.ad === 'a' ? 'after' : 'form';
+  const CONSENT_VERSION_AFTER = 'v3a-2026-10-12';
   const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
   type FieldName = 'email' | 'phone';
@@ -188,9 +200,10 @@ const id = `lf-${location}`;
         full_name: String(data.get('full_name') ?? '').trim() || null,
         email: String(data.get('email')).trim(),
         phone: String(data.get('phone') ?? '').trim() || null,
-        marketing_consent: data.get('marketing_consent') === 'yes',
-        phone_consent: data.get('phone_consent') === 'yes',
-        consent_version: CONSENT_VERSION,
+        marketing_consent: CONSENT_FLOW === 'form' && data.get('marketing_consent') === 'yes',
+        phone_consent: CONSENT_FLOW === 'form' && data.get('phone_consent') === 'yes',
+        consent_flow: CONSENT_FLOW,
+        consent_version: CONSENT_FLOW === 'after' ? CONSENT_VERSION_AFTER : CONSENT_VERSION,
         form_location: location,
         website: String(data.get('website') ?? ''),
         calc: { onceCzk: calc.onceCzk, monthlyCzk: calc.monthlyCzk, years: calc.years },
@@ -224,12 +237,18 @@ const id = `lf-${location}`;
           lead_ref: leadRef,
           marketing_consent: payload.marketing_consent,
           phone_consent: payload.phone_consent && Boolean(payload.phone),
+          consent_flow: CONSENT_FLOW,
           has_name: Boolean(payload.full_name),
           has_phone: Boolean(payload.phone),
           used_calculator: calc.touched,
         });
-        // Only what /dekujeme needs: the first name for the greeting and the reference for lead_segment (no e-mail)
-        try { sessionStorage.setItem('fg:lead', JSON.stringify({ firstName: payload.full_name?.split(/\s+/)[0] ?? '', leadRef })); } catch { /* ignore */ }
+        // Only what /dekujeme needs: the first name, the reference (lead_segment, D38 consents), whether to offer
+        // the consents there and whether a call is possible at all – never the e-mail or the number itself
+        try {
+          sessionStorage.setItem('fg:lead', JSON.stringify({
+            firstName: payload.full_name?.split(/\s+/)[0] ?? '', leadRef, consentFlow: CONSENT_FLOW, hasPhone: Boolean(payload.phone),
+          }));
+        } catch { /* ignore */ }
         window.location.assign('/dekujeme');
       } catch (err) {
         track('form_error', { form_location: location, reason: 'server', detail: String(err) });

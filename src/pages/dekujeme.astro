@@ -39,6 +39,17 @@ import { formatDate, dataRetrieved } from '../lib/etf';
       </div>
     </header>
 
+    <!-- D38: visitors from ad A had no consent boxes in the form – the two optional consents are offered here -->
+    <section class="ask consent no-print" aria-labelledby="consent-h" data-consent hidden>
+      <h2 id="consent-h">Chcete od nás ještě něco? Obojí je dobrovolné.</h2>
+      <div class="ask-options">
+        <button type="button" class="chip-btn" data-consent-kind="email" aria-pressed="false">Ano, posílejte mi další tipy e-mailem</button>
+        <button type="button" class="chip-btn" data-consent-kind="phone" aria-pressed="false" hidden>Ano, můžete mi zavolat</button>
+      </div>
+      <p class="fine">Souhlas můžete kdykoli odvolat e-mailem na <a href="mailto:mykola@stoyka.eu">mykola@stoyka.eu</a>. Více v <a href="/zasady">zásadách ochrany osobních údajů</a>.</p>
+      <p class="fine" data-consent-status role="status"></p>
+    </section>
+
     <section class="ask no-print" aria-labelledby="ask-h" data-ask>
       <h2 id="ask-h">Jedna otázka, dobrovolně: už investujete?</h2>
       <div class="ask-options" role="group" aria-labelledby="ask-h">
@@ -128,6 +139,8 @@ import { formatDate, dataRetrieved } from '../lib/etf';
   :global(.hist strong) { font-size: var(--fs-lg); color: var(--c-navy-900); white-space: nowrap; }
   .ask { display: grid; gap: var(--sp-3); padding: var(--sp-5); border-radius: var(--r-lg); background: var(--c-navy-100); max-width: var(--w-text); }
   .ask h2 { font-size: var(--fs-lg); }
+  .consent { background: var(--c-green-100); }
+  .ask[hidden] { display: none; }
   .ask-options { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
   .chip-btn {
     min-height: var(--tap); padding: var(--sp-2) var(--sp-5); border-radius: var(--r-pill);
@@ -264,4 +277,33 @@ import { formatDate, dataRetrieved } from '../lib/etf';
   drawTyChart();
   let tyResize: number | undefined;
   window.addEventListener('resize', () => { window.clearTimeout(tyResize); tyResize = window.setTimeout(drawTyChart, 150); });
+
+  // D38: the optional consents for visitors from ad A, one click each; stored with the lead via /api/consent
+  const consentBox = document.querySelector<HTMLElement>('[data-consent]')!;
+  const leadInfo = lead as { leadRef?: string; consentFlow?: string; hasPhone?: boolean };
+  if (leadInfo.consentFlow === 'after' && leadInfo.leadRef) {
+    consentBox.hidden = false;
+    const status = consentBox.querySelector<HTMLElement>('[data-consent-status]')!;
+    const phoneBtn = consentBox.querySelector<HTMLButtonElement>('[data-consent-kind=phone]')!;
+    phoneBtn.hidden = !leadInfo.hasPhone; // a call needs a number
+    consentBox.querySelectorAll<HTMLButtonElement>('[data-consent-kind]').forEach((btn) => btn.addEventListener('click', async () => {
+      const kind = btn.dataset.consentKind!;
+      btn.disabled = true;
+      status.textContent = '';
+      try {
+        const res = await fetch('/api/consent', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ lead_ref: leadInfo.leadRef, kind }),
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        btn.setAttribute('aria-pressed', 'true');
+        status.textContent = kind === 'email' ? 'Děkujeme, další tipy vám budeme posílat e-mailem.' : 'Děkujeme, můžeme vám zavolat.';
+        track('consent_given', { kind, lead_ref: leadInfo.leadRef ?? null });
+      } catch {
+        btn.disabled = false;
+        status.textContent = 'Souhlas se nepodařilo uložit. Zkuste to prosím znovu.';
+      }
+    }));
+  }
 </script>

@@ -213,9 +213,9 @@ test.describe('lead form (D5, D13, D25)', () => {
     expect(ref).toMatch(/^[0-9a-f-]{36}$/);
     expect(await events(page)).toContainEqual(['form_submit', expect.objectContaining({ lead_ref: ref })]);
 
-    // the tab keeps only the first name and the reference – never the e-mail
+    // the tab keeps only the first name, the reference and two flags for the consent offer (D38) – never the e-mail or a number
     const kept = JSON.parse((await page.evaluate(() => sessionStorage.getItem('fg:lead')))!);
-    expect(kept).toEqual({ firstName: 'Jana', leadRef: ref });
+    expect(kept).toEqual({ firstName: 'Jana', leadRef: ref, consentFlow: 'form', hasPhone: false });
 
     await expect(page.locator('[data-hello]')).toHaveText(/Děkujeme, Jana/);
     await expect(page.locator('[data-report] tr')).toHaveCount(12);
