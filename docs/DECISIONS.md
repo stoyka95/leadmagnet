@@ -326,7 +326,7 @@ Miky dal Claudovi zkontrolovat návrh úprav textů od ChatGPT. Claude každý b
 ## Rozhodnuto Claudem (drobnosti)
 - **Graf scénářů i po odeslání (11. 10., na Mikyho dotaz „ukáže se ten graf v e-mailu/PDF?"):** čárový graf vývoje za 5 let je teď i na děkovací stránce a v PDF příloze. Stránka i děkovací stránka používají stejnou funkci, takže ukazují totéž. V e-mailu zůstávají pruhy z HTML tabulek, protože čárový graf by musel být obrázek: Gmail ani Outlook vložené SVG nezobrazí a generovat obrázek na serveru nebo přes cizí službu je zbytečná složitost (D27).
 - **Definice konverze (11. 10.):** konverze = `form_submit` potvrzený serverem (kontakt skutečně uložený) ÷ unikátní návštěvníci s `utm_source` z reklamy. Proč: kliknutí na tlačítko, které skončí chybou, není kontakt.
-- **Název značky:** před použitím ověřit, že „Fingramo" nepoužívá existující firma (ARES, web).
+- **Název značky:** ověřeno 11. 10. v ARES a na webu: „Fingramo“ nikdo nepoužívá, podobná FINGRAM CS s.r.o. je z jiného oboru (SOURCES.md).
 - **Výchozí hodnoty kalkulačky (11. 10.):** 100 000 Kč jednorázově, 3 000 Kč měsíčně, 20 let. Odpovídají typickému začínajícímu investorovi a dají se snadno přepsat.
 - **Výchozí hero bez UTM:** varianta B (obecnější).
 - ~~**Lepivé CTA na mobilu** po odscrollování hero.~~ Nahrazeno lepivou horní lištou (D27).

@@ -3,7 +3,7 @@
 Praktická úloha pro Clientelo (Junior AI Developer), **zadání B: konverzní landing page**. Autor: Mykola Stoyka. Stránku jsem postavil s AI (Claude Code), viz [sekce 11](#11-jak-jsem-pracoval-s-ai).
 
 ## 1. Co to je
-Landing page pro českého drobného investora z reklamy na mobilu. Spočítá mu poplatky populárních ETF z newyorské burzy v korunách, ukáže jejich evropské verze, které si z Česka koupí, a výměnou za e-mail mu pošle celé osobní srovnání.
+Landing page pro českého drobného investora z reklamy na mobilu. Spočítá mu poplatky populárních ETF z newyorské burzy v korunách, ukáže jejich evropské verze a alternativy, které si z Česka koupí, a výměnou za e-mail mu pošle celé osobní srovnání.
 
 > **Fingramo je fiktivní značka** vytvořená pro výběrové řízení (D14). Data o fondech, formulář, e-mail i měření jsou ale skutečné a fungují.
 
@@ -27,7 +27,7 @@ Landing page pro českého drobného investora z reklamy na mobilu. Spočítá m
 Přichází z reklamy na mobilu a má pár sekund.
 
 **Co dostane za e-mail (D2, D27):** osobní srovnání pro svou částku. Obsahuje:
-- 6 amerických ETF a jejich evropské verze vedle sebe,
+- 6 amerických ETF a jejich evropské verze a alternativy vedle sebe,
 - poplatky v Kč na 10 a 20 let,
 - 4 scénáře vývoje z dokumentu KID a historii S&P 500 pro zvolený počet let,
 - otázky pro brokera a odkazy na zdroje.
@@ -63,7 +63,7 @@ První obrazovka opakuje slib a čísla své reklamy, takže návštěvník hned
 |---|---|---|
 | 1 | **Hero** podle reklamy, tlačítko „Spočítat moje poplatky" | Návštěvník z reklamy rozhoduje za pár sekund. První obrazovka opakuje slib reklamy a nabízí jediný krok. |
 | 2 | **Kalkulačka poplatků** + formulář pod výsledkem | Hodnota musí přijít před žádostí o kontakt. Osobní výsledek za ~10 s je důvod chtít celé srovnání a formulář je hned u něj. |
-| 3 | **Srovnání 6 ETF** (americký originál vs. evropská verze, přepínač S&P 500 / celé USA / svět / dividendy) | Druhý nástroj pro analytičtější návštěvníky a pro ty z reklamy A („kde je VOO"). Tlačítko vede k formuláři u kalkulačky. |
+| 3 | **Srovnání 6 ETF** (americký originál vs. evropská verze nebo alternativa, přepínač S&P 500 / celé USA / svět / dividendy) | Druhý nástroj pro analytičtější návštěvníky a pro ty z reklamy A („kde je VOO"). Tlačítko vede k formuláři u kalkulačky. |
 | 4 | **Dobré vědět**: proč VOO u brokera možná nenajdete (KID, PRIIPs) a kdy se z prodeje neplatí daň | Odpovídá na otázku, která vznikne hned po srovnání. Krátce a se zdroji. |
 | 5 | **Co vám pošleme** (5 bodů + náhled e-mailu) | Zopakuje hodnotu před posledním formulářem pro ty, kdo první formulář přeskočili. |
 | 6 | **Časté otázky + Kdo za srovnáním stojí + závěrečný formulář** | Odstraní poslední pochybnosti (nejsme broker ani poradce, nikdo za srovnání neplatí, odkud jsou data) těsně před formulářem. |
@@ -74,14 +74,14 @@ Stránka je na mobilu záměrně kompaktní:
 - originál a evropská verze jsou vedle sebe,
 - zamčený seznam je jen ukázka (D35).
 
-Na šířce 390 px má stránka 9 569 px a formulář u kalkulačky začíná na 2 243 px.
+Na šířce 390 px má stránka 9 623 px (varianta `control`, u `hero_input` 9 654 px) a formulář u kalkulačky začíná na 2 233 px. Změřeno na produkci 12. 10.
 
 ## 6. Interaktivní prvky a co přijde po odeslání
 - **Kalkulačka poplatků** (hlavní prvek, D16):
   - Zadává se jednorázová částka, měsíční částka a počet let. Výsledek se přepočítá okamžitě, bez tlačítka.
   - Počítá jen roční poplatek fondu (TER), bez slibů výnosu. Volitelně jde zadat vlastní předpoklad výnosu („váš předpoklad, ne náš slib").
   - Vede k formuláři hned pod výsledkem a k tlačítkům „Odemknout…" u rozmazaného detailu.
-- **Srovnání fondů** (D4): přepínač podle toho, co chce návštěvník mít v portfoliu. Ke každému americkému fondu ukáže evropskou verzi s ISIN a štítkem „stejný index" nebo „podobný, jiný index". Vede k formuláři.
+- **Srovnání fondů** (D4): přepínač podle toho, co chce návštěvník mít v portfoliu. Ke každému americkému fondu ukáže evropský fond s ISIN. Když sleduje stejný index, je označený „Evropská verze“, jinak „Evropská alternativa“ s popisem rozdílu (D39). Vede k formuláři.
 - **Živý A/B test první obrazovky (H2):** polovina návštěvníků má místo tlačítka rovnou pole „Kolik chcete investovat měsíčně?" (D28).
 
 **Po odeslání formuláře:**
@@ -131,7 +131,7 @@ Všechny insighty počítají jen produkční doménu `fingramo.vercel.app` a vy
 - **Autocapture** (automatické zachytávání všech kliknutí) je v kódu vypnutý. Posílají se jen pojmenované události trychtýře, takže data jsou čistší a na mobilu běží méně JavaScriptu. Nastavení projektu v PostHogu k tomu přidává dvě souhrnná měření: **kliknutí bez reakce** (dead clicks, ukazují místa, která vypadají klikatelně a nejsou) a **rychlost stránky** (web vitals). Ani jedno nepracuje s osobními údaji.
 
 #### Trychtýř (události)
-`$pageview` (s UTM) → `scroll_50` → `cta_click` → `tool_used` (kalkulačka / srovnání) → `form_start` → `form_submit` (jen když server kontakt opravdu uložil) → `thank_you_view`. Navíc se měří `form_error`, `hero_calc_submit`, `lead_segment` a `share_click`. Každý kontakt v databázi má náhodné `lead_ref`, stejné jako u jeho `form_submit`, takže jde dohledat jeho cestu.
+`$pageview` (s UTM) → `scroll_50` → `cta_click` → `tool_used` (kalkulačka / srovnání) → `form_start` → `form_submit` (jen když server kontakt opravdu uložil) → `thank_you_view`. Navíc se měří `form_error`, `hero_calc_submit`, `lead_segment`, `consent_given` (souhlas na děkovací stránce u reklamy A, D38) a `share_click`. Každý kontakt v databázi má náhodné `lead_ref`, stejné jako u jeho `form_submit`, takže jde dohledat jeho cestu.
 
 **Konverze** = `form_submit` potvrzený serverem ÷ unikátní návštěvníci, v rozpadu podle varianty reklamy.
 
@@ -145,7 +145,7 @@ Všechny insighty počítají jen produkční doménu `fingramo.vercel.app` a vy
 **Proč odhaduji víc než medián investování:**
 - nabídka je zdarma a bez závazku a povinné pole je jen e-mail,
 - návštěvník vidí svůj osobní výsledek dřív, než ho o něco žádáme, a detail se odemkne e-mailem,
-- první obrazovka navazuje na reklamu a stránka je rychlá (Lighthouse na mobilu 100 / 100 / 100 / 100).
+- první obrazovka navazuje na reklamu a stránka je rychlá (Lighthouse na mobilu: výkon 97–100, ostatní kategorie 100).
 
 **Proč ne víc:**
 - jde o studený provoz ze sociálních sítí, téma investic vyžaduje důvěru a značka je neznámá,
@@ -202,9 +202,9 @@ Základní verze má 2 formuláře (u kalkulačky a na konci). Varianta se třet
 - **Rozhodnutí dělám já.** V [docs/DECISIONS.md](docs/DECISIONS.md) je 39 zapsaných rozhodnutí. U řady z nich jsem zvolil jinou variantu, než AI doporučila: například dva interaktivní prvky, jméno a telefon ve formuláři, vykání, vizuální styl a fiktivní značku.
 - **Data proti zdroji, ne proti paměti AI.** Každé číslo je z webu správce nebo z dokumentu KID a poplatky jsou ověřené dvakrát. Když web blokoval stahování, AI ho otevřela v prohlížeči.
 - **Testy:**
-  - 84 unit testů hlídá výpočty, shodu dat se zdroji, API, e-mail a PDF.
+  - 86 unit testů hlídá výpočty, shodu dat se zdroji, API, e-mail a PDF.
   - 133 E2E testů běží v prohlížeči na mobilu i desktopu, lokálně i proti produkci. Pokrývají celou cestu z obou reklam, přístupnost (axe), dotykové plochy 44 px, souhlasy a měření.
-  - Lighthouse na mobilu: 100 / 100 / 100 / 100.
+  - Lighthouse na mobilu (produkce, 12. 10., 8 měření): výkon 97–100, nejčastěji 100 (LCP 1,5 s). Přístupnost, best practices a SEO vždy 100.
   - Detail je v [docs/TESTING.md](docs/TESTING.md).
 - **Kontrola na produkci, ne jen lokálně:** testovací kontakt na produkci, kontrola řádku v databázi, doručení e-mailu s PDF v Resendu a událostí v PostHogu.
 - **Výstup jiné AI** (Antigravity od Googlu) jsem nepřevzal naslepo. Claude ho ověřil proti datům a pravidlům a zachytil v něm faktické chyby. Například jako nejlevnější evropskou verzi uvedl fond, který nejlevnější není, a navrhl formulaci, která by byla investičním doporučením.

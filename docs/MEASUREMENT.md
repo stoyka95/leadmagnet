@@ -14,7 +14,7 @@ Podklad pro README §8. Rozhodnutí: D11 (PostHog EU + Vercel Analytics), D24 (b
 - Do prohlížeče se **nic neukládá** (ověřeno: `document.cookie` je prázdné, `localStorage` prázdné). PostHog spojuje události jednoho návštěvníka na serveru podle denně měněného hashe. Trychtýř proto funguje i přes přechod `/` → `/dekujeme` (ověřeno: stejné `distinct_id` u všech 8 kroků).
 - IP adresy se neukládají: v nastavení PostHog projektu je zapnuté „Discard client IP data" (`anonymize_ips: true`), v kódu se to nenastavuje. Ověřeno 11. 10. 2026: 163 produkčních událostí za 7 dní, žádná nemá `$ip` ani polohu (`$geoip_*`), přestože transformace GeoIP je v projektu zapnutá.
 - **Omezení:** stejný člověk další den = nový návštěvník. U reklamy, kde se rozhoduje během minut, to nevadí, jen se tím nadhodnocuje počet unikátních návštěvníků v delším období.
-- Jediné úložiště, které stránka používá, je `sessionStorage` `fg:calc`, tedy zadání kalkulačky pro děkovací stránku (funkční, nutné pro službu, o kterou návštěvník požádal).
+- Stránka používá jen `sessionStorage` (smaže se se zavřením záložky): `fg:calc` (zadání kalkulačky pro děkovací stránku), `fg:exp_hero_calc` a `fg:forms` (varianta testu), `fg:lead` po odeslání (křestní jméno pro pozdrav, `lead_ref`, zda nabídnout souhlasy na děkovací stránce a zda byl vyplněn telefon; nikdy e-mail ani číslo) a `fg:segment` (odpověď „Už investujete?", aby se otázka neopakovala). Popsáno i v zásadách.
 
 ## Události (trychtýř)
 | # | Událost | Kdy | Vlastnosti |

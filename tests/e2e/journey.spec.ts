@@ -391,7 +391,7 @@ test.describe('phone length (D35)', () => {
         height: document.documentElement.scrollHeight,
         formTop: document.querySelector('#lf-calculator-h')!.getBoundingClientRect().top + scrollY,
       }));
-      expect(height).toBeLessThan(9700); // 9 569 px after QA 12. 10. (consents above the button)
+      expect(height).toBeLessThan(9700); // 9 623 px control / 9 654 px hero_input on production 12. 10.
       expect(formTop).toBeLessThan(2400);
     }
   });

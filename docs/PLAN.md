@@ -87,7 +87,7 @@ Každý krok: změna, testy (unit/E2E) upravené nebo nové, kontrola na mobilu 
 6. [x] **Zhuštění (D31):** zkrátit sekci KID a Daně, detaily do FAQ; blok „Kdo za tím stojí" (2–3 věty, odkazy na zdroje).
 7. [x] **Děkovací stránka (D32):** otázka „Už investujete?" (Ano / Začínám / Zatím ne, událost `lead_segment`, nic osobního) a sdílení (Web Share API na mobilu, jinak WhatsApp a kopírovat odkaz; odkaz s `utm_source=share`).
 8. [x] **Hypotézy H1 a H3** – v README spolu s H2 a kandidátem 2 vs. 3 formuláře.
-9. [ ] **Testy:** celá sada lokálně i proti produkci, Lighthouse znovu.
+9. [x] **Testy:** celá sada lokálně i proti produkci, Lighthouse znovu (12. 10., TESTING.md).
 10. [x] **S Mikym (D36):** vlastní linkové ikony (`Icon.astro`), ilustrace na děkovací stránce, OG obrázek 1200×630.
 
 ## Fáze 5c – Mikyho kontrola stránky (11. 10.) ✅ – D35
@@ -102,12 +102,18 @@ Každý krok: změna, testy (unit/E2E) upravené nebo nové, kontrola na mobilu 
 - [x] `anonymize_ips` – zapnuté v nastavení projektu, ověřeno v datech (žádná IP ani poloha)
 - [ ] Záznamy relací vypnout i v nastavení PostHog projektu – Miky
 
+## Fáze 5d – Kontrola produkce a texty (12. 10.) ✅ – D37, D38, D39
+- [x] Ruční průchod produkcí v prohlížeči a konzoli, 16 nálezů → `docs/QA-2026-10-12.md` (D37)
+- [x] Reklama A: formulář bez zaškrtávacích polí, souhlas na děkovací stránce, `/api/consent` (D38)
+- [x] Kontrola textového návrhu ChatGPT: 4 faktické opravy + kratší nadpis kalkulačky (D39)
+- [x] Kontrola celého webu (všechny varianty), e-mailu, PDF a dokumentace: nulová částka a „verze/alternativa“ v e-mailu a PDF, zásady (paměť v záložce), zastaralá čísla v dokumentech
+
 ## Fáze 6 – README a odevzdání (čt 15. 10. večer)
 - [x] README se všemi 13 sekcemi (sekce 5 CLAUDE.md), včetně očekávané konverze a 3 A/B hypotéz (11. 10., dříve než plán) + sekce Soukromí a právní stránka
 - [x] Doplnit `docs/AI-WORK-NOTES.md` (pokyny, kontrola výstupu, chyby AI)
 - [ ] `/export` všech session → `ai-log/` → commit + push – **Miky** (příkaz `/export` v Claude Code)
 - [~] Závěrečný kontrolní seznam (sekce 2 CLAUDE.md) – 11. 10.:
-  - [x] veřejný repozitář `stoyka95/leadmagnet` (PUBLIC), 116+ commitů
+  - [x] veřejný repozitář `stoyka95/leadmagnet` (PUBLIC), 140+ commitů
   - [x] URL https://fingramo.vercel.app funguje na mobilu (E2E 375/390 px, Lighthouse mobil 100)
   - [x] obě verze reklamy v `ads/` (4:5 a 9:16) a jejich texty
   - [x] README se všemi sekcemi, odkazy v README ověřené

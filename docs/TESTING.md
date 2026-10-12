@@ -1,6 +1,6 @@
 # Testy (Fáze 5)
 
-Stav k 12. 10. 2026 (po kontrole produkce a D38): **83 unit testů a 133 E2E testů prochází** lokálně (7 testů běží jen na mobilu, proto se v projektu desktop přeskočí). Proti produkci 107 prošlo a 9 se přeskočilo (navíc 2 testy jen pro lokální server). Po Fázi 5c to bylo 107 E2E. Předtím (po Fázi 5b) 74 unit a 90 E2E. Lighthouse na mobilu (produkce): **100 / 100 / 100 / 100** v obou variantách A/B testu.
+Stav k 12. 10. 2026 (po D39 a kontrole celého webu, e-mailu a dokumentace): **86 unit testů a 133 E2E testů prochází** lokálně (7 testů běží jen na mobilu, proto se v projektu desktop přeskočí). Proti produkci 130 prošlo a 9 se přeskočilo (jeden test přístupnosti selhal jen při souběžném zatížení, při opakování prošel 10× za sebou). Dřív: po D38 83 unit, po Fázi 5c 107 E2E, po Fázi 5b 74 unit a 90 E2E. Lighthouse na mobilu (produkce): výkon 97–100, přístupnost, best practices a SEO 100 (detail níže).
 
 ## Jak spustit
 
@@ -18,10 +18,11 @@ E2E testy používají Chrome nainstalovaný v počítači. Odeslání formulá�
 ### Unit (`tests/unit/`)
 | Soubor | Co ověřuje |
 |---|---|
-| `calc.test.ts` | výpočet poplatků (uzavřený vzorec, 0 %, nulové částky, monotónnost), regrese čísel SPY/VOO ze stránky, růst a scénáře KID, rozsah historie 5–30 let |
+| `calc.test.ts` | text zadané částky bez nulové položky (stejný na děkovací stránce, v e-mailu a PDF); výpočet poplatků (uzavřený vzorec, 0 %, nulové částky, monotónnost), regrese čísel SPY/VOO ze stránky, růst a scénáře KID, rozsah historie 5–30 let |
 | `data.test.ts` | každý fond má zdroj (URL), poplatek a evropský protějšek; **poplatky a URL v `etf.json` = tabulky v `SOURCES.md`**; **historie S&P 500 přepočtená ze surových dat Damodarana** (nejhorší, medián a nejlepší období pro 5–30 let) |
-| `email-report.test.ts` | report má 6 fondů, e-mail obsahuje vše slíbené (logo, 12 fondů, 4 scénáře, historii, riziko, zásady), escapuje jméno (žádné vložení HTML), PDF zmiňuje jen s přílohou, textová verze bez HTML |
+| `email-report.test.ts` | report má 6 fondů, e-mail obsahuje vše slíbené (logo, 12 fondů, 4 scénáře, historii, riziko, zásady), escapuje jméno (žádné vložení HTML), PDF zmiňuje jen s přílohou, textová verze bez HTML, „Evropská verze“ jen u stejného indexu (i v textové verzi), nulová částka se vynechá |
 | `api-lead.test.ts` | validace (400/413/422), honeypot, jen e-mail povinný, normalizace, `return=minimal`, chybný telefon nebo jednopísmenné jméno se zahodí, souhlas jen jako skutečné `true`, rozsahy částek, limit 429, chyba databáze 502, chybějící konfigurace 503, e-mail s PDF přílohou, e-mail i bez PDF, chyba e-mailu nezruší lead |
+| `api-consent.test.ts` | souhlas z děkovací stránky (D38): validace UUID a druhu, filtry dotazu (jen kontakt z této varianty, do 24 h, telefon jen s číslem), 404, 502 |
 | `pdf.test.ts` | PDF má 2 strany A4, < 100 kB, písma z vlastního webu, extrémní částky |
 
 ### E2E (`tests/e2e/`, mobil i desktop)
@@ -29,8 +30,9 @@ E2E testy používají Chrome nainstalovaný v počítači. Odeslání formulá�
 - žádná stránka nescrolluje do šířky (`/`, `/dekujeme`, `/zasady`, `/zdroje`)
 - **obě reklamy × obě varianty 1. obrazovky** celou cestou až na děkovací stránku, lead nese správné `utm_content` (`ad-variants.spec.ts`, D35)
 - **dotykové plochy ≥ 44 px** na 6 stránkách: vstupy, zaškrtávací pole s popiskem, tlačítka a každý odkaz (klepnutí 21 px od středu musí trefit odkaz) (`touch.spec.ts`, D35)
-- **mobil 390 px:** stránka pod 9 600 px, formulář u kalkulačky v prvních 2 400 px, nic nepřetéká (D35)
+- **mobil 390 px:** stránka pod 9 700 px, formulář u kalkulačky v prvních 2 400 px, nic nepřetéká (D35)
 - **2 formuláře v základu, 3 ve variantě `?forms=3`**, tlačítko u srovnání vede k formuláři u kalkulačky (D35)
+- **reklama A bez zaškrtávacích polí** a souhlas jedním tlačítkem na děkovací stránce, včetně chyby při uložení (`consent-after.spec.ts`, D38)
 - dva samostatné nezaškrtnuté souhlasy, past na roboty bez popisku „Firma", vysvětlení u telefonu (D35)
 - lepivá lišta: zůstává nahoře, tlačítko vede do e-mailu posledního formuláře
 - kalkulačka: přepočet, formát čísel, písmena v částce, horizont, paměť v rámci záložky, událost `tool_used`
@@ -56,7 +58,10 @@ E2E testy používají Chrome nainstalovaný v počítači. Odeslání formulá�
 - `thank-you.spec.ts`: dobrovolná otázka (jedna odpověď s `lead_ref`), sdílení (označený odkaz, kopírování), obojí mimo tisk
 - vazba lead ↔ analytika (`analytics_id` = `lead_ref` v `form_submit`), v záložce se nedrží e-mail, z lokálního serveru nic neodchází do PostHogu
 
-## Lighthouse (mobil, produkce, 11. 10. 2026)
+## Lighthouse (mobil, produkce)
+**12. 10. 2026, po D37–D39, Lighthouse 12, 8 měření:** výkon 97–100, nejčastěji 100 (LCP 1,5 s, TBT 50 ms, CLS 0). Pomalejší běhy (97–98, LCP 2,4 s) mají nižší výkon počítače při měření (benchmark ~2 050 místo ~2 700), na stránce se mezi nimi nic neměnilo. Přístupnost, best practices a SEO vždy 100.
+
+**11. 10. 2026:**
 **Po Fázi 5c a grafice (D35, D36), Lighthouse 12:** `control` 100 / 100 / 100 / 100 (LCP 1,5 s, TBT 30 ms, CLS 0), `hero_input` 100 / 100 / 100 / 100 (LCP 1,5 s, TBT 20 ms, CLS 0).
 
 Předchozí měření (po Fázi 5b):

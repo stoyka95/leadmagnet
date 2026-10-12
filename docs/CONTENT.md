@@ -109,7 +109,7 @@ Nadpis: **Proč VOO u svého brokera možná nenajdete**
 1. **Je mezi SPY, IVV a VOO rozdíl?** Sledují stejný index S&P 500, liší se hlavně správcem a poplatkem (0,0945 % vs. 0,03 %).
 2. **Co je UCITS?** Evropská pravidla pro fondy. UCITS ETF mají dokument KID, proto je drobní investoři v EU běžně koupí.
 3. **Je to investiční doporučení?** Ne. Srovnáváme veřejné údaje správců. Rozhodnutí je na vás.
-4. **Co s mými údaji?** Použijeme je k zaslání srovnání. Další e-maily jen pokud zaškrtnete souhlas. Odhlásit se můžete jedním klikem.
+4. **Co s mými údaji?** Použijeme je k zaslání srovnání. Další e-maily nebo telefonát jen tehdy, pokud nám k tomu dáte samostatný souhlas. Souhlas můžete kdykoli odvolat e-mailem na mykola@stoyka.eu. *(12. 10.: text platí pro oba formuláře (D38); „odhlásit jedním klikem“ vypuštěno, protože další e-maily zatím neposíláme)*
 
 Závěrečný formulář: stejný jako u kalkulačky; pokud návštěvník kalkulačku nepoužil, srovnání použije výchozí hodnoty a v e-mailu je odkaz zpět na kalkulačku.
 
