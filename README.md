@@ -17,6 +17,26 @@ Landing page pro českého drobného investora z reklamy na mobilu. Spočítá m
 | **Dashboard měření** (PostHog, vyžaduje přístup) | https://eu.posthog.com/project/301598/dashboard/1014275 |
 | **Repozitář** | https://github.com/stoyka95/leadmagnet |
 
+#### Všechny varianty stránky (odkazy ověřené 12. 10. 2026)
+Stránka má 3 nezávislé přepínače: **reklama** (`utm_content`), **živý A/B test první obrazovky** (`exp`, jinak náhodně 50/50) a **počet formulářů** (`forms`). Odkazy s `exp` a `forms` jsou pro kontrolu: vynutí variantu, která by jinak padla náhodou. Prohlížeč si `exp` a `forms` pamatuje do zavření záložky. Pro jinou variantu otevřete novou záložku, nebo variantu zadejte v odkazu (`?exp=control`, `?forms=2`).
+
+| Varianta | Odkaz |
+|---|---|
+| Reklama A – „Chcete VOO?" (formulář bez zaškrtávacích polí, souhlas až po odeslání, D38) | https://fingramo.vercel.app/?utm_source=meta&utm_medium=paid_social&utm_campaign=etf_nyse_leadmagnet_2026_10&utm_content=a |
+| Reklama B – „Stejný index, jiný poplatek" | https://fingramo.vercel.app/?utm_source=meta&utm_medium=paid_social&utm_campaign=etf_nyse_leadmagnet_2026_10&utm_content=b |
+| Bez UTM (přímá návštěva = verze B) | https://fingramo.vercel.app/ |
+| Reklama A + první obrazovka s tlačítkem (`control`) | https://fingramo.vercel.app/?utm_content=a&exp=control |
+| Reklama A + částka hned na první obrazovce (`hero_input`) | https://fingramo.vercel.app/?utm_content=a&exp=hero_input |
+| Reklama B + `control` | https://fingramo.vercel.app/?utm_content=b&exp=control |
+| Reklama B + `hero_input` | https://fingramo.vercel.app/?utm_content=b&exp=hero_input |
+| Varianta se 3 formuláři (třetí u srovnání fondů, otevře se tlačítkem) | https://fingramo.vercel.app/?forms=3 |
+| Zpět na základ se 2 formuláři | https://fingramo.vercel.app/?forms=2 |
+| Děkovací stránka (při přímém otevření s výchozími částkami) | https://fingramo.vercel.app/dekujeme |
+| Zásady ochrany osobních údajů · Zdroje dat · stránka 404 | https://fingramo.vercel.app/zasady · https://fingramo.vercel.app/zdroje · https://fingramo.vercel.app/neexistuje |
+| Náhledový obrázek pro sdílení (OG) | https://fingramo.vercel.app/og.png |
+
+**Reklamy a e-mail v repozitáři:** reklama A [4:5](https://github.com/stoyka95/leadmagnet/blob/main/ads/ad-a-4x5.png) · [9:16](https://github.com/stoyka95/leadmagnet/blob/main/ads/ad-a-9x16.png), reklama B [4:5](https://github.com/stoyka95/leadmagnet/blob/main/ads/ad-b-4x5.png) · [9:16](https://github.com/stoyka95/leadmagnet/blob/main/ads/ad-b-9x16.png), [texty reklam](https://github.com/stoyka95/leadmagnet/blob/main/ads/README.md). E-mail (jedna šablona pro všechny varianty, liší se jen pozdravem se jménem a PDF přílohou): [mobil](https://github.com/stoyka95/leadmagnet/blob/main/docs/email-ukazka-mobil.png) · [desktop](https://github.com/stoyka95/leadmagnet/blob/main/docs/email-ukazka-desktop.png) · [HTML](https://github.com/stoyka95/leadmagnet/blob/main/docs/email-ukazka.html) · [PDF příloha](https://github.com/stoyka95/leadmagnet/blob/main/docs/email-ukazka-priloha.pdf).
+
 ## 3. Cílová skupina a nabídka za kontakt
 
 **Pro koho (D1):** člověk ve věku 25–40 let s úsporami na spořicím účtu. Na Instagramu nebo YouTube viděl, že „všichni kupují VOO" nebo „SPY", a chce začít. Neví ale:
