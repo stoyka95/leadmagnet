@@ -50,3 +50,9 @@ test('the 5-year scenario chart from the page is shown again after the form, wit
   const bars = await page.locator('[data-bars]').innerText();
   for (const amount of desc.match(/[\d\s]+ Kč/g)!) expect(bars.replace(/\s/g, '')).toContain(amount.replace(/\s/g, ''));
 });
+
+test('a zero lump sum is left out of the summary line (QA 12. 10.)', async ({ page }) => {
+  await page.addInitScript(() => sessionStorage.setItem('fg:calc', JSON.stringify({ onceCzk: 0, monthlyCzk: 5000, years: 20, annualReturnPct: 0, touched: true })));
+  await page.goto('/dekujeme');
+  await expect(page.locator('[data-amount]')).toHaveText(/^Pro 5\s000\sKč měsíčně\.$/);
+});

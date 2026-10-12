@@ -166,8 +166,12 @@ import { formatDate, dataRetrieved } from '../lib/etf';
   try { lead = JSON.parse(sessionStorage.getItem('fg:lead') ?? '{}'); } catch { /* ignore */ }
 
   if (lead.firstName) document.querySelector('[data-hello]')!.textContent = `Děkujeme, ${lead.firstName}. Srovnání je na cestě do e-mailu.`;
-  document.querySelector('[data-amount]')!.textContent =
-    `Pro ${formatCzk(calc.onceCzk)} jednorázově + ${formatCzk(calc.monthlyCzk)} měsíčně.`;
+  // QA 12. 10.: "Pro 0 Kč jednorázově + …" – a zero amount is left out
+  const amountParts = [
+    calc.onceCzk ? `${formatCzk(calc.onceCzk)} jednorázově` : '',
+    calc.monthlyCzk ? `${formatCzk(calc.monthlyCzk)} měsíčně` : '',
+  ].filter(Boolean);
+  document.querySelector('[data-amount]')!.textContent = amountParts.length ? `Pro ${amountParts.join(' + ')}.` : '';
 
   const esc = (s: string) => s.replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
   document.querySelector('[data-report]')!.innerHTML = buildReport(calc)

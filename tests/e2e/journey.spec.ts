@@ -59,12 +59,18 @@ test.describe('sticky top bar (D27)', () => {
     expect(await events(page)).toContainEqual(['cta_click', { cta: 'header_calc' }]);
   });
 
-  test('after the calculator is used it leads to the last form', async ({ page }) => {
+  test('after the calculator is used it leads to the nearest form ahead (QA 12. 10.)', async ({ page }) => {
     await page.goto(AD_B);
     await noSmoothScroll(page);
     await page.locator('#c-once').fill('80000');
     const cta = page.locator('[data-header-cta]');
     await expect(cta).toHaveText(/Získat srovnání/);
+    // at the calculator: the form under the result, not the one at the end of the page
+    await cta.click();
+    await expect(page.locator('#lf-calculator-email')).toBeFocused();
+    await expect(page.locator('#lf-calculator-email')).toBeInViewport();
+    // past that form: the last one
+    await page.locator('#dobre-vedet').scrollIntoViewIfNeeded();
     await cta.click();
     await expect(page.locator('#lf-footer-email')).toBeFocused();
     await expect(page.locator('#lf-footer-email')).toBeInViewport();
@@ -375,7 +381,7 @@ test.describe('other pages', () => {
 });
 
 test.describe('phone length (D35)', () => {
-  test('at 390 px the page stays under 9 600 px, the calculator form starts in the first 2 400 px and nothing overflows', async ({ page }, info) => {
+  test('at 390 px the page stays under 9 700 px, the calculator form starts in the first 2 400 px and nothing overflows', async ({ page }, info) => {
     test.skip(info.project.name !== 'mobil', 'phone layout only');
     await page.setViewportSize({ width: 390, height: 844 });
     for (const exp of ['control', 'hero_input']) {
@@ -385,7 +391,7 @@ test.describe('phone length (D35)', () => {
         height: document.documentElement.scrollHeight,
         formTop: document.querySelector('#lf-calculator-h')!.getBoundingClientRect().top + scrollY,
       }));
-      expect(height).toBeLessThan(9600);
+      expect(height).toBeLessThan(9700); // 9 569 px after QA 12. 10. (consents above the button)
       expect(formTop).toBeLessThan(2400);
     }
   });
@@ -406,5 +412,60 @@ test.describe('share preview (D36)', () => {
     expect(buf.readUInt32BE(16)).toBe(1200); // PNG header: width
     expect(buf.readUInt32BE(20)).toBe(630); // height
     expect(buf.length).toBeLessThan(300_000); // WhatsApp shows previews up to ~300 kB
+  });
+});
+
+test.describe('QA 12. 10. fixes', () => {
+  test('“Chci srovnání” goes straight into the e-mail of the last form', async ({ page }) => {
+    await page.goto('/');
+    await noSmoothScroll(page);
+    await page.getByRole('link', { name: 'Chci srovnání' }).click();
+    await expect(page.locator('#lf-footer-email')).toBeFocused();
+    await expect(page.locator('#lf-footer-email')).toBeInViewport();
+  });
+
+  test('with no amount the calculator asks for one instead of “od 0 Kč (SPY, IVV, …)”', async ({ page }) => {
+    await page.goto('/');
+    await page.locator('#c-once').fill('');
+    await page.locator('#c-monthly').fill('');
+    await expect(page.locator('[data-summary-empty]')).toBeVisible();
+    await expect(page.locator('[data-summary]')).toBeHidden();
+    await expect(page.locator('[data-diff]')).toBeHidden();
+    await page.locator('#c-monthly').fill('1000');
+    await expect(page.locator('[data-summary-empty]')).toBeHidden();
+    await expect(page.locator('[data-summary]')).toBeVisible();
+  });
+
+  test('amounts are capped like the API (100 mil. once, 10 mil. a month), so the e-mail has the page’s numbers', async ({ page }) => {
+    await page.goto('/');
+    await page.locator('#c-once').fill('999999999');
+    await expect(page.locator('#c-once')).toHaveValue(/^100\s000\s000$/);
+    await page.locator('#c-monthly').fill('99999999');
+    await expect(page.locator('#c-monthly')).toHaveValue(/^10\s000\s000$/);
+  });
+
+  test('both consents come before the submit button', async ({ page }) => {
+    await page.goto('/');
+    for (const form of await page.locator('[data-lead-form]').all()) {
+      const order = await form.evaluate((f) => {
+        const button = f.querySelector('button[type=submit]')!;
+        return [...f.querySelectorAll('input[type=checkbox]')].map((c) => Boolean(c.compareDocumentPosition(button) & Node.DOCUMENT_POSITION_FOLLOWING));
+      });
+      expect(order).toEqual([true, true]);
+    }
+  });
+
+  test('the FAQ and the privacy notice no longer promise an unsubscribe link that does not exist', async ({ page }) => {
+    await page.goto('/');
+    await expect(page.locator('#zaver')).not.toContainText('jedním klikem');
+    await page.goto('/zasady');
+    await expect(page.locator('main')).not.toContainText('odkazem v každé zprávě');
+  });
+
+  test('an unknown address shows our own 404 page with a way back', async ({ page }) => {
+    const res = await page.goto('/tahle-stranka-neni');
+    expect(res!.status()).toBe(404);
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText('Tahle stránka neexistuje');
+    await expect(page.getByRole('link', { name: 'Spočítat moje poplatky' })).toHaveAttribute('href', '/#kalkulacka');
   });
 });

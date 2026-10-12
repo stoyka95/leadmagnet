@@ -1,0 +1,22 @@
+---
+// QA 12. 10.: our own "not found" page instead of the platform default – logo and a way back to the calculator.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Logo from '../components/Logo.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+---
+<BaseLayout title="Stránka nenalezena | Fingramo" description="Tahle stránka neexistuje. Srovnání ETF a kalkulačku poplatků najdete na hlavní stránce." noindex>
+  <main class="container doc">
+    <div class="brand"><Logo href="/" size={32} /></div>
+    <p class="eyebrow">Chyba 404</p>
+    <h1>Tahle stránka neexistuje</h1>
+    <p class="lead">Odkaz je možná neúplný nebo stránka zanikla. Srovnání ETF a kalkulačka poplatků jsou na hlavní stránce.</p>
+    <p><a class="btn btn-primary" href="/#kalkulacka">Spočítat moje poplatky</a></p>
+  </main>
+  <SiteFooter />
+</BaseLayout>
+
+<style>
+  .doc { padding-block: var(--sp-6) var(--sp-16); display: grid; gap: var(--sp-4); max-width: var(--w-text); }
+  .brand { margin-bottom: var(--sp-6); }
+  h1 { font-size: var(--fs-2xl); }
+</style>
