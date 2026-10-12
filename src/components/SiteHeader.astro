@@ -63,10 +63,16 @@ import Logo from './Logo.astro';
   document.querySelector('[data-hero-calc]')?.addEventListener('submit', toForm);
 
   // "calc" mode is a plain link to #kalkulacka (no focus: on phones the keyboard would cover the result).
-  // "form" mode goes straight into the e-mail field of the last form.
+  // "form" mode goes into the e-mail field of the nearest form the visitor has not scrolled past yet
+  // (QA 12. 10.: it always jumped to the last form and skipped the one right under the calculator result).
+  const nearestEmail = (): HTMLInputElement | null => {
+    const forms = [...document.querySelectorAll<HTMLFormElement>('[data-lead-form]')].filter((f) => f.offsetParent !== null);
+    const ahead = forms.find((f) => f.getBoundingClientRect().bottom > header.offsetHeight) ?? forms[forms.length - 1];
+    return ahead?.querySelector<HTMLInputElement>('input[name=email]') ?? null;
+  };
   cta.addEventListener('click', (e) => {
     if (header.dataset.mode !== 'form') return;
-    const target = document.querySelector<HTMLInputElement>('#lf-footer-email');
+    const target = nearestEmail();
     if (!target) return;
     e.preventDefault();
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;

@@ -31,7 +31,7 @@ const items: { icon: IconName; text: string }[] = [
       <ul class="list">
         {items.map((it) => <li><Icon name={it.icon} /><span>{it.text}</span></li>)}
       </ul>
-      <a class="btn btn-primary" href="#zaver" data-track="cta_click" data-cta="what_you_get">Chci srovnání</a>
+      <a class="btn btn-primary" href="#lf-footer-h" data-track="cta_click" data-cta="what_you_get" data-to-email="lf-footer-email">Chci srovnání</a>
     </div>
 
     <GlassCard class="preview" aria-label="Náhled e-mailu se srovnáním">
@@ -55,3 +55,15 @@ const items: { icon: IconName; text: string }[] = [
   .mock-row { display: flex; justify-content: space-between; padding-block: var(--sp-2); border-top: 1px solid var(--c-line); font-size: var(--fs-sm); }
   .more { margin-top: var(--sp-3); }
 </style>
+
+<script>
+  // QA 12. 10.: into the e-mail field of the last form (the link alone ended at the FAQ, the form ~1 100 px lower)
+  document.querySelector<HTMLAnchorElement>('[data-to-email]')?.addEventListener('click', (e) => {
+    const field = document.getElementById((e.currentTarget as HTMLElement).dataset.toEmail!) as HTMLInputElement | null;
+    if (!field) return;
+    e.preventDefault();
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    field.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
+    field.focus({ preventScroll: true });
+  });
+</script>
