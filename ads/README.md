@@ -1,6 +1,7 @@
 # Reklamy – Meta (Instagram / Facebook), mobil
 
 **Stav:** texty SCHVÁLENY Mikym 11. 10. 2026 (D18). Vizuály hotové (11. 10.): `ad-a-4x5.png`, `ad-a-9x16.png`, `ad-b-4x5.png`, `ad-b-9x16.png`. Zdroj: `ads/src/ad.html` – stejné tokeny jako stránka, čísla načtená z `data/etf.json` (žádné ručně opsané). Render: Playwright, 1080×1350 a 1080×1920.
+**Úprava 12. 10. (na Mikyho pokyn):** vizuál A – sloupec „Evropský fond“ a podtitul „Ukážeme vám, co z populárních ETF z newyorské burzy koupíte v Evropě…“; vizuál B 4:5 – volné místo rozdělené nad nadpis a nad kartu (dřív velká mezera pod podtitulem); OG – „evropských verzí a alternativ“. Texty kampaně (primární text, titulek) beze změny.
 **Náhled pro sdílení (OG, D36):** `ads/src/og.html` → `public/og.png` (1200×630), stejný přístup a data, navazuje na verzi B.
 Kanál a úhly: D6. Tón: vykání (D7). Žádné sliby výnosů, každé číslo ze `data/SOURCES.md`.
 
@@ -12,7 +13,7 @@ Obě verze nabízejí **totéž** (zdarma srovnání ETF + poplatky v Kč). Liš
 
 | Prvek | Text |
 |---|---|
-| **Vizuál (4:5, 1080×1350)** | Velký nápis: **„Chcete VOO? Váš broker ho možná nenabízí."** · karta: VOO, SPY, VT → jejich evropské verze s poplatky · dole „Srovnání 6 ETF zdarma" · upozornění na riziko. *(Přeškrtnutí tickerů z návrhu vypuštěno – naznačovalo by, že fond koupit nejde vůbec, což neplatí, viz Fio.)* |
+| **Vizuál (4:5, 1080×1350)** | Velký nápis: **„Chcete VOO? Váš broker ho možná nenabízí."** · karta: VOO, SPY, VT → evropský fond s poplatky (nadpis sloupce „Evropský fond“, protože VT → VWCE je alternativa s jiným indexem, D39) · dole „Srovnání 6 ETF zdarma" · upozornění na riziko. *(Přeškrtnutí tickerů z návrhu vypuštěno – naznačovalo by, že fond koupit nejde vůbec, což neplatí, viz Fio.)* |
 | **Primární text** | Viděli jste na sociálních sítích VOO nebo SPY, ale u svého brokera je nenajdete? Důvod je jednoduchý: americké fondy obvykle nemají dokument KID, který evropská pravidla pro drobné investory vyžadují. Ukážeme vám, které evropské verze sledují stejný index – a kolik vás budou stát poplatky v korunách. Zdarma. |
 | **Titulek** | Hledáte VOO? Tady je evropská verze. |
 | **Popis** | Srovnání 6 ETF z NYSE · data od správců |

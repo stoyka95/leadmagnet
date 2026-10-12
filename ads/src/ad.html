@@ -52,6 +52,7 @@
   .pill { background: var(--c-green-800); color: #fff; font-size: 40px; font-weight: 700; padding: 30px 48px; border-radius: 999px; }
   .free { font-size: 32px; color: var(--c-ink-muted); font-weight: 600; }
   .legal { font-size: 24px; color: var(--c-ink-faint); margin: 28px 0 0; }
+  .ad:not(.f9x16) .v-b.headline { margin-top: auto; }
   .v-b { display: none; }
   body.b .v-a { display: none; }
   body.b .v-b { display: block; }
@@ -67,16 +68,16 @@
     <!-- A: pain angle -->
     <div class="v-a">
       <h1>Chcete VOO?<br/>Váš broker ho možná nenabízí.</h1>
-      <p class="sub">Ukážeme vám evropské verze populárních ETF z newyorské burzy – a kolik vás budou stát poplatky v korunách.</p>
+      <p class="sub">Ukážeme vám, co z populárních ETF z newyorské burzy koupíte v Evropě – a kolik vás budou stát poplatky v korunách.</p>
     </div>
     <!-- B: numbers angle -->
-    <div class="v-b">
+    <div class="v-b headline">
       <h1>Stejný index S&amp;P&nbsp;500.<br/>Jiný poplatek.</h1>
       <p class="sub">Kolik to dělá v korunách u vaší částky? Spočítejte si to za 10 vteřin.</p>
     </div>
 
     <div class="card v-a" id="pairs">
-      <div class="label"><span>Originál (NYSE)</span><span></span><span>Evropská verze</span></div>
+      <div class="label"><span>Originál (NYSE)</span><span></span><span>Evropský fond</span></div>
     </div>
     <div class="card v-b">
       <div class="duel" id="duel"></div>
