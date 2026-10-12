@@ -354,3 +354,13 @@ Miky: „Potřebuji, aby jedna z variant A nebo B místo zaškrtnutí polí měl
 ### Kde se AI spletla
 1. Nový E2E test hledal ve větě špatný úsek textu (chyba testu, stránka byla v pořádku).
 2. První verze ukládala `consent_flow` do vlastnosti všech událostí podle `utm_content`. Na děkovací stránce už `utm_content` v adrese není, takže by tam hodnota byla špatně. AI to zachytila před spuštěním a `consent_flow` posílá jen u `form_submit` a `consent_given`.
+
+---
+
+## Session 2, pokračování – 12. 10. 2026: kontrola návrhu textů od ChatGPT (D39)
+
+- Miky poslal návrh úprav textů od ChatGPT. Claude ho nepřevzal naslepo: každý bod porovnal s aktuálním kódem a se zdroji v SOURCES.md a rozdělil ho na „opravit" (4), „už hotové" (3), „nedoporučuji" (5) a „volitelný styl" (4). O výběru rozhodl Miky.
+- **Kde měl cizí výstup pravdu a AI chybu přehlédla:** FAQ „jen pokud zaškrtnete souhlas" po D38 neplatilo pro reklamu A. Opraveno samostatným `fix:` commitem.
+- **Kde cizí výstup pracoval se starým stavem:** vysvětlení u telefonu pro reklamu A, Xtrackers v řádku důvěry a vysvětlení TER už byly hotové.
+- **Kde by cizí výstup stránku zhoršil:** vágnější daňová věta místo doložené sazby 15 % (smlouva ČR–USA, IRS).
+- Ověřeno: nový unit test hlídá „verze" vs. „alternativa" v reportu i v e-mailu, E2E 133 prošlo, snímky karty a nadpisu na mobilu.

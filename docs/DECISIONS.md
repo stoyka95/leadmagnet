@@ -307,6 +307,20 @@ Claude prošel produkci jako návštěvník (log: [QA-2026-10-12.md](QA-2026-10-
 - **Důsledek, na který Claude upozornil a Miky ho přijal:** rozdíl mezi reklamou A a B v konverzi teď může způsobit reklama i formulář, nepůjde je od sebe oddělit. V README je to uvedené u testu reklam.
 - **Provedení:** formulář z reklamy A nemá zaškrtávací pole, místo nich věta „zeptáme se vás až po odeslání". Na děkovací stránce dvě tlačítka „Ano, posílejte mi další tipy e-mailem" a „Ano, můžete mi zavolat" (to druhé jen s vyplněným telefonem). Souhlas uloží `/api/consent` ke kontaktu podle náhodného `lead_ref`, jen do 24 h a jen u kontaktu z této varianty. V databázi jsou nové sloupce `consent_source` (form / thank_you) a `consent_updated_at`, verze textu `v3a-2026-10-12`. Zásady jsou upravené.
 
+### D39 – Kontrola textového návrhu od ChatGPT (12. 10. 2026)
+Miky dal Claudovi zkontrolovat návrh úprav textů od ChatGPT. Claude každý bod porovnal s aktuální stránkou a se zdroji. Část návrhu pracovala se starým stavem (vysvětlení u telefonu, Xtrackers, vysvětlení TER už byly hotové).
+- **Věcné opravy (Miky vybral všechny 4 doporučené):**
+  - FAQ o souhlasu platí pro obě varianty formuláře;
+  - bez superlativu „6 nejpopulárnějších" (neměl zdroj, VT a SCHD nejsou mezi 6 největšími ETF na NYSE);
+  - věta s výsledkem říká „za celou dobu" místo „ročních poplatcích";
+  - „Evropská alternativa" u fondů s jiným indexem (VTI, VT, SCHD) na stránce, v e-mailu i v PDF.
+- **Styl (Miky vybral 1 ze 4):** kratší nadpis kalkulačky „Spočítejte si poplatky pro svou investici".
+- **Záměrně nepřevzato:**
+  - vágnější texty o dividendách a UCITS (dnešní jsou doložené zdroji),
+  - delší poznámka na kartě amerického fondu (úzké karty na mobilu),
+  - změny nadpisů hero a „za 10 vteřin" (oslabily by návaznost na reklamy),
+  - „Odemknout" → „Získat" a věta „Stačí e-mail" (jen styl, stránka by se prodloužila).
+
 ---
 
 ## Rozhodnuto Claudem (drobnosti)
