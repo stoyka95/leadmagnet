@@ -2,7 +2,7 @@
 // Most clients ignore SVG and many ignore <style>, so the layout is inline and table-based, the logo is a PNG and the
 // chart is drawn with table cells. The <style> block only tightens spacing on phones where it is supported.
 import { buildReport, buildGrowth, brokerQuestions, SCENARIO_COLOURS, PAID_COLOUR, type ReportInput } from './report';
-import { formatCzk } from './fees';
+import { formatCzk, amountText } from './fees';
 import { formatPct, formatDate, dataRetrieved } from './etf';
 
 const esc = (s: string) => s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
@@ -24,7 +24,7 @@ export interface EmailOptions {
 export const buildEmail = (firstName: string, input: ReportInput & { years: number }, siteUrl: string, opts: EmailOptions = {}) => {
   const rows = buildReport(input);
   const growth = buildGrowth(input);
-  const amount = `${formatCzk(input.onceCzk)} jednorázově + ${formatCzk(input.monthlyCzk)} měsíčně`;
+  const amount = amountText(input.onceCzk, input.monthlyCzk);
   const subject = 'Vaše srovnání ETF: poplatky v korunách';
   const host = siteUrl.replace(/^https?:\/\//, '');
   const hello = `Dobrý den${firstName ? `, ${esc(firstName)}` : ''},`;
@@ -135,7 +135,7 @@ export const buildEmail = (firstName: string, input: ReportInput & { years: numb
           ${opts.hasPdf ? `<p style="margin:14px 0 0;font-size:14px;line-height:1.5;color:${C.muted}">Celé srovnání máte i v&nbsp;příloze jako <strong style="color:${C.navy}">PDF</strong> k&nbsp;uložení nebo vytištění.</p>` : ''}
 
           ${h2('Kolik zaplatíte na poplatcích fondu', 32)}
-          ${note('Roční poplatek fondu (TER) přepočtený na koruny pro vaši částku, bez růstu investice. Pod každým fondem je jeho evropská verze (UCITS), která sleduje stejný nebo podobný index. Její poplatek může být nižší i vyšší.')}
+          ${note('Roční poplatek fondu (TER) přepočtený na koruny pro vaši částku, bez růstu investice. Pod každým fondem je evropský fond (UCITS) se stejným, nebo podobným indexem. Jeho poplatek může být nižší i vyšší.')}
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="font-size:15px;line-height:1.4">
             <tr>
               <td style="padding:0 0 8px;${label};border-bottom:2px solid ${C.line}">Fond</td>
@@ -190,7 +190,7 @@ export const buildEmail = (firstName: string, input: ReportInput & { years: numb
     'Poplatky fondu (TER) v Kč, 10 let / 20 let, bez růstu investice:',
     ...rows.map(
       (r) =>
-        `- ${r.ticker} (${formatPct(r.ter)}): ${formatCzk(r.fees10)} / ${formatCzk(r.fees20)}\n  evropská verze ${r.euTicker}, ISIN ${r.euIsin} (${formatPct(r.euTer)}): ${formatCzk(r.euFees10)} / ${formatCzk(r.euFees20)}`,
+        `- ${r.ticker} (${formatPct(r.ter)}): ${formatCzk(r.fees10)} / ${formatCzk(r.fees20)}\n  ${r.euLabel.toLowerCase()} ${r.euTicker}, ISIN ${r.euIsin} (${formatPct(r.euTer)}): ${formatCzk(r.euFees10)} / ${formatCzk(r.euFees20)}`,
     ),
     '',
     `Jak by mohla investice vypadat za ${growth.kidYears} let (scénáře z KID fondu ${growth.kid.ticker}, nejde o předpověď):`,

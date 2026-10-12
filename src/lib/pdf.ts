@@ -5,7 +5,7 @@
 import { PDFDocument, rgb, type PDFFont, type PDFPage, type RGB } from 'pdf-lib';
 import fontkit from '@pdf-lib/fontkit';
 import { buildReport, buildGrowth, brokerQuestions, SCENARIO_COLOURS, type ReportInput } from './report';
-import { formatCzk } from './fees';
+import { formatCzk, amountText } from './fees';
 import { formatPct, formatDate, dataRetrieved } from './etf';
 import { kidScenarios, KID_YEARS, valuePath, paidInPath } from './growth';
 
@@ -96,10 +96,10 @@ export const buildPdf = async (input: ReportInput & { years: number }, siteUrl: 
   page.drawText('Vaše srovnání ETF v korunách', { x: M, y: y - 20, size: 20, font: bold, color: C.navy });
   y -= 34;
 
-  const amountText = `${formatCzk(input.onceCzk)} jednorázově + ${formatCzk(input.monthlyCzk)} měsíčně`;
-  panel(C.navySoft, paraHeight('VAŠE ZADÁNÍ', bold, 8, W - 28) + paraHeight(amountText, bold, 11, W - 28), () => {
+  const amount = amountText(input.onceCzk, input.monthlyCzk);
+  panel(C.navySoft, paraHeight('VAŠE ZADÁNÍ', bold, 8, W - 28) + paraHeight(amount, bold, 11, W - 28), () => {
     para('VAŠE ZADÁNÍ', { font: bold, size: 8, color: C.navy, x: M + 14, width: W - 28 });
-    para(amountText, { font: bold, size: 11, color: C.navy, x: M + 14, width: W - 28 });
+    para(amount, { font: bold, size: 11, color: C.navy, x: M + 14, width: W - 28 });
   });
   const spy = rows.find((r) => r.ticker === 'SPY'), voo = rows.find((r) => r.ticker === 'VOO');
   if (spy && voo) {
@@ -110,7 +110,7 @@ export const buildPdf = async (input: ReportInput & { years: number }, siteUrl: 
 
   // Fee table
   heading('Kolik zaplatíte na poplatcích fondu');
-  para('Roční poplatek fondu (TER) přepočtený na koruny pro vaši částku, bez růstu investice. Pod každým fondem je jeho evropská verze (UCITS), která sleduje stejný nebo podobný index. Její poplatek může být nižší i vyšší.', { size: 9.5, gap: 8 });
+  para('Roční poplatek fondu (TER) přepočtený na koruny pro vaši částku, bez růstu investice. Pod každým fondem je evropský fond (UCITS) se stejným, nebo podobným indexem. Jeho poplatek může být nižší i vyšší.', { size: 9.5, gap: 8 });
   const colTer = M + W - 190, col10 = M + W - 90, col20 = M + W;
   const tableHead = () => {
     ensure(20);

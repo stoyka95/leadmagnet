@@ -34,3 +34,9 @@ export const feesForTer = (terPct: number, input: FeeInput): FeeResult => {
 
 const czk = new Intl.NumberFormat('cs-CZ', { style: 'currency', currency: 'CZK', maximumFractionDigits: 0 });
 export const formatCzk = (value: number): string => czk.format(Math.round(value));
+
+// Audit 12. 10.: "0 Kč jednorázově + 3 000 Kč měsíčně" (always in the hero_input variant) – a zero amount is left out
+export const amountText = (onceCzk: number, monthlyCzk: number): string =>
+  [onceCzk ? `${formatCzk(onceCzk)} jednorázově` : '', monthlyCzk ? `${formatCzk(monthlyCzk)} měsíčně` : '']
+    .filter(Boolean)
+    .join(' + ') || formatCzk(0);

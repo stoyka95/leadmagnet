@@ -167,7 +167,7 @@ import { formatDate, dataRetrieved } from '../lib/etf';
 <script>
   import { buildReport, buildGrowth, SCENARIO_COLOURS, PAID_COLOUR } from '../lib/report';
   import { formatDate } from '../lib/etf';
-  import { formatCzk } from '../lib/fees';
+  import { formatCzk, amountText } from '../lib/fees';
   import { formatPct } from '../lib/etf';
   import { readCalc } from '../lib/calc-state';
   import { track } from '../lib/track';
@@ -179,12 +179,8 @@ import { formatDate, dataRetrieved } from '../lib/etf';
   try { lead = JSON.parse(sessionStorage.getItem('fg:lead') ?? '{}'); } catch { /* ignore */ }
 
   if (lead.firstName) document.querySelector('[data-hello]')!.textContent = `Děkujeme, ${lead.firstName}. Srovnání je na cestě do e-mailu.`;
-  // QA 12. 10.: "Pro 0 Kč jednorázově + …" – a zero amount is left out
-  const amountParts = [
-    calc.onceCzk ? `${formatCzk(calc.onceCzk)} jednorázově` : '',
-    calc.monthlyCzk ? `${formatCzk(calc.monthlyCzk)} měsíčně` : '',
-  ].filter(Boolean);
-  document.querySelector('[data-amount]')!.textContent = amountParts.length ? `Pro ${amountParts.join(' + ')}.` : '';
+  // QA 12. 10.: "Pro 0 Kč jednorázově + …" – a zero amount is left out (shared with the e-mail and PDF)
+  document.querySelector('[data-amount]')!.textContent = calc.onceCzk || calc.monthlyCzk ? `Pro ${amountText(calc.onceCzk, calc.monthlyCzk)}.` : '';
 
   const esc = (s: string) => s.replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
   document.querySelector('[data-report]')!.innerHTML = buildReport(calc)

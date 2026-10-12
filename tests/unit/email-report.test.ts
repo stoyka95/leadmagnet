@@ -82,5 +82,17 @@ describe('European fund label (text review 12. 10.)', () => {
     expect(html).toContain('Evropská verze SPYL');
     expect(html).toContain('Evropská alternativa XD9U');
     expect(html).not.toContain('Evropská verze XD9U');
+    // the plain-text part too (audit 12. 10.: it said "evropská verze" for every fund)
+    const { text } = buildEmail('', INPUT, SITE);
+    expect(text).toContain('evropská verze SPYL');
+    expect(text).toContain('evropská alternativa XD9U');
+    expect(text).not.toContain('evropská verze XD9U');
+  });
+
+  it('leaves out a zero amount (the hero_input variant always sends 0 Kč one-off)', () => {
+    const { html, text } = buildEmail('', { onceCzk: 0, monthlyCzk: 3_000, years: 20 }, SITE);
+    expect(plain(html)).toContain(`<strong>${plain(formatCzk(3_000))} měsíčně</strong>`);
+    expect(html).not.toContain('jednorázově');
+    expect(text).toContain(`Vaše zadání: ${formatCzk(3_000)} měsíčně`);
   });
 });

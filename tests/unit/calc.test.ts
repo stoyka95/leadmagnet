@@ -1,6 +1,6 @@
 // Fee and growth maths (D16, D21): the numbers the visitor sees, the e-mail and the PDF all come from here.
 import { describe, expect, it } from 'vitest';
-import { feesForTer, formatCzk } from '../../src/lib/fees';
+import { feesForTer, formatCzk, amountText } from '../../src/lib/fees';
 import { valuePath, paidInPath, historyFor, kidScenarios, KID_YEARS } from '../../src/lib/growth';
 import { etfByTicker } from '../../src/lib/etf';
 
@@ -44,6 +44,15 @@ describe('formatCzk', () => {
   it('formats Czech style with rounding', () => {
     expect(formatCzk(1964.6).replace(/\s/g, ' ')).toBe('1 965 Kč');
     expect(formatCzk(0).replace(/\s/g, ' ')).toBe('0 Kč');
+  });
+});
+
+describe('amountText', () => {
+  it('leaves out a zero amount and never comes back empty', () => {
+    expect(amountText(100_000, 3_000)).toBe(`${formatCzk(100_000)} jednorázově + ${formatCzk(3_000)} měsíčně`);
+    expect(amountText(0, 3_000)).toBe(`${formatCzk(3_000)} měsíčně`);
+    expect(amountText(50_000, 0)).toBe(`${formatCzk(50_000)} jednorázově`);
+    expect(amountText(0, 0)).toBe(formatCzk(0));
   });
 });
 
