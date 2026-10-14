@@ -269,7 +269,7 @@ Kde zadání nebylo jednoznačné, rozhodl jsem takto:
 - cookie lištu se souhlasem a možností odmítnout, pokud se zapne cokoli nad rámec dnešního měření,
 - záznamy relací jen po souhlasu,
 - zásady ochrany osobních údajů s identifikací skutečného provozovatele (IČO, adresa) místo fiktivní značky,
-- smlouvy o zpracování osobních údajů s dodavateli (PostHog, Supabase, Vercel, Resend). Vercel má DPA jen u plánů Pro a Enterprise. Zásady proto netvrdí, že záruky pro předání do USA už jsou zajištěné (D40),
+- smlouvy o zpracování osobních údajů s dodavateli (PostHog, Supabase, Vercel, Resend). Vercel má DPA jen u plánů Pro a Enterprise a projekt běží na plánu Hobby, takže pro ostrý provoz je potřeba Pro. Zásady proto netvrdí, že záruky pro předání do USA už jsou zajištěné (D40),
 - souhlas, nebo jiné řešení, pro uložení varianty A/B testu v paměti záložky (`sessionStorage`). Nejde o cookie a nic se neodesílá, ale § 89 zákona o elektronických komunikacích se týká jakéhokoli ukládání do zařízení a testovací varianta není pro službu nezbytná (D40),
 - dobu uchování kontaktů a postup mazání na požádání,
 - double opt-in pro další e-maily (potvrzení odkazem),

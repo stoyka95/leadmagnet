@@ -338,7 +338,8 @@ Miky dal Claudovi zkontrolovat návrh úprav textů od ChatGPT. Claude každý b
   - DPA Vercelu platí jen pro plány Pro a Enterprise. Resend: standardní smluvní doložky (SCC) jsou součástí jeho DPA a má certifikaci DPF. Supabase: SCC 2021/914. U PostHogu se DPA ověřit nepodařilo.
   - Stránka proto netvrdí, že záruky jsou zajištěné u všech zpracovatelů. Říká, že se před ostrým provozem ověří.
 - **Zdroje:** [praxikon – Digital Omnibus](https://www.praxikon.com/en/avg/digital-omnibus), [EDRi](https://edri.org/our-work/the-digital-omnibus-is-going-on-summer-break-your-rights-are-not/), [WilmerHale – DPF appeal](https://www.wilmerhale.com/en/insights/blogs/wilmerhale-privacy-and-cybersecurity-law/20251201-european-court-of-justice-to-review-challenge-to-eu-us-data-privacy-framework), [Vercel DPA](https://vercel.com/legal/dpa), [Resend DPA](https://resend.com/legal/dpa), [Supabase DPA](https://supabase.com/legal/customer-resources/data-processing-addendum), [PostHog – retence dat](https://posthog.com/docs/data/events-retention), [ÚOOÚ – cookies](https://uoou.gov.cz/cookies).
-- **Otevřené, na Mikym:** viz README „Pro ostré nasazení“ (Vercel plán a DPA, uložení varianty testu v záložce).
+- **Uložení varianty A/B testu v záložce (sessionStorage):** varianty (a) neukládat, varianta se vylosuje při každém načtení *(doporučeno)* · (b) nechat a popsat riziko · (c) ukládat až po souhlasu s cookie lištou. **Zvoleno (b):** beze změny kódu. Zásady uložení popisují, README ho uvádí jako bod pro ostrý provoz.
+- **Plán Vercelu:** Miky potvrdil Hobby, takže DPA Vercelu neplatí. Zásady to správně neslibují. Pro ostrý provoz je potřeba přejít na Pro (README).
 
 ---
 
