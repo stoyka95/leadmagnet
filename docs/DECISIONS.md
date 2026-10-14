@@ -321,6 +321,25 @@ Miky dal Claudovi zkontrolovat návrh úprav textů od ChatGPT. Claude každý b
   - změny nadpisů hero a „za 10 vteřin" (oslabily by návaznost na reklamy),
   - „Odemknout" → „Získat" a věta „Stačí e-mail" (jen styl, stránka by se prodloužila).
 
+### D40 – Zásady ochrany osobních údajů podle čl. 13 GDPR (14. 10. 2026)
+- **Podnět (Miky):** stránka /zasady bez sekce „Kdo s údaji pracuje za nás“, ale správně podle GDPR k 10/2026, a stejně široká jako hlavní stránka.
+- **Co bylo špatně (kontrola proti čl. 13 GDPR):**
+  - chyběla doba uložení u měření a u telefonu a právní základ u ochrany formuláře (limit 3 žádostí),
+  - právo vznést námitku nebylo uvedené samostatně (čl. 21 odst. 4),
+  - chyběla věta, že odvolání souhlasu nemá vliv na dřívější zpracování,
+  - chybělo, které údaje jsou povinné a co se stane, když je nedáte, a informace o automatizovaném rozhodování,
+  - u obchodních sdělení chyběl § 7 zákona 480/2004 Sb.,
+  - u předání do USA chyběly záruky (čl. 13 odst. 1 písm. f),
+  - datum a verze formuláře byly staré (bez v3a-2026-10-12 z D38).
+- **Proč seznam zpracovatelů nemohl jen zmizet:** čl. 13 odst. 1 písm. e) vyžaduje příjemce **nebo kategorie příjemců**. Jména jsou pryč, zůstaly kategorie (provoz webu, databáze, e-maily, měření) a seznam se zárukami na požádání.
+- **Aktuální stav k 14. 10. 2026 (ověřeno):**
+  - Digital Omnibus (změny GDPR a cookies, čl. 88a) je jen návrh, v Radě se stále vyjednává. Platí GDPR a ePrivacy, v ČR § 89 zákona o elektronických komunikacích.
+  - Rámec EU-USA (DPF) platí. Tribunál ho potvrdil 3. 9. 2025 (Latombe), odvolání C-703/25 P u Soudního dvora čeká.
+  - DPA Vercelu platí jen pro plány Pro a Enterprise. Resend: standardní smluvní doložky (SCC) jsou součástí jeho DPA a má certifikaci DPF. Supabase: SCC 2021/914. U PostHogu se DPA ověřit nepodařilo.
+  - Stránka proto netvrdí, že záruky jsou zajištěné u všech zpracovatelů. Říká, že se před ostrým provozem ověří.
+- **Zdroje:** [praxikon – Digital Omnibus](https://www.praxikon.com/en/avg/digital-omnibus), [EDRi](https://edri.org/our-work/the-digital-omnibus-is-going-on-summer-break-your-rights-are-not/), [WilmerHale – DPF appeal](https://www.wilmerhale.com/en/insights/blogs/wilmerhale-privacy-and-cybersecurity-law/20251201-european-court-of-justice-to-review-challenge-to-eu-us-data-privacy-framework), [Vercel DPA](https://vercel.com/legal/dpa), [Resend DPA](https://resend.com/legal/dpa), [Supabase DPA](https://supabase.com/legal/customer-resources/data-processing-addendum), [PostHog – retence dat](https://posthog.com/docs/data/events-retention), [ÚOOÚ – cookies](https://uoou.gov.cz/cookies).
+- **Otevřené, na Mikym:** viz README „Pro ostré nasazení“ (Vercel plán a DPA, uložení varianty testu v záložce).
+
 ---
 
 ## Rozhodnuto Claudem (drobnosti)

@@ -219,7 +219,7 @@ Základní verze má 2 formuláře (u kalkulačky a na konci). Varianta se třet
 - Pak jsem zadával po fázích (data → obsah → stavba → měření → testy → README) a průběžně posílal připomínky ze screenshotů a z prohlížení stránky.
 
 #### Jak jsem výstup kontroloval
-- **Rozhodnutí dělám já.** V [docs/DECISIONS.md](docs/DECISIONS.md) je 39 zapsaných rozhodnutí. U řady z nich jsem zvolil jinou variantu, než AI doporučila: například dva interaktivní prvky, jméno a telefon ve formuláři, vykání, vizuální styl a fiktivní značku.
+- **Rozhodnutí dělám já.** V [docs/DECISIONS.md](docs/DECISIONS.md) je 40 zapsaných rozhodnutí. U řady z nich jsem zvolil jinou variantu, než AI doporučila: například dva interaktivní prvky, jméno a telefon ve formuláři, vykání, vizuální styl a fiktivní značku.
 - **Data proti zdroji, ne proti paměti AI.** Každé číslo je z webu správce nebo z dokumentu KID a poplatky jsou ověřené dvakrát. Když web blokoval stahování, AI ho otevřela v prohlížeči.
 - **Testy:**
   - 86 unit testů hlídá výpočty, shodu dat se zdroji, API, e-mail a PDF.
@@ -246,7 +246,7 @@ Výběr, všechno je v AI-WORK-NOTES:
 - nechat AI chyby zapisovat, ne schovávat.
 
 ## 12. Rozhodnutí a jejich důvody
-Všech 39 rozhodnutí s variantami, mou volbou a důvody je v [docs/DECISIONS.md](docs/DECISIONS.md). Plán a stav fází jsou v [docs/PLAN.md](docs/PLAN.md), texty stránky v [docs/CONTENT.md](docs/CONTENT.md).
+Všech 40 rozhodnutí s variantami, mou volbou a důvody je v [docs/DECISIONS.md](docs/DECISIONS.md). Plán a stav fází jsou v [docs/PLAN.md](docs/PLAN.md), texty stránky v [docs/CONTENT.md](docs/CONTENT.md).
 
 Kde zadání nebylo jednoznačné, rozhodl jsem takto:
 - **„ETF z NYSE" vs. co si Čech opravdu koupí:** stránka srovnává americké fondy z NYSE Arca, ale poctivě říká, že je drobný investor z EU u řady brokerů nekoupí, a ke každému ukazuje evropskou verzi (D1, D12).
@@ -269,7 +269,8 @@ Kde zadání nebylo jednoznačné, rozhodl jsem takto:
 - cookie lištu se souhlasem a možností odmítnout, pokud se zapne cokoli nad rámec dnešního měření,
 - záznamy relací jen po souhlasu,
 - zásady ochrany osobních údajů s identifikací skutečného provozovatele (IČO, adresa) místo fiktivní značky,
-- smlouvy o zpracování osobních údajů s dodavateli (PostHog, Supabase, Vercel, Resend),
+- smlouvy o zpracování osobních údajů s dodavateli (PostHog, Supabase, Vercel, Resend). Vercel má DPA jen u plánů Pro a Enterprise. Zásady proto netvrdí, že záruky pro předání do USA už jsou zajištěné (D40),
+- souhlas, nebo jiné řešení, pro uložení varianty A/B testu v paměti záložky (`sessionStorage`). Nejde o cookie a nic se neodesílá, ale § 89 zákona o elektronických komunikacích se týká jakéhokoli ukládání do zařízení a testovací varianta není pro službu nezbytná (D40),
 - dobu uchování kontaktů a postup mazání na požádání,
 - double opt-in pro další e-maily (potvrzení odkazem),
 - ověření právních textů a reklamy u odborníka, protože reklama na investice je regulovaná.
