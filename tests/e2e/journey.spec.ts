@@ -462,6 +462,18 @@ test.describe('QA 12. 10. fixes', () => {
     await expect(page.locator('main')).not.toContainText('odkazem v každé zprávě');
   });
 
+  test('the privacy notice has every part GDPR Art. 13 asks for and is as wide as the home page (D40)', async ({ page }) => {
+    await page.goto('/');
+    const homeWidth = await page.locator('main .container').first().evaluate((e) => e.getBoundingClientRect().width);
+    await page.goto('/zasady');
+    const main = page.locator('main');
+    for (const part of ['Kdo je správce', 'Právní základ', 'Jak dlouho', 'Komu údaje předáváme', 'Předání mimo EU', 'Automatizované rozhodování', 'Právo vznést námitku', 'Souhlas můžete kdykoli odvolat', 'Pplk. Sochora 727/27', 'Povinné je jen e-mail']) {
+      await expect(main).toContainText(part);
+    }
+    await expect(main).not.toContainText('Kdo s údaji pracuje za nás');
+    expect(Math.abs((await main.evaluate((e) => e.getBoundingClientRect().width)) - homeWidth)).toBeLessThan(2);
+  });
+
   test('an unknown address shows our own 404 page with a way back', async ({ page }) => {
     const res = await page.goto('/tahle-stranka-neni');
     expect(res!.status()).toBe(404);

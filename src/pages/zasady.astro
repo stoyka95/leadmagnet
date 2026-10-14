@@ -1,50 +1,100 @@
 ---
-// Privacy notice (D13, D14). Demo project: the real person responsible for the data is named.
+// Privacy notice (D13, D14, D40). Demo project: the real person responsible for the data is named.
+// Covers GDPR Art. 13: controller, purposes + legal bases + retention per purpose, recipients (categories),
+// transfers, rights (objection stated separately, Art. 21(4)), withdrawal of consent, complaint, required vs. optional data,
+// no automated decisions. Checked 14. 10. 2026 (sources in docs/DECISIONS.md D40).
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Logo from '../components/Logo.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 ---
-<BaseLayout title="Zásady ochrany osobních údajů | Fingramo" description="Jak Fingramo zpracovává osobní údaje z formuláře.">
+<BaseLayout title="Zásady ochrany osobních údajů | Fingramo" description="Jak Fingramo zpracovává osobní údaje z formuláře a z měření návštěvnosti.">
   <main class="container doc">
     <div class="brand"><Logo href="/" size={32} /></div>
     <h1>Zásady ochrany osobních údajů</h1>
-    <p class="fine">Platné od 11. 10. 2026 · verze formuláře v3-2026-10-11</p>
+    <p class="fine">Platné od 14. 10. 2026. Platí pro formulář ve verzích v3-2026-10-11 (souhlasy zaškrtnutím) a v3a-2026-10-12 (souhlasy tlačítkem po odeslání).</p>
 
-    <h2>Kdo údaje zpracovává</h2>
-    <p>Fingramo je <strong>fiktivní značka ukázkového projektu</strong> vytvořeného pro výběrové řízení. Správcem osobních údajů odeslaných přes tuto stránku je <strong>Mykola Stoyka</strong>, kontakt: <a href="mailto:mykola@stoyka.eu">mykola@stoyka.eu</a>.</p>
+    <h2>Kdo je správce</h2>
+    <p>Fingramo je <strong>fiktivní značka ukázkového projektu</strong> vytvořeného pro výběrové řízení. Správcem osobních údajů odeslaných přes tuto stránku je <strong>Mykola Stoyka</strong>, e-mail <a href="mailto:mykola@stoyka.eu">mykola@stoyka.eu</a>. Pověřence pro ochranu osobních údajů nemáme jmenovaného, zákon nám to neukládá. Se vším se obracejte na uvedený e-mail.</p>
 
-    <h2>Jaké údaje, proč a na jakém základě</h2>
+    <h2>Jaké údaje, proč, na jakém základě a jak dlouho</h2>
+
+    <h3>1. Zaslání srovnání, o které žádáte</h3>
     <ul>
-      <li><strong>E-mail, volitelně jméno a telefon a vaše zadání v kalkulačce</strong> – abychom vám poslali vyžádané srovnání. Právní základ: vaše žádost (čl. 6 odst. 1 písm. b) GDPR).</li>
-      <li><strong>Další tipy e-mailem</strong> – jen pokud zaškrtnete první souhlas ve formuláři, nebo (u části návštěvníků) pokud ho po odeslání potvrdíte tlačítkem na děkovací stránce. Právní základ: souhlas (čl. 6 odst. 1 písm. a) GDPR). Odvolat ho můžete kdykoli e-mailem na <a href="mailto:mykola@stoyka.eu">mykola@stoyka.eu</a>. Pokud bychom další e-maily začali posílat, bude v každém z nich i odkaz pro odhlášení.</li>
-      <li><strong>Telefonický kontakt</strong> – jen pokud vyplníte telefon a udělíte druhý, samostatný souhlas (zaškrtnutím ve formuláři nebo tlačítkem na děkovací stránce). Právní základ: souhlas (čl. 6 odst. 1 písm. a) GDPR). Odvolat ho můžete kdykoli e-mailem nebo během hovoru.</li>
-      <li><strong>Měření návštěvnosti</strong> (které části stránky se používají, z jaké reklamy jste přišli, souhrnné mapy kliknutí; <strong>záznamy průchodu stránkou nepořizujeme</strong>) – <strong>bez cookies</strong>; návštěvu rozpoznáváme jen v rámci jednoho dne podle denně měněného otisku, IP adresy se neukládají. Obsah polí formuláře se do měření nepřenáší. Právní základ: oprávněný zájem na zlepšování stránky (čl. 6 odst. 1 písm. f) GDPR).</li>
-      <li><strong>Paměť jen v otevřené záložce</strong> – prohlížeč si do zavření záložky pamatuje čísla z kalkulačky, kterou verzi stránky vidíte (testujeme, která je srozumitelnější), a po odeslání formuláře vaše křestní jméno pro pozdrav na děkovací stránce a náhodné číslo odeslání (e-mail ani telefon si nepamatuje). Nejde o cookies, nic z toho se neodesílá jinam a po zavření záložky se to smaže.</li>
+      <li><strong>Údaje:</strong> e-mail, nepovinně jméno a telefon, částky a počet let z kalkulačky, který formulář jste použili, z jaké reklamy jste přišli (UTM parametry), čas odeslání a verze textu formuláře.</li>
+      <li><strong>Proč:</strong> abychom vám poslali srovnání e-mailem s PDF přílohou a ukázali ho na děkovací stránce.</li>
+      <li><strong>Právní základ:</strong> plnění na vaši žádost, tedy poskytnutí bezplatné služby, o kterou jste požádali (čl. 6 odst. 1 písm. b) GDPR).</li>
+      <li><strong>Povinné je jen e-mail.</strong> Bez něj vám srovnání nemůžeme poslat. Jméno a telefon jsou dobrovolné.</li>
+      <li><strong>Jak dlouho:</strong> nejdéle 6 měsíců od odeslání, pak údaje smažeme.</li>
     </ul>
 
-    <h2>Kdo s údaji pracuje za nás</h2>
+    <h3>2. Ochrana formuláře před zneužitím</h3>
     <ul>
-      <li><strong>Supabase</strong> – databáze kontaktů, servery ve Frankfurtu (EU).</li>
-      <li><strong>Resend</strong> – odeslání e-mailu se srovnáním (region EU-West).</li>
-      <li><strong>Vercel</strong> – provoz webu, serverové funkce ve Frankfurtu (EU).</li>
-      <li><strong>PostHog</strong> – měření návštěvnosti, datové centrum v EU (Frankfurt).</li>
-      <li><strong>Vercel Web Analytics</strong> – počet návštěv bez cookies.</li>
+      <li><strong>Údaje:</strong> e-mail a čas odeslání (tytéž jako v bodě 1, nic dalšího nesbíráme).</li>
+      <li><strong>Proč:</strong> na jednu e-mailovou adresu přijmeme nejvýš 3 žádosti za 24 hodin, aby formulář nešel použít k zahlcení cizí schránky.</li>
+      <li><strong>Právní základ:</strong> oprávněný zájem na bezpečném provozu služby a na ochraně adresátů (čl. 6 odst. 1 písm. f) GDPR).</li>
+      <li><strong>Jak dlouho:</strong> stejně jako v bodě 1.</li>
     </ul>
-    <p>Někteří z těchto zpracovatelů jsou společnosti se sídlem v USA. Údaje neprodáváme ani nepředáváme dalším stranám.</p>
 
-    <h2>Jak dlouho</h2>
-    <p>Údaje pro zaslání srovnání uchováváme nejdéle 6 měsíců. Údaje se souhlasem s dalšími e-maily do odvolání souhlasu. Protože jde o ukázkový projekt, budou všechny údaje smazány po skončení výběrového řízení.</p>
+    <h3>3. Další tipy e-mailem (obchodní sdělení)</h3>
+    <ul>
+      <li><strong>Kdy:</strong> jen pokud k tomu dáte samostatný souhlas, a to zaškrtnutím ve formuláři nebo tlačítkem na děkovací stránce. Žádné pole není předem zaškrtnuté a souhlas není podmínkou zaslání srovnání.</li>
+      <li><strong>Právní základ:</strong> váš souhlas (čl. 6 odst. 1 písm. a) GDPR a § 7 zákona č. 480/2004 Sb., o některých službách informační společnosti).</li>
+      <li><strong>Jak dlouho:</strong> do odvolání souhlasu. Pokud vám do 6 měsíců žádný tip nepošleme, údaje smažeme i se souhlasem.</li>
+      <li>Zatím žádné další e-maily neposíláme. Pokud začneme, bude v každém odkaz pro odhlášení.</li>
+    </ul>
+
+    <h3>4. Telefonický kontakt</h3>
+    <ul>
+      <li><strong>Kdy:</strong> jen pokud vyplníte telefon a dáte k tomu druhý, samostatný souhlas (zaškrtnutím ve formuláři nebo tlačítkem na děkovací stránce). Zavoláme jen kvůli srovnání, investiční rady nedáváme.</li>
+      <li><strong>Právní základ:</strong> váš souhlas (čl. 6 odst. 1 písm. a) GDPR).</li>
+      <li><strong>Jak dlouho:</strong> do odvolání souhlasu, nejdéle 6 měsíců od odeslání.</li>
+    </ul>
+
+    <h3>5. Měření návštěvnosti</h3>
+    <ul>
+      <li><strong>Údaje:</strong> které části stránky se zobrazily a které tlačítko jste použili, z jaké reklamy jste přišli, souhrnné mapy kliknutí, rychlost načtení stránky. <strong>Bez cookies.</strong> Návštěvu rozpoznáváme jen v rámci jednoho dne podle otisku, který měřicí služba počítá na serveru a denně mění. IP adresy se neukládají. Obsah polí formuláře do měření nejde. <strong>Záznamy průchodu stránkou (nahrávání obrazovky) nepořizujeme.</strong></li>
+      <li>Při odeslání formuláře se měření propojí s vaším kontaktem náhodným číslem, abychom věděli, která reklama a který krok vedly k žádosti o srovnání.</li>
+      <li><strong>Právní základ:</strong> oprávněný zájem zjistit, které reklamy a části stránky fungují, a stránku podle toho zlepšovat (čl. 6 odst. 1 písm. f) GDPR). Proti tomu můžete kdykoli vznést námitku (viz Vaše práva).</li>
+      <li><strong>Jak dlouho:</strong> záznamy o návštěvách nejdéle 1 rok.</li>
+    </ul>
+
+    <h3>6. Paměť jen v otevřené záložce</h3>
+    <p>Prohlížeč si do zavření záložky pamatuje (úložiště <code>sessionStorage</code>, ne cookies):</p>
+    <ul>
+      <li>čísla z kalkulačky, aby je děkovací stránka mohla ukázat,</li>
+      <li>kterou verzi první obrazovky a formuláře vidíte (testujeme, která je srozumitelnější), aby se vám během návštěvy neměnila,</li>
+      <li>po odeslání formuláře vaše křestní jméno pro pozdrav na děkovací stránce, náhodné číslo odeslání a odpověď na otázku „Už investujete?“. E-mail ani telefon si nepamatuje.</li>
+    </ul>
+    <p>Nic z toho se neukládá natrvalo a po zavření záložky se to smaže.</p>
+
+    <h2>Komu údaje předáváme</h2>
+    <p>Údaje <strong>neprodáváme</strong> a nikomu je nepředáváme pro jeho vlastní účely. Pracují s nimi jen naši zpracovatelé podle našich pokynů: poskytovatelé provozu webu a serverových funkcí, databáze kontaktů, odesílání e-mailů a měření návštěvnosti.</p>
+    <p><strong>Předání mimo EU:</strong> údaje ukládáme v datových centrech v EU, ale někteří zpracovatelé jsou společnosti se sídlem v USA a přístup z USA proto nelze vyloučit. Takové předání musí být zajištěné standardními smluvními doložkami EU (čl. 46 GDPR) nebo certifikací podle rámce EU-USA pro ochranu osobních údajů (čl. 45 GDPR). Jde o ukázkový projekt: před ostrým provozem tyto záruky ověříme u každého zpracovatele. Seznam zpracovatelů a kopii záruk vám na požádání pošleme.</p>
+
+    <h2>Automatizované rozhodování</h2>
+    <p>Nerozhodujeme o vás automaticky a nevytváříme profily, které by pro vás měly právní nebo podobně závažné účinky.</p>
 
     <h2>Vaše práva</h2>
-    <p>Máte právo na přístup k údajům, jejich opravu, výmaz, omezení zpracování, přenositelnost a právo vznést námitku. Stačí napsat na <a href="mailto:mykola@stoyka.eu">mykola@stoyka.eu</a>. Máte také právo podat stížnost u Úřadu pro ochranu osobních údajů (<a href="https://uoou.gov.cz" rel="noopener">uoou.gov.cz</a>).</p>
+    <ul>
+      <li>Máte právo na <strong>přístup</strong> ke svým údajům, jejich <strong>opravu</strong>, <strong>výmaz</strong>, <strong>omezení zpracování</strong> a <strong>přenositelnost</strong>.</li>
+      <li><strong>Souhlas můžete kdykoli odvolat</strong> e-mailem na <a href="mailto:mykola@stoyka.eu">mykola@stoyka.eu</a>, u telefonu i během hovoru. Odvolání nemá vliv na zpracování, které proběhlo před ním.</li>
+      <li><strong>Právo vznést námitku:</strong> proti zpracování na základě oprávněného zájmu (body 2 a 5) můžete kdykoli vznést námitku z důvodů týkajících se vaší situace. Pak údaje dál nezpracujeme, pokud neprokážeme závažné oprávněné důvody. Proti obchodním sdělením můžete vznést námitku kdykoli a bez udání důvodu.</li>
+      <li>Stačí napsat na <a href="mailto:mykola@stoyka.eu">mykola@stoyka.eu</a>. Odpovíme bez zbytečného odkladu, nejpozději do 1 měsíce.</li>
+      <li>Máte také právo podat stížnost u dozorového úřadu: <strong>Úřad pro ochranu osobních údajů</strong>, Pplk. Sochora 727/27, 170 00 Praha 7, <a href="https://uoou.gov.cz" rel="noopener">uoou.gov.cz</a>.</li>
+    </ul>
+
+    <h2>Změny zásad</h2>
+    <p>Když zásady změníme, upravíme datum platnosti nahoře. Protože jde o ukázkový projekt, všechny údaje smažeme po skončení výběrového řízení, nejpozději ve lhůtách uvedených výše.</p>
   </main>
   <SiteFooter />
 </BaseLayout>
 
 <style>
-  .doc { max-width: calc(var(--w-text) + 2 * var(--gutter)); padding-block: var(--sp-6) var(--sp-16); display: grid; gap: var(--sp-3); }
+  /* Same width as the home page (.container), 14. 10. 2026 */
+  .doc { padding-block: var(--sp-6) var(--sp-16); display: grid; gap: var(--sp-3); }
   .brand { margin-bottom: var(--sp-4); }
   h1 { font-size: var(--fs-2xl); }
   h2 { font-size: var(--fs-lg); margin-top: var(--sp-6); }
+  h3 { font-size: var(--fs-md); margin-top: var(--sp-3); }
   ul { padding-left: var(--sp-5); display: grid; gap: var(--sp-2); margin: 0; }
 </style>
