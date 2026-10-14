@@ -111,14 +111,14 @@ Každý krok: změna, testy (unit/E2E) upravené nebo nové, kontrola na mobilu 
 ## Fáze 6 – README a odevzdání (čt 15. 10. večer)
 - [x] README se všemi 13 sekcemi (sekce 5 CLAUDE.md), včetně očekávané konverze a 3 A/B hypotéz (11. 10., dříve než plán) + sekce Soukromí a právní stránka
 - [x] Doplnit `docs/AI-WORK-NOTES.md` (pokyny, kontrola výstupu, chyby AI)
-- [ ] `/export` všech session → `ai-log/` → commit + push – **Miky** (příkaz `/export` v Claude Code)
+- [x] Export session → `ai-log/` (14. 10., export z aplikace převedený do markdownu, `ai-log/README.md`). Po poslední session před odesláním export zopakovat.
 - [~] Závěrečný kontrolní seznam (sekce 2 CLAUDE.md) – 11. 10.:
   - [x] veřejný repozitář `stoyka95/leadmagnet` (PUBLIC), 140+ commitů
   - [x] URL https://fingramo.vercel.app funguje na mobilu (E2E 375/390 px, Lighthouse mobil 100)
   - [x] obě verze reklamy v `ads/` (4:5 a 9:16) a jejich texty
   - [x] README se všemi sekcemi, odkazy v README ověřené
   - [x] žádné klíče v repozitáři (jen `.env.example`)
-  - [ ] `ai-log/` s exporty – Miky
+  - [x] `ai-log/` s exporty (14. 10.)
   - [ ] smazat 5 testovacích kontaktů v Supabase (`utm_source=test`) – **Miky 11. 10.: až těsně před odesláním** (Claude smaže na pokyn, pak ověří 0 řádků)
   - [ ] ruční kontrola na skutečném telefonu – Miky
   - [ ] záznamy relací vypnout i v nastavení PostHogu – Miky
