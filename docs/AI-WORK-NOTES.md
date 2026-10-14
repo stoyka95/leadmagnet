@@ -397,3 +397,24 @@ Miky: „Zkontroluj teď web, všechny varianty, e-maily (text atd., kolik máme
 ### Kde se AI spletla
 - **Dokumentace zaostávala za kódem.** Po každé změně (D37–D39) AI upravila čísla jen v části dokumentů. Poučení: po změně, která ovlivní výšku stránky, testy nebo texty, projít všechny dokumenty, ne jen ten, který se právě píše.
 - **Lighthouse:** první běh dal výkon 95–97, protože běžel souběžně s testy. Výsledek se neopsal, ale měřilo se znovu a zvlášť. Výkon 97–100 se zapsal i s vysvětlením.
+
+---
+
+## 14. 10. 2026: zásady ochrany osobních údajů (D40)
+
+### Pokyn
+Miky: „Uprav /zasady bez sekce ‚Kdo s údaji pracuje za nás‘, ale aby vše bylo správně podle GDPR (aktuality 10. 2026). Projdi stránku, udělej seznam, co je špatně, dohledej aktuální pravidla a upravuj. Obsah stejně široký jako index."
+
+### Co AI udělala
+- Prošla stránku podle čl. 13 GDPR a našla 8 nedostatků (D40).
+- Dohledala stav k 10/2026:
+  - Digital Omnibus je stále jen návrh,
+  - rámec EU-USA (DPF) platí a odvolání u Soudního dvora čeká,
+  - přečetla DPA Vercelu, Resendu a Supabase.
+- Upozornila, že sekce nemůže zmizet bez náhrady: GDPR vyžaduje aspoň kategorie příjemců. Jména jsou pryč, kategorie zůstaly.
+- Ověřila v prohlížeči, co stránka ukládá do zařízení: cookies ani localStorage nic, sessionStorage jen `fg:exp_hero_calc` hned při načtení. PostHog v režimu bez cookies nic.
+- E2E test hlídá povinné části zásad a šířku stejnou jako hlavní stránka. Prošla i kontrola přístupnosti, vodorovného scrollu a dotykových ploch.
+
+### Kde mohla AI chybovat a co udělala jinak
+- Nejsnazší by bylo napsat „předání do USA je zajištěno standardními smluvními doložkami". To by ale nebyla pravda: DPA Vercelu platí jen pro plány Pro a Enterprise a DPA PostHogu se ověřit nepodařilo. Stránka proto píše jen to, co je ověřené, a otevřené body jsou v README.
+- Sama našla další riziko, na které se Miky neptal: uložení varianty A/B testu do sessionStorage bez souhlasu (§ 89 zákona o elektronických komunikacích). Nerozhodla za Mikyho, předložila varianty.
