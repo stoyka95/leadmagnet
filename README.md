@@ -127,7 +127,7 @@ Data jsou statická (stav k 11. 10. 2026). Pro ostrý provoz by se musela pravid
 Podrobnosti (všechny události a jejich vlastnosti, velikost vzorku pro A/B test, čistota dat) jsou v [docs/MEASUREMENT.md](docs/MEASUREMENT.md).
 
 #### Dashboard
-Vše je na jednom dashboardu v PostHogu (EU): **[Fingramo – trychtýř leadů](https://eu.posthog.com/project/301598/dashboard/1014275)**.
+Vše je na jednom dashboardu v PostHogu (EU): **[Fingramo – trychtýř leadů](https://eu.posthog.com/shared/Nby-TAkFRTdCiei8ggasw-ErOz-lsw)**.
 
 | Insight | Co ukazuje |
 |---|---|
