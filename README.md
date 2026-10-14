@@ -15,6 +15,7 @@ Landing page pro českého drobného investora z reklamy na mobilu. Spočítá m
 | **Odkazy z reklam** | A: `https://fingramo.vercel.app/?utm_source=meta&utm_medium=paid_social&utm_campaign=etf_nyse_leadmagnet_2026_10&utm_content=a` · B: totéž s `utm_content=b` |
 | **E-mail, který návštěvník dostane** | [mobil](docs/email-ukazka-mobil.png) · [desktop](docs/email-ukazka-desktop.png) · [PDF příloha](docs/email-ukazka-priloha.pdf) |
 | **Dashboard měření** (PostHog, vyžaduje přístup) | https://eu.posthog.com/project/301598/dashboard/1014275 |
+| **Dashboard měření** (PostHog, veřejný) | https://eu.posthog.com/shared/Nby-TAkFRTdCiei8ggasw-ErOz-lsw |
 | **Repozitář** | https://github.com/stoyka95/leadmagnet |
 
 #### Všechny varianty stránky (odkazy ověřené 12. 10. 2026)
